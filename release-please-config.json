@@ -1,7 +1,16 @@
 {
   "packages": {
-    "packages/vue-markdown-design": {},
-    "packages/markdown-it-headers": {},
-    "packages/markdown-it-sanitize": {}
+    "packages/vue-markdown-design": {
+      "release-type": "node",
+      "changelog-path": "packages/vue-markdown-design/CHANGELOG.md"
+    },
+    "packages/markdown-it-headers": {
+      "release-type": "node",
+      "changelog-path": "packages/markdown-it-headers/CHANGELOG.md"
+    },
+    "packages/markdown-it-sanitize": {
+      "release-type": "node",
+      "changelog-path": "packages/markdown-it-sanitize/CHANGELOG.md"
+    }
   }
 }
