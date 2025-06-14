@@ -1,65 +1,43 @@
-# markdown-it-headers
+# Vue Markdown Design
 
-一个用于提取 markdown 标题信息的 markdown-it 插件，主要返回的标题信息请看 [MditHeadings](#MditHeadings)。
+一个基于 [markdown-it](https://github.com/markdown-it/markdown-it) 的 Vue 3 开箱即用 Markdown 组件，主要功能有 Markdown 渲染，目录生成，关键字搜索。同时内置其他常用功能，包括支持 markdown-it 插件，emoji 表情，标题永久链接，防御 XSS 攻击，支持 TypeScript 等。
 
 ## 快速上手
 
 ### 安装
 
 ```sh
-npm i @markdown-design/markdown-it-headers
+npm i vue-markdown-design
 ```
 
 ### 使用
 
 ```js
-// demo.js
+// main.js
 
-import markdownit from 'markdown-it'
-import { headers } from '@markdown-design/markdown-it-headers'
+// 引入组件
+import VueMarkdown from 'vue-markdown-design'
 
-const md = markdownit()
-md.use(headers)
+import { createApp } from 'vue'
 
-const env = {}
-md.render(`# foo\n## bar\nbaz`, env)
-const { headings = [] } = env
-console.log(headings)
-// 输出：
-// [
-//     {
-//         "level": 1,
-//         "text": "foo"
-//     },
-//     {
-//         "level": 2,
-//         "text": "bar"
-//     }
-// ]
+const app = createApp()
+
+// 注册组件
+app.use(VueMarkdown)
+
+app.mount('#app')
 ```
 
-### TypeScript
+```vue
+<!-- demo.vue -->
 
-```ts
-// demo.ts
-import { type MditHeadersEnv } from '@markdown-design/markdown-it-headers'
-
-const env: MditHeadersEnv = {}
+<vue-markdown :src="`# 标题\n内容`" />
 ```
 
-#### MditHeadersEnv
+## 更多
 
-| 名称     | 类型                            |
-| -------- | ------------------------------- |
-| headings | [MditHeadings](#MditHeadings)[] |
-
-#### MditHeadings
-
-| 名称  | 说明           | 类型   |
-| ----- | -------------- | ------ |
-| level | 标题的级别     | number |
-| text  | 标题包含的内容 | string |
+详细文档即将发布，敬请期待！
 
 ## 开源协议
 
-本项目基于 [MIT](./LICENSE) 协议。
+本项目基于 [MIT](../../LICENSE) 协议。

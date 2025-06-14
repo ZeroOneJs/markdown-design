@@ -1,3 +1,5 @@
+English | [中文](./README.zh-CN.md)
+
 # markdown-it-headers
 
 A markdown-it plugin for extracting markdown heading information. For details on the returned heading structure, see [MditHeadings](#MditHeadings).

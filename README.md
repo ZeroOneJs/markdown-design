@@ -1,65 +1,45 @@
-# markdown-it-headers
+English | [中文](./README.zh-CN.md)
 
-A markdown-it plugin for extracting markdown heading information. For details on the returned heading structure, see [MditHeadings](#MditHeadings).
+# Vue Markdown Design
+
+A Vue 3 out-of-the-box Markdown component built on [markdown-it](https://github.com/markdown-it/markdown-it). It mainly features Markdown rendering, TOC generation, and keyword search. It also includes other common functionalities such as support for markdown-it plugins, emoji, heading permalinks, XSS sanitization, and TypeScript.
 
 ## Quick Start
 
 ### Installation
 
 ```sh
-npm i @markdown-design/markdown-it-headers
+npm i vue-markdown-design
 ```
 
 ### Usage
 
 ```js
-// demo.js
+// main.js
 
-import markdownit from 'markdown-it'
-import { headers } from '@markdown-design/markdown-it-headers'
+// Import component
+import VueMarkdown from 'vue-markdown-design'
 
-const md = markdownit()
-md.use(headers)
+import { createApp } from 'vue'
 
-const env = {}
-md.render(`# foo\n## bar\nbaz`, env)
-const { headings = [] } = env
-console.log(headings)
-// Outputs:
-// [
-//     {
-//         "level": 1,
-//         "text": "foo"
-//     },
-//     {
-//         "level": 2,
-//         "text": "bar"
-//     }
-// ]
+const app = createApp()
+
+// Register component
+app.use(VueMarkdown)
+
+app.mount('#app')
 ```
 
-### TypeScript
+```vue
+<!-- demo.vue -->
 
-```ts
-// demo.ts
-import { type MditHeadersEnv } from '@markdown-design/markdown-it-headers'
-
-const env: MditHeadersEnv = {}
+<vue-markdown :src="`# Title\nContent`" />
 ```
 
-#### MditHeadersEnv
+## More
 
-| Name     | Type                            |
-| -------- | ------------------------------- |
-| headings | [MditHeadings](#MditHeadings)[] |
-
-#### MditHeadings
-
-| Name  | Description     | Type   |
-| ----- | --------------- | ------ |
-| level | Heading level   | number |
-| text  | Heading content | string |
+More documentation coming soon!
 
 ## License
 
-[MIT](./LICENSE).
+[MIT](../../LICENSE).

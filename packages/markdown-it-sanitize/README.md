@@ -1,3 +1,5 @@
+English | [中文](./README.zh-CN.md)
+
 # markdown-it-sanitize
 
 A markdown-it plugin built on [DOMPurify](https://github.com/cure53/DOMPurify). The plugin sanitizes the output HTML when the html option of markdown-it is enabled, to prevent XSS attacks.
