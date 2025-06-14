@@ -1,0 +1,21 @@
+import { scrollToEl } from '../dom'
+
+describe('dom', () => {
+  it('scrollToEl', () => {
+    cy.mount(() => (
+      <>
+        <div style="height: 100vh;"></div>
+        <div style="height: 300px; overflow: scroll;">
+          <div style="height: 100vh;"></div>
+          <div data-cy>内容</div>
+          <div style="height: 100vh;"></div>
+        </div>
+        <div style="height: 100vh;"></div>
+      </>
+    ))
+    cy.get('[data-cy]').should(($el) => {
+      scrollToEl($el[0])
+      expect($el).to.boundary.satisfy(({ top }) => top === 0)
+    })
+  })
+})

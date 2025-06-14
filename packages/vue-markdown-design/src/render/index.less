@@ -1,0 +1,44 @@
+@import url('github-markdown-css/github-markdown-light.css');
+@import url('highlight.js/styles/github.css');
+
+:root {
+  --vmd-render-bg: var(--vmd-bg-color);
+  --vmd-render-padding: var(--vmd-container-padding);
+  --vmd-render-margin: var(--vmd-container-margin);
+  --vmd-render-max-w: var(--vmd-container-max-w);
+  --vmd-render-anchor-opacity: 0;
+  --vmd-render-anchor-top: 0;
+  --vmd-render-anchor-left: 0;
+  --vmd-render-anchor-margin-left: -0.8em;
+  --vmd-render-anchor-ani: opacity 0.25s;
+  --vmd-render-anchor-hover-opacity: 1;
+}
+
+.vmd-render {
+  margin: var(--vmd-render-margin);
+  max-width: var(--vmd-render-max-w);
+  padding: var(--vmd-render-padding);
+  background: var(--vmd-render-bg);
+  &--permalink {
+    & h1,
+    & h2,
+    & h3,
+    & h4,
+    & h5,
+    & h6 {
+      position: relative;
+      &:hover .vmd-render__anchor {
+        opacity: var(--vmd-render-anchor-hover-opacity);
+      }
+    }
+  }
+  & &__anchor {
+    position: absolute;
+    top: var(--vmd-render-anchor-top);
+    left: var(--vmd-render-anchor-left);
+    margin-left: var(--vmd-render-anchor-margin-left);
+    user-select: none;
+    opacity: var(--vmd-render-anchor-opacity);
+    transition: var(--vmd-render-anchor-ani);
+  }
+}

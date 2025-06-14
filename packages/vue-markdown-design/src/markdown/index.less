@@ -1,0 +1,113 @@
+:root {
+  --vmd-markdown-aside-w: 320px;
+  --vmd-markdown-aside-wrapper-w: var(--vmd-markdown-aside-w);
+  --vmd-markdown-toc-w: var(--vmd-markdown-aside-w);
+  --vmd-markdown-aside-border: 1px solid var(--vmd-line-color);
+  --vmd-markdown-search-bg: var(--vmd-bg-color);
+  --vmd-markdown-ani-duration: 0.5s;
+  --vmd-markdown-ani-function: ease;
+  --vmd-markdown-render-ani: opacity var(--vmd-markdown-ani-duration)
+    var(--vmd-markdown-ani-function);
+  --vmd-markdown-aside-ani: all var(--vmd-markdown-ani-duration) var(--vmd-markdown-ani-function);
+  --vmd-markdown-btn-radius: 10px;
+  --vmd-markdown-btn-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  --vmd-markdown-btn-bg: var(--vmd-bg-color);
+  --vmd-markdown-btn-margin: 40px 32px;
+  --vmd-markdown-btn-ani: width 0.2s ease;
+  --vmd-markdown-btn-icon-h: 40px;
+  --vmd-markdown-btn-icon-border-w: 2px;
+  --vmd-markdown-btn-icon-border: var(--vmd-markdown-btn-icon-border-w) #fff solid;
+  --vmd-markdown-btn-icon-line-left: calc(0px - var(--vmd-markdown-btn-icon-border-w) - 0.5px);
+  --vmd-markdown-btn-icon-active: var(--vmd-active-color);
+  --vmd-markdown-btn-icon-line-w: 1px;
+  --vmd-markdown-btn-icon-line-h: 18px;
+  --vmd-markdown-btn-icon-line-color: var(--vmd-line-color);
+  --vmd-markdown-toc-bg: var(--vmd-bg-color);
+  --vmd-markdown-search-padding: 0 var(--vmd-container-padding);
+  --vmd-markdown-search-margin: var(--vmd-container-margin);
+  --vmd-markdown-search-max-w: var(--vmd-container-max-w);
+}
+
+.vmd-markdown {
+  &--large {
+    display: flex;
+    .vmd-markdown {
+      &__wrapper {
+        flex: auto;
+      }
+      &__aside {
+        flex-grow: 0;
+        flex-shrink: 0;
+        width: var(--vmd-markdown-aside-wrapper-w);
+        border-left: var(--vmd-markdown-aside-border);
+      }
+    }
+  }
+  &__wrapper {
+    min-width: 0; // 使文本正常换行
+  }
+  &__search {
+    background: var(--vmd-markdown-search-bg);
+    &-input {
+      padding: var(--vmd-markdown-search-padding);
+      margin: var(--vmd-markdown-search-margin);
+      max-width: var(--vmd-markdown-search-max-w);
+    }
+  }
+  &__render--hidden {
+    transition: var(--vmd-markdown-render-ani);
+    opacity: 0;
+  }
+  &__btn {
+    border-radius: var(--vmd-markdown-btn-radius);
+    box-shadow: var(--vmd-markdown-btn-shadow);
+    background: var(--vmd-markdown-btn-bg);
+    display: flex;
+    margin: var(--vmd-markdown-btn-margin);
+    cursor: pointer;
+    overflow: hidden;
+    transition: var(--vmd-markdown-btn-ani);
+    &-icon {
+      flex: auto;
+      height: var(--vmd-markdown-btn-icon-h);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: var(--vmd-markdown-btn-icon-border);
+      border-radius: inherit;
+      box-sizing: border-box;
+      color: var(--vmd-icon-color);
+      &--active {
+        background: var(--vmd-markdown-btn-icon-active);
+      }
+      & + & {
+        position: relative;
+        &::after {
+          content: '';
+          display: block;
+          width: var(--vmd-markdown-btn-icon-line-w);
+          height: var(--vmd-markdown-btn-icon-line-h);
+          background: var(--vmd-markdown-btn-icon-line-color);
+          position: absolute;
+          left: var(--vmd-markdown-btn-icon-line-left);
+        }
+      }
+    }
+  }
+  &__ani {
+    &-enter-active,
+    &-leave-active {
+      transition: var(--vmd-markdown-aside-ani);
+    }
+    &-enter-from,
+    &-leave-to {
+      width: 0 !important;
+      opacity: 0;
+    }
+  }
+  &__toc {
+    width: var(--vmd-markdown-toc-w); // 防止播放动画时文字换行
+    overflow: scroll;
+    background: var(--vmd-markdown-toc-bg);
+  }
+}

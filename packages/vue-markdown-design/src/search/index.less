@@ -1,0 +1,90 @@
+:root {
+  --vmd-search-w: 100%;
+  --vmd-search-bg: var(--vmd-bg-color);
+  --vmd-search-padding: 0 10px;
+  --vmd-search-font-size: 14px;
+  --vmd-search-item-padding: 0 10px;
+  --vmd-search-huge-h: 56px;
+  --vmd-search-large-h: 40px;
+  --vmd-search-normal-h: 32px;
+  --vmd-search-small-h: 24px;
+  --vmd-search-small-font-size: 12px;
+  --vmd-search-border: 1px solid var(--vmd-line-color);
+  --vmd-search-disabled-opacity: 0.5;
+  --vmd-search-input-font-size: 1em;
+  --vmd-search-input-padding: 0;
+  --vmd-search-clearable-color: var(--vmd-text-secondary-color);
+  --vmd-search-count-font-size: 12px;
+  --vmd-search-count-color: var(--vmd-text-secondary-color);
+  --vmd-search-btn-hover-opacity: 0.5;
+  --vmd-search-mark: mark;
+  --vmd-search-highlight: orange;
+}
+
+.vmd-search {
+  box-sizing: border-box;
+  display: inline-flex;
+  width: var(--vmd-search-w);
+  align-items: center;
+  background: var(--vmd-search-bg);
+  padding: var(--vmd-search-padding);
+  font-size: var(--vmd-search-font-size);
+  & > *:not(&__input) {
+    padding: var(--vmd-search-item-padding);
+    flex: none;
+  }
+  // 高度放在 input，避免父元素的 display 为 inline-flex 时使高度不准
+  &--huge &__input {
+    height: var(--vmd-search-huge-h);
+  }
+  &--large &__input {
+    height: var(--vmd-search-large-h);
+  }
+  &--normal &__input {
+    height: var(--vmd-search-normal-h);
+  }
+  &--small &__input {
+    height: var(--vmd-search-small-h);
+  }
+  &--small {
+    font-size: var(--vmd-search-small-font-size);
+  }
+  &--border {
+    border-bottom: var(--vmd-search-border);
+  }
+  &--disabled {
+    cursor: not-allowed;
+    & > *:not(.vmd-search__close) {
+      opacity: var(--vmd-search-disabled-opacity);
+      cursor: inherit !important;
+    }
+  }
+  &__input {
+    font-size: var(--vmd-search-input-font-size);
+    flex: auto;
+    border-style: none;
+    background: transparent;
+    outline: none;
+    padding: var(--vmd-search-input-padding);
+  }
+  &__clearable {
+    color: var(--vmd-search-clearable-color) !important;
+  }
+  &__count {
+    font-size: var(--vmd-search-count-font-size);
+    color: var(--vmd-search-count-color);
+  }
+  &__btn {
+    cursor: pointer;
+    color: var(--vmd-icon-color);
+    &:hover {
+      opacity: var(--vmd-search-btn-hover-opacity);
+    }
+  }
+  &--mark {
+    background: var(--vmd-search-mark) !important;
+  }
+  &--highlight {
+    background: var(--vmd-search-highlight) !important;
+  }
+}

@@ -1,0 +1,74 @@
+{
+  "name": "vue-markdown-design",
+  "version": "0.0.0",
+  "description": "Vue 3 markdown component built on markdown-it.",
+  "main": "lib/index.js",
+  "module": "es/index.mjs",
+  "typings": "lib/index.d.ts",
+  "files": [
+    "es",
+    "lib"
+  ],
+  "scripts": {
+    "test": "cypress run --component",
+    "test:dev": "cypress open --component",
+    "type-check": "vue-tsc -p tsconfig.build.json",
+    "build-only": "vite build",
+    "build": "run-p type-check build-only"
+  },
+  "homepage": "https://github.com/ZeroOneJs/markdown-design#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ZeroOneJs/markdown-design.git"
+  },
+  "bugs": "https://github.com/ZeroOneJs/markdown-design/issues",
+  "author": "Zero",
+  "license": "MIT",
+  "keywords": [
+    "vue",
+    "vue3",
+    "markdown",
+    "markdown-it",
+    "component",
+    "toc",
+    "search"
+  ],
+  "dependencies": {
+    "@fortawesome/free-solid-svg-icons": "^6.6.0",
+    "@fortawesome/vue-fontawesome": "^3.0.8",
+    "@markdown-design/markdown-it-headers": "workspace:^",
+    "@markdown-design/markdown-it-sanitize": "workspace:^",
+    "@types/markdown-it": "catalog:",
+    "@types/markdown-it-emoji": "^3.0.1",
+    "@vueuse/core": "^11.2.0",
+    "compute-scroll-into-view": "^3.1.0",
+    "github-markdown-css": "^5.6.1",
+    "highlight.js": "^11.10.0",
+    "lodash": "^4.17.21",
+    "mark.js": "^8.11.1",
+    "markdown-it": "catalog:",
+    "markdown-it-anchor": "^9.2.0",
+    "markdown-it-emoji": "^3.0.0",
+    "popmotion": "^11.0.5",
+    "vue": "^3.4.29"
+  },
+  "peerDependencies": {
+    "vue": "^3.0.0"
+  },
+  "devDependencies": {
+    "@cypress/code-coverage": "^3.13.10",
+    "@types/lodash": "^4.17.7",
+    "@types/mark.js": "^8.11.12",
+    "@vitejs/plugin-vue": "^5.0.5",
+    "@vitejs/plugin-vue-jsx": "^4.0.0",
+    "cypress": "^14.0.3",
+    "less": "^4.2.0",
+    "npm-run-all2": "catalog:",
+    "typescript": "catalog:",
+    "vite": "catalog:",
+    "vite-plugin-dts": "^4.5.0",
+    "vite-plugin-istanbul": "^6.0.2",
+    "vite-plugin-lib-inject-css": "^2.2.1",
+    "vue-tsc": "^2.0.21"
+  }
+}
