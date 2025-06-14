@@ -17,7 +17,7 @@ describe('Sticky', () => {
       cy.get('[data-cy]').should('boundary.satisfy', ({ top }) => top === 0)
     })
     it('bottom', () => {
-      cy.wait(50) // 防止测试之间 <html> 滚动条相互影响
+      cy.wait(100) // 防止测试之间 <html> 滚动条相互影响
       cy.mount(() => (
         <>
           <div style="height: 100vh">占位</div>
@@ -80,7 +80,7 @@ describe('Sticky', () => {
       cy.get('[data-cy="content"]').should('boundary.satisfy', ({ top }) => top < 0)
     })
     it('bottom', () => {
-      cy.wait(50) // 防止测试之间 <html> 滚动条相互影响
+      cy.wait(100) // 防止测试之间 <html> 滚动条相互影响
       cy.mount(() => (
         <>
           <div style="height: 100vh">占位</div>
@@ -114,7 +114,7 @@ describe('Sticky', () => {
     cy.get('.vmd-sticky__wrapper').should('have.css', 'z-index', '0')
   })
   it('滚动对象', () => {
-    cy.wait(50) // 防止测试之间 <html> 滚动条相互影响
+    cy.wait(100) // 防止测试之间 <html> 滚动条相互影响
     cy.mount(() => (
       <>
         <div style="height: 90vh">占位</div>
