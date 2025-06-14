@@ -1,6 +1,6 @@
 {
   "name": "@markdown-design/markdown-it-sanitize",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "A markdown-it plugin built on DOMPurify.",
   "main": "src/index.ts",
   "publishConfig": {
