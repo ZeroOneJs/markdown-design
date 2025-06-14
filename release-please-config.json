@@ -1,0 +1,7 @@
+{
+  "packages": {
+    "packages/vue-markdown-design": {},
+    "packages/markdown-it-headers": {},
+    "packages/markdown-it-sanitize": {}
+  }
+}
