@@ -23,14 +23,14 @@ jobs:
           node-version: '18'
           cache: 'pnpm'
 
-      - name: Install dependencies
-        run: pnpm i
-
       - name: Cache Cypress binary
         uses: actions/cache@v4
         with:
           path: ~/.cache/Cypress
-          key: cypress-${{ runner.os }}-v14.0.3
+          key: cypress-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }},
+
+      - name: Install dependencies
+        run: pnpm i
 
       - name: Run test
         run: pnpm test
