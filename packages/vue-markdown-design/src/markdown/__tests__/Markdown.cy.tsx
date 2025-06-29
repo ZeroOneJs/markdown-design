@@ -90,7 +90,7 @@ describe('Markdown', () => {
     cy.get(`[id='${id}']`).should('boundary.satisfy', ({ top }) => Math.floor(top) === 60)
   })
   it('offsetBottom', () => {
-    cy.wait(20) // 防止测试之间 <html> 滚动条相互影响
+    cy.scrollTo('top', { ensureScrollable: false }) // 防止测试之间 <html> 滚动条相互影响
     cy.fixture('commonmark/poem.md').then((src) => {
       cy.mount(() => <Markdown showBtn src={src} offsetBottom="60" />)
     })
@@ -112,14 +112,14 @@ describe('Markdown', () => {
     }
   )
   it('searchOffset', () => {
-    cy.wait(20) // 防止测试之间 <html> 滚动条相互影响
+    cy.scrollTo('top', { ensureScrollable: false }) // 防止测试之间 <html> 滚动条相互影响
     cy.fixture('commonmark/poem.md').then((src) => {
       cy.mount(() => <Markdown src={src} keyword="Perched" search searchOffset={60} />)
     })
     cy.get('.vmd-search--highlight').should('boundary.satisfy', ({ top }) => Math.floor(top) === 60)
   })
   it('searchSmooth', () => {
-    cy.wait(20) // 防止测试之间 <html> 滚动条相互影响
+    cy.scrollTo('top', { ensureScrollable: false }) // 防止测试之间 <html> 滚动条相互影响
     cy.fixture('commonmark/poem.md').then((src) => {
       cy.mount(() => <Markdown src={src} keyword="Perched" search searchSmooth searchOffset={0} />)
     })
@@ -130,7 +130,7 @@ describe('Markdown', () => {
     cy.get('.vmd-search--highlight').should('boundary.satisfy', ({ top }) => Math.floor(top) === 0)
   })
   it('tocOffset', () => {
-    cy.wait(20) // 防止测试之间 <html> 滚动条相互影响
+    cy.scrollTo('top', { ensureScrollable: false }) // 防止测试之间 <html> 滚动条相互影响
     const id = 'the-tyger'
     cy.fixture('commonmark/poem.md').then((src) => {
       cy.mount(() => <Markdown src={src} toc tocOffset={60} />)
@@ -146,7 +146,7 @@ describe('Markdown', () => {
     cy.get('.vmd-toc__item--active').should('contain', 'The Tyger')
   })
   it('tocSmooth', () => {
-    cy.wait(20) // 防止测试之间 <html> 滚动条相互影响
+    cy.scrollTo('top', { ensureScrollable: false }) // 防止测试之间 <html> 滚动条相互影响
     const id = 'the-raven'
     cy.fixture('commonmark/poem.md').then((src) => {
       cy.mount(() => <Markdown src={src} toc tocSmooth />)
@@ -199,7 +199,7 @@ describe('Markdown', () => {
     cy.get('.vmd-toc__text').should('not.contain', 'Old Title').and('contain', 'New Title')
   })
   it('tocScrollTo', () => {
-    cy.wait(20) // 防止测试之间 <html> 滚动条相互影响
+    cy.scrollTo('top', { ensureScrollable: false }) // 防止测试之间 <html> 滚动条相互影响
     const id = 'the-tyger'
     cy.window().then((win) => {
       cy.spy(win.console, 'warn').as('console.warn')
