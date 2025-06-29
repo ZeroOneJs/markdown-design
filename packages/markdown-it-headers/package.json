@@ -1,7 +1,7 @@
 {
   "name": "@markdown-design/markdown-it-headers",
   "version": "0.1.1",
-  "description": "a markdown-it plugin for extracting markdown heading information.",
+  "description": "A markdown-it plugin for extracting markdown heading information.",
   "main": "src/index.ts",
   "publishConfig": {
     "main": "dist/index.js",
