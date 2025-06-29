@@ -33,5 +33,6 @@
     "vite": "catalog:",
     "vitest": "^3.0.5"
   },
-  "packageManager": "pnpm@9.11.0"
+  "packageManager": "pnpm@9.11.0",
+  "version": "1.0.0"
 }
