@@ -7,7 +7,7 @@ describe('MdRender', () => {
     })
     cy.get('.markdown-body').should(
       'have.html',
-      '<h1 id="%E6%A0%87%E9%A2%98" tabindex="-1"><a class="vmd-render__anchor" href="#%E6%A0%87%E9%A2%98" data-vmd-hidden="">#</a>标题</h1>\n<p>这是一个段落，用于测试 markdown 的渲染效果。</p>\n'
+      '<h1 id="title" tabindex="-1"><a class="vmd-render__anchor" href="#title" data-vmd-hidden="">#</a>Title</h1>\n<p>This is a paragraph used to test the rendering effect of markdown.</p>\n'
     )
   })
   describe('plugins', () => {
@@ -46,7 +46,9 @@ describe('MdRender', () => {
     })
     afterEach(() => {
       cy.get('p').should('not.exist')
-      cy.get('span').should('exist').and('contain', '这是一个段落，用于测试 markdown 的渲染效果。')
+      cy.get('span')
+        .should('exist')
+        .and('contain', 'This is a paragraph used to test the rendering effect of markdown.')
     })
   })
   it('inline', () => {
@@ -135,19 +137,19 @@ describe('MdRender', () => {
     cy.contains('😃').should('exist')
   })
   describe('anchor', () => {
-    const selector = `[id='${encodeURI('标题')}']`
+    const selector = '[id=title]'
     it('boolean', () => {
-      cy.mount(() => <Render src={'# 标题'} />)
+      cy.mount(() => <Render src={'# Title'} />)
       cy.get(selector).should('exist')
     })
     it('object', () => {
-      cy.mount(() => <Render src={'# 标题'} anchor={{ tabIndex: false }} />)
+      cy.mount(() => <Render src={'# Title'} anchor={{ tabIndex: false }} />)
       cy.get(selector).should('not.have.attr', 'tabIndex')
     })
     it('function', () => {
       cy.mount(() => (
         <Render
-          src={'# 标题'}
+          src={'# Title'}
           anchor={(anchor) => ({
             permalink: anchor.permalink.headerLink({
               renderAttrs: () => ({
@@ -162,11 +164,11 @@ describe('MdRender', () => {
   })
   describe('permalink', () => {
     it('默认', () => {
-      cy.mount(() => <Render src={'# 标题'} />)
+      cy.mount(() => <Render src={'# Title'} />)
       cy.get('a.vmd-render__anchor').should('exist')
     })
     it('禁用', () => {
-      cy.mount(() => <Render src={'# 标题'} permalink={false} />)
+      cy.mount(() => <Render src={'# Title'} permalink={false} />)
       cy.get('a.vmd-render__anchor').should('not.exist')
     })
   })

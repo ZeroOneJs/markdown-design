@@ -62,7 +62,7 @@
     "@types/mark.js": "^8.11.12",
     "@vitejs/plugin-vue": "^5.0.5",
     "@vitejs/plugin-vue-jsx": "^4.0.0",
-    "cypress": "^14.0.3",
+    "cypress": "^14.5.0",
     "less": "^4.2.0",
     "npm-run-all2": "catalog:",
     "typescript": "catalog:",

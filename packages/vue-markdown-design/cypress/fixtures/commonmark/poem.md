@@ -1,46 +1,165 @@
-# 古文
+# Poem
 
-## 出师表
+## The Tyger
 
-先帝创业未半而中道崩殂，今天下三分，益州疲弊，此诚危急存亡之秋也。然侍卫之臣不懈于内，忠志之士忘身于外者，盖追先帝之殊遇，欲报之于陛下也。诚宜开张圣听，以光先帝遗德，恢弘志士之气，不宜妄自菲薄，引喻失义，以塞忠谏之路也。
+_William Blake_
 
-宫中府中，俱为一体，陟罚臧否，不宜异同。若有作奸犯科及为忠善者，宜付有司论其刑赏，以昭陛下平明之理，不宜偏私，使内外异法也。
+Tyger! Tyger! burning bright  
+In the forests of the night,  
+What immortal hand or eye  
+Could frame thy fearful symmetry?
 
-侍中、侍郎郭攸之、费祎、董允等，此皆良实，志虑忠纯，是以先帝简拔以遗陛下。愚以为宫中之事，事无大小，悉以咨之，然后施行，必能裨补阙漏，有所广益。
+In what distant deeps or skies  
+Burnt the fire of thine eyes?  
+On what wings dare he aspire?  
+What the hand, dare sieze the fire?
 
-将军向宠，性行淑均，晓畅军事，试用于昔日，先帝称之曰能，是以众议举宠为督。愚以为营中之事，悉以咨之，必能使行阵和睦，优劣得所。
+And what shoulder, & what art,  
+Could twist the sinews of thy heart?  
+And when thy heart began to beat,  
+What dread hand? & what dread feet?
 
-亲贤臣，远小人，此先汉所以兴隆也；亲小人，远贤臣，此后汉所以倾颓也。先帝在时，每与臣论此事，未尝不叹息痛恨于桓、灵也。侍中、尚书、长史、参军，此悉贞良死节之臣，愿陛下亲之信之，则汉室之隆，可计日而待也。
+What the hammer? what the chain?  
+In what furnace was thy brain?  
+What the anvil? what dread grasp  
+Dare its deadly terrors clasp?
 
-臣本布衣，躬耕于南阳，苟全性命于乱世，不求闻达于诸侯。先帝不以臣卑鄙，猥自枉屈，三顾臣于草庐之中，咨臣以当世之事，由是感激，遂许先帝以驱驰。后值倾覆，受任于败军之际，奉命于危难之间，尔来二十有一年矣。
+When the stars threw down their spears,  
+And water'd heaven with their tears,  
+Did he smile his work to see?  
+Did he who made the Lamb make thee?
 
-先帝知臣谨慎，故临崩寄臣以大事也。受命以来，夙夜忧叹，恐托付不效，以伤先帝之明，故五月渡泸，深入不毛。今南方已定，兵甲已足，当奖率三军，北定中原，庶竭驽钝，攘除奸凶，兴复汉室，还于旧都。此臣所以报先帝而忠陛下之职分也。至于斟酌损益，进尽忠言，则攸之、祎、允之任也。
+Tyger! Tyger! burning bright  
+In the forests of the night,  
+What immortal hand or eye  
+Dare frame thy fearful symmetry?
 
-愿陛下托臣以讨贼兴复之效，不效，则治臣之罪，以告先帝之灵。若无兴德之言，则责攸之、祎、允等之慢，以彰其咎；陛下亦宜自谋，以咨诹善道，察纳雅言。深追先帝遗诏，臣不胜受恩感激。
-今当远离，临表涕零，不知所言。
+## The Raven
 
-## 赤壁赋
+_Edgar Allan Poe_
 
-壬戌之秋，七月既望，苏子与客泛舟游于赤壁之下。清风徐来，水波不兴。举酒属客，诵明月之诗，歌窈窕之章。少焉，月出于东山之上，徘徊于斗牛之间。白露横江，水光接天。纵一苇之所如，凌万顷之茫然。浩浩乎如冯虚御风，而不知其所止；飘飘乎如遗世独立，羽化而登仙。
+Once upon a midnight dreary, while I pondered, weak and weary,  
+Over many a quaint and curious volume of forgotten lore—  
+While I nodded, nearly napping, suddenly there came a tapping,  
+As of some one gently rapping, rapping at my chamber door—  
+“’Tis some visitor,” I muttered, “tapping at my chamber door—  
+Only this and nothing more.”
 
-于是饮酒乐甚，扣舷而歌之。歌曰：“桂棹兮兰桨，击空明兮溯流光。渺渺兮予怀，望美人兮天一方。”客有吹洞箫者，倚歌而和之。其声呜呜然，如怨如慕，如泣如诉，余音袅袅，不绝如缕。舞幽壑之潜蛟，泣孤舟之嫠妇。
+Ah, distinctly I remember it was in the bleak December;  
+And each separate dying ember wrought its ghost upon the floor.  
+Eagerly I wished the morrow;—vainly I had sought to borrow  
+From my books surcease of sorrow—sorrow for the lost Lenore—  
+For the rare and radiant maiden whom the angels name Lenore—  
+Nameless here for evermore.
 
-苏子愀然，正襟危坐而问客曰：“何为其然也？”客曰：“月明星稀，乌鹊南飞，此非曹孟德之诗乎？西望夏口，东望武昌，山川相缪，郁乎苍苍，此非孟德之困于周郎者乎？方其破荆州，下江陵，顺流而东也，舳舻千里，旌旗蔽空，酾酒临江，横槊赋诗，固一世之雄也，而今安在哉？况吾与子渔樵于江渚之上，侣鱼虾而友麋鹿，驾一叶之扁舟，举匏樽以相属。寄蜉蝣于天地，渺沧海之一粟。哀吾生之须臾，羡长江之无穷。挟飞仙以遨游，抱明月而长终。知不可乎骤得，托遗响于悲风。”
+And the silken, sad, uncertain rustling of each purple curtain  
+Thrilled me—filled me with fantastic terrors never felt before;  
+So that now, to still the beating of my heart, I stood repeating,  
+“’Tis some visitor entreating entrance at my chamber door—  
+Some late visitor entreating entrance at my chamber door;—  
+This it is and nothing more.”
 
-苏子曰：“客亦知夫水与月乎？逝者如斯，而未尝往也；盈虚者如彼，而卒莫消长也。盖将自其变者而观之，则天地曾不能以一瞬；自其不变者而观之，则物与我皆无尽也，而又何羡乎！且夫天地之间，物各有主，苟非吾之所有，虽一毫而莫取。惟江上之清风，与山间之明月，耳得之而为声，目遇之而成色，取之无禁，用之不竭，是造物者之无尽藏也，而吾与子之所共适。”
+Presently my soul grew stronger; hesitating then no longer,  
+“Sir,” said I, “or Madam, truly your forgiveness I implore;  
+But the fact is I was napping, and so gently you came rapping,  
+And so faintly you came tapping, tapping at my chamber door,  
+That I scarce was sure I heard you”—here I opened wide the door;—  
+Darkness there and nothing more.
 
-客喜而笑，洗盏更酌。肴核既尽，杯盘狼籍。相与枕藉乎舟中，不知东方之既白。
+Deep into that darkness peering, long I stood there wondering, fearing,  
+Doubting, dreaming dreams no mortal ever dared to dream before;  
+But the silence was unbroken, and the stillness gave no token,  
+And the only word there spoken was the whispered word, “Lenore?”  
+This I whispered, and an echo murmured back the word, “Lenore!”—  
+Merely this and nothing more.
 
-## 岳阳楼记
+Back into the chamber turning, all my soul within me burning,  
+Soon again I heard a tapping somewhat louder than before.  
+“Surely,” said I, “surely that is something at my window lattice;  
+Let me see, then, what thereat is, and this mystery explore—  
+Let my heart be still a moment and this mystery explore;—  
+’Tis the wind and nothing more!”
 
-庆历四年春，滕子京谪守巴陵郡。越明年，政通人和，百废具兴，乃重修岳阳楼，增其旧制，刻唐贤今人诗赋于其上，属予作文以记之。
+Open here I flung the shutter, when, with many a flirt and flutter,  
+In there stepped a stately Raven of the saintly days of yore;  
+Not the least obeisance made he; not a minute stopped or stayed he;  
+But, with mien of lord or lady, perched above my chamber door—  
+Perched upon a bust of Pallas just above my chamber door—  
+Perched, and sat, and nothing more.
 
-予观夫巴陵胜状，在洞庭一湖。衔远山，吞长江，浩浩汤汤，横无际涯，朝晖夕阴，气象万千，此则岳阳楼之大观也，前人之述备矣。然则北通巫峡，南极潇湘，迁客骚人，多会于此，览物之情，得无异乎？
+Then this ebony bird beguiling my sad fancy into smiling,  
+By the grave and stern decorum of the countenance it wore,  
+“Though thy crest be shorn and shaven, thou,” I said, “art sure no craven,  
+Ghastly grim and ancient Raven wandering from the Nightly shore—  
+Tell me what thy lordly name is on the Night’s Plutonian shore!”  
+Quoth the Raven “Nevermore.”
 
-若夫淫雨霏霏，连月不开，阴风怒号，浊浪排空，日星隐曜，山岳潜形，商旅不行，樯倾楫摧，薄暮冥冥，虎啸猿啼。登斯楼也，则有去国怀乡，忧谗畏讥，满目萧然，感极而悲者矣。
+Much I marvelled this ungainly fowl to hear discourse so plainly,  
+Though its answer little meaning—little relevancy bore;  
+For we cannot help agreeing that no living human being  
+Ever yet was blest with seeing bird above his chamber door—  
+Bird or beast upon the sculptured bust above his chamber door,  
+With such name as “Nevermore.”
 
-至若春和景明，波澜不惊，上下天光，一碧万顷，沙鸥翔集，锦鳞游泳，岸芷汀兰，郁郁青青。而或长烟一空，皓月千里，浮光跃金，静影沉璧，渔歌互答，此乐何极！登斯楼也，则有心旷神怡，宠辱偕忘，把酒临风，其喜洋洋者矣。
+But the Raven, sitting lonely on the placid bust, spoke only  
+That one word, as if his soul in that one word he did outpour.  
+Nothing further then he uttered—not a feather then he fluttered—  
+Till I scarcely more than muttered “Other friends have flown before—  
+On the morrow he will leave me, as my hopes have flown before.”  
+Then the bird said “Nevermore.”
 
-嗟夫！予尝求古仁人之心，或异二者之为，何哉？不以物喜，不以己悲，居庙堂之高则忧其民，处江湖之远则忧其君。是进亦忧，退亦忧。然则何时而乐耶？其必曰“先天下之忧而忧，后天下之乐而乐”乎！噫！微斯人，吾谁与归？
+Startled at the stillness broken by reply so aptly spoken,  
+“Doubtless,” said I, “what it utters is its only stock and store  
+Caught from some unhappy master whom unmerciful Disaster  
+Followed fast and followed faster till his songs one burden bore—  
+Till the dirges of his Hope that melancholy burden bore  
+Of ‘Never—nevermore.’”
 
-时六年九月十五日。
+But the Raven still beguiling my sad fancy into smiling,  
+Straight I wheeled a cushioned seat in front of bird, and bust and door;  
+Then, upon the velvet sinking, I betook myself to linking  
+Fancy unto fancy, thinking what this ominous bird of yore—  
+What this grim, ungainly, ghastly, gaunt and ominous bird of yore  
+Meant in croaking “Nevermore.”
+
+This I sat engaged in guessing, but no syllable expressing  
+To the fowl whose fiery eyes now burned into my bosom’s core;  
+This and more I sat divining, with my head at ease reclining  
+On the cushion’s velvet lining that the lamp-light gloated o’er,  
+But whose velvet violet lining with the lamp-light gloating o'er,  
+She shall press, ah, nevermore!
+
+Then, methought, the air grew denser, perfumed from an unseen censer  
+Swung by Seraphim whose foot-falls tinkled on the tufted floor.  
+“Wretch,” I cried, “thy God hath lent thee—by these angels he hath sent thee  
+Respite—respite and nepenthe, from thy memories of Lenore;  
+Quaff, oh quaff this kind nepenthe and forget this lost Lenore!”  
+Quoth the Raven “Nevermore.”
+
+“Prophet!” said I, “thing of evil!—prophet still, if bird or devil!—  
+Whether Tempter sent, or whether tempest tossed thee here ashore,  
+Desolate yet all undaunted, on this desert land enchanted—  
+On this home by Horror haunted—tell me truly, I implore—  
+Is there—is there balm in Gilead?—tell me—tell me, I implore!”  
+Quoth the Raven “Nevermore.”
+
+“Prophet!” said I, “thing of evil—prophet still, if bird or devil!  
+By that Heaven that bends above us—by that God we both adore—  
+Tell this soul with sorrow laden if, within the distant Aidenn,  
+It shall clasp a sainted maiden whom the angels name Lenore—  
+Clasp a rare and radiant maiden whom the angels name Lenore.”  
+Quoth the Raven “Nevermore.”
+
+“Be that word our sign in parting, bird or fiend!” I shrieked, upstarting—  
+“Get thee back into the tempest and the Night’s Plutonian shore!  
+Leave no black plume as a token of that lie thy soul hath spoken!  
+Leave my loneliness unbroken!—quit the bust above my door!  
+Take thy beak from out my heart, and take thy form from off my door!”  
+Quoth the Raven “Nevermore.”
+
+And the Raven, never flitting, still is sitting, still is sitting  
+On the pallid bust of Pallas just above my chamber door;  
+And his eyes have all the seeming of a demon’s that is dreaming,  
+And the lamp-light o’er him streaming throws his shadow on the floor;  
+And my soul from out that shadow that lies floating on the floor  
+Shall be lifted—nevermore!

@@ -7,7 +7,7 @@ describe('dom', () => {
         <div style="height: 100vh;"></div>
         <div style="height: 300px; overflow: scroll;">
           <div style="height: 100vh;"></div>
-          <div data-cy>内容</div>
+          <div data-cy>content</div>
           <div style="height: 100vh;"></div>
         </div>
         <div style="height: 100vh;"></div>

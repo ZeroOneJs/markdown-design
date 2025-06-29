@@ -2,7 +2,7 @@ import Search from '..'
 
 describe('MdSearch', () => {
   it('clearable', () => {
-    cy.mount(() => <Search modelValue="关键字" />)
+    cy.mount(() => <Search modelValue="keyword" />)
     cy.get('.vmd-search__clearable').should('exist')
   })
   it('border', () => {
@@ -19,15 +19,15 @@ describe('MdSearch', () => {
     cy.get('.vmd-search__input').should('be.disabled')
   })
   it('placeholder', () => {
-    cy.mount(() => <Search placeholder="请输入内容" />)
-    cy.get('.vmd-search__input').should('have.attr', 'placeholder', '请输入内容')
+    cy.mount(() => <Search placeholder="placeholder" />)
+    cy.get('.vmd-search__input').should('have.attr', 'placeholder', 'placeholder')
   })
   it('target', () => {
     cy.mount(() => (
       <>
-        <Search target="[data-cy='target']" modelValue="关键字" />
-        <div data-cy="target">关键字</div>
-        <div data-cy="other">关键字</div>
+        <Search target="[data-cy='target']" modelValue="keyword" />
+        <div data-cy="target">keyword</div>
+        <div data-cy="other">keyword</div>
       </>
     ))
     cy.get('[data-cy="target"] mark.vmd-search--mark').should('exist')
@@ -68,7 +68,7 @@ describe('MdSearch', () => {
   })
   it('input', () => {
     cy.mount(() => <Search onInput={cy.spy().as('onInput')} />)
-    cy.get('.vmd-search__input').type('关键字')
+    cy.get('.vmd-search__input').type('keyword')
     cy.get('@onInput').should('have.been.calledWith', Cypress.sinon.match({ type: 'input' }))
   })
   it('focus/blur', () => {
@@ -80,12 +80,12 @@ describe('MdSearch', () => {
   })
   it('change', () => {
     cy.mount(() => <Search onChange={cy.spy().as('onChange')} />)
-    cy.get('.vmd-search__input').type('关键字{enter}')
+    cy.get('.vmd-search__input').type('keyword{enter}')
     cy.get('@onChange').should('have.been.calledWith', Cypress.sinon.match({ type: 'change' }))
   })
   it('clear', () => {
     cy.mount(Search, {
-      props: { modelValue: '关键字', disabled: true, onClear: cy.spy().as('onClear') }
+      props: { modelValue: 'keyword', disabled: true, onClear: cy.spy().as('onClear') }
     }).as('vue')
     cy.get('.vmd-search__clearable').click()
     cy.get('@onClear').should('not.have.been.called')
@@ -97,7 +97,7 @@ describe('MdSearch', () => {
   })
   it('toggle', () => {
     cy.mount(Search, {
-      props: { modelValue: '关键字', disabled: true, onToggle: cy.spy().as('onToggle') }
+      props: { modelValue: 'keyword', disabled: true, onToggle: cy.spy().as('onToggle') }
     }).as('vue')
     cy.get('.vmd-search__prev').click()
     cy.get('@onToggle').should('not.have.been.called')
@@ -111,7 +111,7 @@ describe('MdSearch', () => {
   })
   it('totalChange', () => {
     cy.mount(Search, { props: { onTotalChange: cy.spy().as('onTotalChange') } }).then(
-      ({ wrapper }) => wrapper.setProps({ modelValue: '关键字' })
+      ({ wrapper }) => wrapper.setProps({ modelValue: 'keyword' })
     )
     cy.get('@onTotalChange').should('have.been.calledWith', 0)
   })

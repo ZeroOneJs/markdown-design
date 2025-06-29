@@ -5,22 +5,22 @@ describe('Markdown', () => {
   it('keyword/update:keyword', () => {
     cy.mount(() => (
       <Markdown
-        src="关键字。换行的关键<br>字。"
+        src="Keyword. Key<br>words for line breaks."
         search
         onUpdate:keyword={cy.spy().as('onUpdateKeyword')}
       />
     ))
-    cy.get('.vmd-search__input').type('关键字')
-    cy.get('@onUpdateKeyword').should('have.been.calledWith', '关键字')
+    cy.get('.vmd-search__input').type('Keyword')
+    cy.get('@onUpdateKeyword').should('have.been.calledWith', 'Keyword')
     cy.get('.vmd-search--mark').should('have.length', 3)
     cy.get('.vmd-search--mark').first().should('have.class', 'vmd-search--highlight')
   })
   it('current/update:current', () => {
     cy.mount(() => (
       <Markdown
-        src="关键字。换行的关键<br>字。"
+        src="Keyword. Key<br>words for line breaks."
         search
-        keyword="关键字"
+        keyword="Keyword"
         onUpdate:current={cy.spy().as('onUpdateCurrent')}
       />
     ))
@@ -62,7 +62,7 @@ describe('Markdown', () => {
     cy.get('.vmd-markdown__toc').should('not.exist')
   })
   it('offsetTop', () => {
-    const id = encodeURI('出师表')
+    const id = 'the-tyger'
     cy.fixture('commonmark/poem.md').then((src) => {
       cy.mount(Markdown, {
         props: {
@@ -114,16 +114,14 @@ describe('Markdown', () => {
   it('searchOffset', () => {
     cy.wait(20) // 防止测试之间 <html> 滚动条相互影响
     cy.fixture('commonmark/poem.md').then((src) => {
-      cy.mount(() => <Markdown src={src} keyword="清风徐来，水波不兴" search searchOffset={60} />)
+      cy.mount(() => <Markdown src={src} keyword="Perched" search searchOffset={60} />)
     })
     cy.get('.vmd-search--highlight').should('boundary.satisfy', ({ top }) => Math.floor(top) === 60)
   })
   it('searchSmooth', () => {
     cy.wait(20) // 防止测试之间 <html> 滚动条相互影响
     cy.fixture('commonmark/poem.md').then((src) => {
-      cy.mount(() => (
-        <Markdown src={src} keyword="清风徐来，水波不兴" search searchSmooth searchOffset={0} />
-      ))
+      cy.mount(() => <Markdown src={src} keyword="Perched" search searchSmooth searchOffset={0} />)
     })
     cy.get('.vmd-search--highlight').should(
       'not.boundary.satisfy',
@@ -133,7 +131,7 @@ describe('Markdown', () => {
   })
   it('tocOffset', () => {
     cy.wait(20) // 防止测试之间 <html> 滚动条相互影响
-    const id = encodeURI('出师表')
+    const id = 'the-tyger'
     cy.fixture('commonmark/poem.md').then((src) => {
       cy.mount(() => <Markdown src={src} toc tocOffset={60} />)
     })
@@ -141,16 +139,15 @@ describe('Markdown', () => {
     cy.get(`[id='${id}']`).should('boundary.satisfy', ({ top }) => Math.floor(top) === 60)
   })
   it('tocBound', () => {
-    const text = '出师表'
     cy.fixture('commonmark/poem.md').then((src) => {
       cy.mount(() => <Markdown src={src} toc tocBound={60} />)
     })
-    cy.get(`[id='${encodeURI(text)}']`).scrollIntoView({ offset: { top: -60, left: 0 } })
-    cy.get('.vmd-toc__item--active').should('contain', text)
+    cy.get('[id=the-tyger]').scrollIntoView({ offset: { top: -60, left: 0 } })
+    cy.get('.vmd-toc__item--active').should('contain', 'The Tyger')
   })
   it('tocSmooth', () => {
     cy.wait(20) // 防止测试之间 <html> 滚动条相互影响
-    const id = encodeURI('赤壁赋')
+    const id = 'the-raven'
     cy.fixture('commonmark/poem.md').then((src) => {
       cy.mount(() => <Markdown src={src} toc tocSmooth />)
     })
@@ -165,7 +162,7 @@ describe('Markdown', () => {
     cy.get('.vmd-toc__item').should('not.have.descendants', 'a').and('have.descendants', 'span')
   })
   it('tocChangeHash', () => {
-    const id = encodeURI('标题')
+    const id = 'title'
     cy.fixture('commonmark/mini.md').then((src) => {
       cy.mount(() => <Markdown src={src} toc tocChangeHash={false} />)
     })
@@ -173,7 +170,7 @@ describe('Markdown', () => {
     cy.hash().should('not.eq', id)
   })
   it('tocClick', () => {
-    const id = encodeURI('标题')
+    const id = 'title'
     cy.fixture('commonmark/mini.md').then((src) => {
       cy.mount(() => <Markdown src={src} toc onTocClick={cy.spy().as('onTocClick')} />)
     })
@@ -181,7 +178,7 @@ describe('Markdown', () => {
     cy.get('@onTocClick').should('have.been.calledWith', Cypress.sinon.match({ id }))
   })
   it('tocChange', () => {
-    const id = encodeURI('出师表')
+    const id = 'the-tyger'
     cy.fixture('commonmark/poem.md').then((src) => {
       cy.mount(() => <Markdown src={src} toc onTocChange={cy.spy().as('onTocChange')} />)
     })
@@ -191,20 +188,19 @@ describe('Markdown', () => {
   it('tocRefresh', () => {
     cy.mount(Markdown, {
       props: {
-        src: '# 旧标题',
+        src: '# Old Title',
         toc: true
       }
     }).then(({ wrapper, component }) => {
-      const { element } = wrapper.get(`[id='${encodeURI('旧标题')}']`)
-      element.innerHTML = '新标题'
+      const { element } = wrapper.get('[id=old-title]')
+      element.innerHTML = 'New Title'
       ;(component as MarkdownInstance).tocRefresh()
     })
-    cy.get('.vmd-toc__text').should('not.contain', '旧标题').and('contain', '新标题')
+    cy.get('.vmd-toc__text').should('not.contain', 'Old Title').and('contain', 'New Title')
   })
   it('tocScrollTo', () => {
     cy.wait(20) // 防止测试之间 <html> 滚动条相互影响
-    const text = '出师表'
-    const id = encodeURI(text)
+    const id = 'the-tyger'
     cy.window().then((win) => {
       cy.spy(win.console, 'warn').as('console.warn')
     })
@@ -226,14 +222,14 @@ describe('Markdown', () => {
         ;(component as MarkdownInstance).tocScrollTo(id)
       })
     })
-    cy.get('.vmd-toc__item--active').should('contain', text)
+    cy.get('.vmd-toc__item--active').should('contain', 'The Tyger')
     cy.get(`[id='${id}']`).should('boundary.satisfy', ({ top }) => Math.floor(top) === 0)
   })
   it('toc 随 src 内容更改', () => {
-    cy.mount(Markdown, { props: { src: '# 旧标题', toc: true } }).then(({ wrapper }) => {
-      wrapper.setProps({ src: '# 新标题' })
+    cy.mount(Markdown, { props: { src: '# Old Title', toc: true } }).then(({ wrapper }) => {
+      wrapper.setProps({ src: '# New Title' })
     })
-    cy.get('.vmd-toc__text').should('not.contain', '旧标题').and('contain', '新标题')
+    cy.get('.vmd-toc__text').should('not.contain', 'Old Title').and('contain', 'New Title')
   })
   it(
     '小屏幕点选目录时目录自动关闭',
@@ -242,7 +238,7 @@ describe('Markdown', () => {
       viewportHeight: 960
     },
     () => {
-      cy.mount(() => <Markdown src={'# 标题'} toc />)
+      cy.mount(() => <Markdown src={'# Title'} toc />)
       cy.get('.vmd-toc__text').click()
       cy.get('.vmd-markdown__aside').should('not.exist')
     }
@@ -260,7 +256,7 @@ describe('Markdown', () => {
     cy.get('.vmd-search__input').should('not.have.focus')
   })
   it('searchClear', () => {
-    cy.mount(Markdown, { props: { search: true, keyword: '关键词' } }).then(({ component }) => {
+    cy.mount(Markdown, { props: { search: true, keyword: 'keyword' } }).then(({ component }) => {
       ;(component as MarkdownInstance).searchClear()
     })
     cy.get('.vmd-search__input').should('not.have.value')
