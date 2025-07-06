@@ -42,6 +42,8 @@ jobs:
 
       - name: Publish
         if: ${{ steps.release.outputs.releases_created == 'true' }}
-        run: pnpm -r publish
+        run: |
+          echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
+          pnpm -r publish
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
