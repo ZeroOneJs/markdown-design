@@ -19,7 +19,8 @@
   "homepage": "https://github.com/ZeroOneJs/markdown-design/tree/main/packages/markdown-it-headers#readme",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ZeroOneJs/markdown-design.git"
+    "url": "https://github.com/ZeroOneJs/markdown-design.git",
+    "directory": "packages/markdown-it-headers"
   },
   "bugs": "https://github.com/ZeroOneJs/markdown-design/issues",
   "author": "Zero",
