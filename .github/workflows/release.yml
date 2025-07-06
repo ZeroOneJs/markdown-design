@@ -8,30 +8,40 @@ on:
 permissions:
   contents: write
   pull-requests: write
-  issues: write
 
 jobs:
   release:
     runs-on: ubuntu-latest
     steps:
-      - uses: googleapis/release-please-action@v4
+      - name: Release Please
+        uses: googleapis/release-please-action@v4
         id: release
 
-      - uses: actions/checkout@v4
-        if: ${{ steps.release.outputs.release_created }}
+      - name: Checkout
+        if: ${{ steps.release.outputs.releases_created == 'true' }}
+        uses: actions/checkout@v4
 
       - name: Install pnpm
+        if: ${{ steps.release.outputs.releases_created == 'true' }}
         run: corepack enable
-        if: ${{ steps.release.outputs.release_created }}
 
-      - uses: actions/setup-node@v4
+      - name: Install Node.js
+        if: ${{ steps.release.outputs.releases_created == 'true' }}
+        uses: actions/setup-node@v4
         with:
           node-version: '18'
           cache: 'pnpm'
-        if: ${{ steps.release.outputs.release_created }}
+
+      - name: Install dependencies
+        if: ${{ steps.release.outputs.releases_created == 'true' }}
+        run: pnpm i
+
+      - name: Build
+        if: ${{ steps.release.outputs.releases_created == 'true' }}
+        run: pnpm build
 
       - name: Publish
+        if: ${{ steps.release.outputs.releases_created == 'true' }}
         run: pnpm -r publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        if: ${{ steps.release.outputs.release_created }}
