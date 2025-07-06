@@ -1,20 +1,25 @@
 import type { BoundaryMatcher } from './type'
 
+function getBoundaryResult(this: Chai.AssertionStatic, matcher: BoundaryMatcher) {
+  const el = this._obj.get?.(0)
+  if (!(el instanceof HTMLElement)) return {}
+  const rect = el.getBoundingClientRect()
+  return { rect, result: matcher(rect) }
+}
 export const chaiBoundary: Chai.ChaiPlugin = (_chai, utils) => {
   _chai.Assertion.overwriteMethod('satisfy', function (_super) {
     return function (this: Chai.AssertionStatic, matcher: BoundaryMatcher, ...args: any[]) {
-      const isBoundary = utils.flag(this, 'boundary')
-      const el = this._obj.get(0)
-      if (isBoundary && el instanceof HTMLElement) {
-        const rect = el.getBoundingClientRect()
+      if (utils.flag(this, 'boundary')) {
+        const { rect, result = utils.flag(this, 'negate') } = getBoundaryResult.call(this, matcher)
         this.assert(
-          matcher(rect),
-          'expected #{this} to satisfy #{exp} but got #{act}',
-          'expected #{this} to not satisfy #{exp} but got #{act}',
-          matcher
+          result,
+          'expected #{act} to satisfy #{exp}',
+          'expected #{act} to not satisfy #{exp}',
+          matcher,
+          rect
         )
       } else {
-        _super.apply(this, matcher, ...args)
+        _super.call(this, matcher, ...args)
       }
     }
   })
