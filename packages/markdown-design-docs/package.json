@@ -1,0 +1,24 @@
+{
+  "name": "@markdown-design/markdown-design-docs",
+  "private": true,
+  "type": "module",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "vitepress dev",
+    "build": "vitepress build",
+    "preview": "vitepress preview"
+  },
+  "devDependencies": {
+    "@types/markdown-it": "catalog:",
+    "@types/markdown-it-container": "^2.0.10",
+    "@vitejs/plugin-vue-jsx": "catalog:",
+    "highlight.js": "catalog:",
+    "less": "catalog:",
+    "markdown-it-container": "^4.0.0",
+    "unplugin-vue-components": "^30.0.0",
+    "vitepress": "^1.6.3",
+    "vitepress-plugin-group-icons": "^1.6.1",
+    "vue": "catalog:",
+    "vue-markdown-design": "workspace:^"
+  }
+}

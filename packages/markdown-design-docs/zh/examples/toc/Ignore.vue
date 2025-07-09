@@ -1,0 +1,110 @@
+<template>
+  <div>
+    <p>
+      请选择忽略的标题级别：
+      <label v-for="(_, index) in ignoreList" :key="index" style="margin-right: 10px">
+        <input v-model="ignoreList[index]" name="checkbox" type="checkbox" />
+        h{{ index + 1 }}
+      </label>
+    </p>
+    <div style="display: flex; flex-wrap: wrap">
+      <vmd-render ref="renderRef" style="height: 436px; overflow: auto; flex: 70%" :src="md" />
+      <vmd-toc style="flex: auto" :target="renderRef" :ignore="ignore" />
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref, watchEffect } from 'vue'
+
+const renderRef = ref(null)
+
+const ignore = ref([])
+const ignoreList = ref([false, false, true, false, false, false])
+watchEffect(() => {
+  ignore.value = ignoreList.value.map((item, index) => Number(item) && index + 1).filter(Boolean)
+})
+
+const md = `
+  # h1 Heading 8-)
+  ## h2 Heading
+  ### h3 Heading
+  #### h4 Heading
+  ##### h5 Heading
+  ###### h6 Heading
+
+
+  ## Horizontal Rules
+
+  ___
+
+  ---
+
+  ***
+
+
+  ## Emphasis
+
+  **This is bold text**
+
+  __This is bold text__
+
+  *This is italic text*
+
+  _This is italic text_
+
+  ~~Strikethrough~~
+
+
+  ## Blockquotes
+
+  > Blockquotes can also be nested...
+  >> ...by using additional greater-than signs right next to each other...
+  > > > ...or with spaces between arrows.
+
+
+  ## Lists
+
+  Unordered
+
+  + Create a list by starting a line with \`+\`, \`-\`, or \`*\`
+  + Sub-lists are made by indenting 2 spaces:
+    - Marker character change forces new list start:
+      * Ac tristique libero volutpat at
+      + Facilisis in pretium nisl aliquet
+      - Nulla volutpat aliquam velit
+  + Very easy!
+
+  Ordered
+
+  1. Lorem ipsum dolor sit amet
+  2. Consectetur adipiscing elit
+  3. Integer molestie lorem at massa
+
+
+  1. You can use sequential numbers...
+  1. ...or keep all the numbers as \`1.\`
+
+  Start numbering with offset:
+
+  57. foo
+  1. bar
+
+
+  ## Tables
+
+  | Option | Description |
+  | ------ | ----------- |
+  | data   | path to data files to supply the data that will be passed into templates. |
+  | engine | engine to be used for processing templates. Handlebars is the default. |
+  | ext    | extension to be used for dest files. |
+
+  Right aligned columns
+
+  | Option | Description |
+  | ------:| -----------:|
+  | data   | path to data files to supply the data that will be passed into templates. |
+  | engine | engine to be used for processing templates. Handlebars is the default. |
+  | ext    | extension to be used for dest files. |
+  `
+</script>
