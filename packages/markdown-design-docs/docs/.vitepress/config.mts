@@ -28,7 +28,20 @@ export default defineConfig({
       label: 'English'
     },
     zh: {
-      label: '简体中文'
+      label: '简体中文',
+      themeConfig: {
+        nav: [{ text: 'Guide', link: '/zh/guide/markdown' }],
+        sidebar: [
+          {
+            text: '基础',
+            items: [{ text: '快速开始', link: '/zh/quickstart' }]
+          },
+          {
+            text: '组件',
+            items: [{ text: 'Markdown', link: '/zh/markdown' }]
+          }
+        ]
+      }
     }
   }
 })
