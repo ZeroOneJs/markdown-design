@@ -1,6 +1,7 @@
 import type { Theme } from 'vitepress'
 import DefaultTheme from 'vitepress/theme'
 import 'virtual:group-icons.css'
+import '../plugins/vitepress-plugin-demo/index.css'
 
 const modules = import.meta.glob('/examples/**/*.vue', { import: 'default', eager: true })
 
