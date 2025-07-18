@@ -1,6 +1,5 @@
 # Markdown
 
-<demo />
-
-::: demo /examples/markdown/demo.vue
+::: demo
+@/examples/markdown/index.vue
 :::

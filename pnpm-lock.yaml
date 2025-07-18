@@ -9,6 +9,9 @@ catalogs:
     '@types/markdown-it':
       specifier: ^14.1.2
       version: 14.1.2
+    less:
+      specifier: ^4.2.0
+      version: 4.2.0
     markdown-it:
       specifier: ^14.1.0
       version: 14.1.0
@@ -92,6 +95,9 @@ importers:
       '@types/markdown-it-container':
         specifier: ^2.0.10
         version: 2.0.10
+      less:
+        specifier: 'catalog:'
+        version: 4.2.0
       markdown-it-container:
         specifier: ^4.0.0
         version: 4.0.0
@@ -219,7 +225,7 @@ importers:
         specifier: ^14.5.0
         version: 14.5.0
       less:
-        specifier: ^4.2.0
+        specifier: 'catalog:'
         version: 4.2.0
       npm-run-all2:
         specifier: 'catalog:'
