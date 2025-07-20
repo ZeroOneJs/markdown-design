@@ -1,6 +1,7 @@
 import { defineConfig } from 'vitepress'
 import { groupIconMdPlugin, groupIconVitePlugin } from 'vitepress-plugin-group-icons'
-import { demo } from './plugins/vitepress-plugin-demo'
+import { demoMdPlugin } from './plugins/vitepress-plugin-demo'
+import vueJsx from '@vitejs/plugin-vue-jsx'
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
@@ -9,11 +10,11 @@ export default defineConfig({
   markdown: {
     config(md) {
       md.use(groupIconMdPlugin)
-      md.use(demo)
+      md.use(demoMdPlugin)
     }
   },
   vite: {
-    plugins: [groupIconVitePlugin()]
+    plugins: [groupIconVitePlugin(), vueJsx()]
   },
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config

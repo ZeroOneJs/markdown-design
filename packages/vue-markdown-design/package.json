@@ -2,9 +2,12 @@
   "name": "vue-markdown-design",
   "version": "0.2.0",
   "description": "Vue 3 markdown component built on markdown-it.",
-  "main": "lib/index.js",
-  "module": "es/index.mjs",
-  "typings": "lib/index.d.ts",
+  "main": "src/index.ts",
+  "publishConfig": {
+    "main": "lib/index.js",
+    "module": "es/index.mjs",
+    "typings": "lib/index.d.ts"
+  },
   "files": [
     "es",
     "lib"
@@ -51,7 +54,7 @@
     "markdown-it-anchor": "^9.2.0",
     "markdown-it-emoji": "^3.0.0",
     "popmotion": "^11.0.5",
-    "vue": "^3.4.29"
+    "vue": "catalog:"
   },
   "peerDependencies": {
     "vue": "^3.0.0"
@@ -61,7 +64,7 @@
     "@types/lodash": "^4.17.7",
     "@types/mark.js": "^8.11.12",
     "@vitejs/plugin-vue": "^5.0.5",
-    "@vitejs/plugin-vue-jsx": "^4.0.0",
+    "@vitejs/plugin-vue-jsx": "catalog:",
     "cypress": "^14.5.0",
     "less": "catalog:",
     "npm-run-all2": "catalog:",

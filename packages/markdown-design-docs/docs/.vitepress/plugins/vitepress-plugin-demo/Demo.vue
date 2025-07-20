@@ -3,7 +3,8 @@
     <component :is="name" />
     <details class="demo__details">
       <summary class="demo__details-summary">{{ summary }}</summary>
-      <slot></slot>
+      <!-- 屏蔽默认插槽 -->
+      <slot name="code"></slot>
     </details>
   </div>
 </template>
@@ -24,6 +25,7 @@ defineProps({ name: String, summary: String })
     &-summary {
       font-weight: bold;
       font-size: 14px;
+      color: #3c3c43;
     }
   }
 }

@@ -8,3 +8,5 @@ catalog:
   'vite': ^5.3.1
   'typescript': ~5.4.0
   'less': ^4.2.0
+  '@vitejs/plugin-vue-jsx': '^4.0.0'
+  'vue': '^3.4.29'

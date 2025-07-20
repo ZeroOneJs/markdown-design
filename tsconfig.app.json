@@ -1,6 +1,11 @@
 {
   "extends": "@vue/tsconfig/tsconfig.dom.json",
-  "include": ["packages/*/src/**/*", "env.d.ts"],
+  "include": [
+    "packages/*/src/**/*",
+    "env.d.ts",
+    "packages/*/docs/**/*",
+    "packages/**/.vitepress/**/*"
+  ],
   "exclude": ["packages/*/src/**/__tests__/*"],
   "compilerOptions": {
     "composite": true,

@@ -1,5 +1,7 @@
 # Markdown
 
+## 基本用法
+
 ::: demo
-@/examples/markdown/index.vue
+../examples/markdown/Basic.vue
 :::
