@@ -1,6 +1,7 @@
 import type { PluginSimple } from 'markdown-it'
 import MarkdownItContainer from 'markdown-it-container'
 import container from 'markdown-it-container'
+import getComponentName from '../../utils/format'
 
 export const demoMdPlugin: PluginSimple = (md) => {
   const titleMap = new Map([['zh', '展开源代码']])
@@ -8,10 +9,10 @@ export const demoMdPlugin: PluginSimple = (md) => {
     render: (tokens, idx, _, env) => {
       if (tokens[idx].nesting === -1) return '</demo>'
       const { content } = tokens[idx + 2]
-      const code = md.render(`<<< ${content}`, env)
-      // const name = content.split('.').shift()?.split('/').pop()
-      console.log('🚀 ~ env:', env)
-      return `<demo name="vp-zh-examples-markdown-Basic.vue" summary="${titleMap.get(env.localeIndex)}"><template #code>${code}</template>`
+      const { localeIndex } = env
+      const path = `/${localeIndex}/examples/${content}`
+      const code = md.render(`<<< @${path}`, env)
+      return `<demo name="${getComponentName(path)}" summary="${titleMap.get(localeIndex)}"><template #code>${code}</template>`
     }
   } as MarkdownItContainer.ContainerOpts)
 }
