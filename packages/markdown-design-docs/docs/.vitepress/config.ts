@@ -64,13 +64,15 @@ export default defineConfig({
             }
           ]
         },
+        aside: false,
         outline: {
           label: '页面导航'
         },
         docFooter: {
           prev: '上一页',
           next: '下一页'
-        }
+        },
+        returnToTopLabel: '回到顶部'
       }
     }
   }

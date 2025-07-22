@@ -5,6 +5,7 @@ import 'virtual:group-icons.css'
 import { VueMarkdown } from 'vue-markdown-design'
 import type { Component } from 'vue'
 import getComponentName from '../utils/format'
+import './custom.less'
 
 export default {
   extends: DefaultTheme,
