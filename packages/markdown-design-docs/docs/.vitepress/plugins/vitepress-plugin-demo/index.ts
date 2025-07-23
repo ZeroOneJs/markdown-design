@@ -11,7 +11,7 @@ export const demoMdPlugin: PluginSimple = (md) => {
       const { content } = tokens[idx + 2]
       const { localeIndex } = env
       const path = `/${localeIndex}/examples/${content}`
-      const code = md.render(`<<< @${path}`, env)
+      const code = md.render(`<<< @${path}`, { ...env }) // ...env 防止 md 文件中的 <script> 标签丢失
       return `<demo name="${getComponentName(path)}" summary="${titleMap.get(localeIndex)}"><template #code>${code}</template>`
     }
   } as MarkdownItContainer.ContainerOpts)

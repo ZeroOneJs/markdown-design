@@ -1,3 +1,11 @@
+<script setup>
+const returnToTop = () => document.documentElement.scrollTop = 0
+window.addEventListener('scroll', returnToTop);
+setTimeout(() => {
+  window.removeEventListener('scroll', returnToTop);
+}, 300);
+</script>
+
 # Markdown
 
 ## 基本用法
