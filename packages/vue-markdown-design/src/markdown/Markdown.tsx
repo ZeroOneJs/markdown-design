@@ -219,7 +219,7 @@ export default defineComponent({
               posX="right"
               flow={false}
               target={wrapper.value}
-              zIndex="101"
+              zIndex="var(--vmd-markdown-btn-z-index)"
               offset={props.offsetBottom}
             >
               <div class={addPrefix('__btn')} style={{ width: `${btnCount.value * 40}px` }}>
