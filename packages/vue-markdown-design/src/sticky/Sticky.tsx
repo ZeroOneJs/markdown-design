@@ -36,7 +36,7 @@ export default defineComponent({
     target: [String, Object] as PropType<string | MaybeElement>,
     zIndex: {
       type: [String, Number],
-      default: 100
+      default: 'var(--vmd-sticky-z-index)'
     }
   },
   setup(props, { slots }) {
