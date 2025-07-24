@@ -12,7 +12,7 @@ export default {
   enhanceApp({ app }) {
     // 注册自定义全局组件
     app.component('Demo', Demo)
-    app.component('VueMarkdown', VueMarkdown)
+    app.use(VueMarkdown)
     const modules: Record<string, Component> = import.meta.glob('/*/examples/**/*.vue', {
       import: 'default',
       eager: true

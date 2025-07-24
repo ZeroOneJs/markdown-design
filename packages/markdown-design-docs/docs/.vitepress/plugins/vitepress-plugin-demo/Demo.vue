@@ -1,6 +1,6 @@
 <template>
   <div class="demo">
-    <component :is="name" />
+    <component class="vp-raw" :is="name" />
     <details class="demo__details">
       <summary class="demo__details-summary">{{ summary }}</summary>
       <!-- 屏蔽默认插槽 -->

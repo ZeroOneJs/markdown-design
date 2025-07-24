@@ -1,4 +1,4 @@
-import { defineConfig } from 'vitepress'
+import { defineConfig, postcssIsolateStyles } from 'vitepress'
 import { groupIconMdPlugin, groupIconVitePlugin } from 'vitepress-plugin-group-icons'
 import { demoMdPlugin } from './plugins/vitepress-plugin-demo'
 import vueJsx from '@vitejs/plugin-vue-jsx'
@@ -14,7 +14,16 @@ export default defineConfig({
     }
   },
   vite: {
-    plugins: [groupIconVitePlugin(), vueJsx()]
+    plugins: [groupIconVitePlugin(), vueJsx()],
+    css: {
+      postcss: {
+        plugins: [
+          postcssIsolateStyles({
+            includeFiles: ['base.css', 'vp-doc.css']
+          })
+        ]
+      }
+    }
   },
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
