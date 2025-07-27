@@ -15,8 +15,7 @@ export interface TOC {
   text: string
   level: number
 }
-export interface TOCItem extends Pick<TOC, 'id' | 'top' | 'level'> {
+export interface TOCItem extends TOC {
   relativeLevel: number
-  text: string
   isActive: boolean
 }
