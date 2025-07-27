@@ -7,7 +7,7 @@ describe('MdRender', () => {
     })
     cy.get('.markdown-body').should(
       'have.html',
-      '<h1 id="title" tabindex="-1"><a class="vmd-render__anchor" href="#title" data-vmd-hidden="">#</a>Title</h1>\n<p>This is a paragraph used to test the rendering effect of markdown.</p>\n'
+      '<h1 id="title" tabindex="-1"><a class="vmd-render__anchor" href="#title" data-vmd-anchor="">#</a>Title</h1>\n<p>This is a paragraph used to test the rendering effect of markdown.</p>\n'
     )
   })
   describe('plugins', () => {
