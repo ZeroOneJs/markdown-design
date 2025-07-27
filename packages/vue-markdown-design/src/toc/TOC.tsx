@@ -126,8 +126,8 @@ export default defineComponent({
       anchors.forEach((item) => node.removeChild(item))
       return node.innerText.trim() // https://developer.mozilla.org/zh-CN/docs/Web/API/Node/textContent#与_innertext_的区别
     }
-    const getTOC = (headings: NodeListOf<HTMLHeadingElement> | undefined) => {
-      if (!headings) return []
+    const getTOC = (headings: NodeListOf<HTMLHeadingElement>) => {
+      if (!headings.length) return []
       const { offset, bound } = props
       const { block, diff } = computeOffset(offset)
       return Array.from(headings, (heading) => {
@@ -142,12 +142,12 @@ export default defineComponent({
       })
     }
     const setTOC = () => {
-      if (isMd.value) return
+      if (isMd.value || !targetEl.value) return
       const selectors = levelWithNum.value.map((level) => `h${level}`).join(',')
-      const headings = targetEl.value?.querySelectorAll<HTMLHeadingElement>(selectors)
+      const headings = targetEl.value.querySelectorAll<HTMLHeadingElement>(selectors)
       toc.value = getTOC(headings)
     }
-    watchPostEffect(setTOC)
+    watchEffect(setTOC)
 
     const listData = computed<TOC[]>(() => (isMd.value ? mdTOC.value : toc.value))
     const runtimeLevel = computed(() => {

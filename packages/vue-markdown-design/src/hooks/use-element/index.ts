@@ -1,12 +1,19 @@
-import { toRef, unrefElement, type MaybeElement, type UnRefElementReturn } from '@vueuse/core'
+import {
+  toRef,
+  unrefElement,
+  useMounted,
+  type MaybeElement,
+  type UnRefElementReturn
+} from '@vueuse/core'
 import { isString } from 'lodash'
-import { onMounted, shallowRef, watch, type MaybeRefOrGetter } from 'vue'
+import { shallowRef, watchPostEffect, type MaybeRefOrGetter } from 'vue'
 
 export function useElement(target?: MaybeRefOrGetter<MaybeElement | string>) {
   const targetEl = shallowRef<UnRefElementReturn>()
   const targetRef = toRef(target)
+  const isMounted = useMounted()
   const update = () => {
-    if (!targetRef.value) return
+    if (!(targetRef.value && isMounted.value)) return
     if (!isString(targetRef.value)) {
       targetEl.value = unrefElement(targetRef.value)
       return
@@ -14,7 +21,6 @@ export function useElement(target?: MaybeRefOrGetter<MaybeElement | string>) {
     targetEl.value = document.querySelector<HTMLElement>(targetRef.value)
     if (!targetEl.value) console.error('[vue-markdown-design] Target does not exist.')
   }
-  watch(targetRef, update, { flush: 'post' })
-  onMounted(update)
+  watchPostEffect(update)
   return { targetEl, update }
 }
