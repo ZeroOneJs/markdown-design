@@ -19,6 +19,7 @@ import type { UnionStr } from '../utils/types'
 import { compute } from 'compute-scroll-into-view'
 import { useScrollParent } from '../hooks/use-scroll-element'
 import { scrollToEl } from '../utils/dom'
+import { DATA_ANCHOR } from '../utils/constant'
 
 const START_LEVEL = 1
 const END_LEVEL = 6
@@ -109,19 +110,22 @@ export default defineComponent({
     const isPlainText = computed(() => isMd.value || props.plainText)
 
     const toc = ref<Required<TOC>[]>([])
-    const classToken = addPrefix('--hidden')
+    const getText = (el: HTMLElement) => {
+      const node = el.cloneNode(true) as HTMLElement
+      const anchors = node.querySelectorAll(`[${DATA_ANCHOR}]`)
+      anchors.forEach((item) => node.removeChild(item))
+      return node.innerText.trim() // https://developer.mozilla.org/zh-CN/docs/Web/API/Node/textContent#与_innertext_的区别
+    }
     const getTOC = (headings: NodeListOf<HTMLHeadingElement> | undefined) => {
       if (!headings) return []
       const { offset, bound } = props
       const { block, diff } = computeOffset(offset)
       return Array.from(headings, (heading) => {
-        heading.classList.add(classToken)
-        const { id, tagName, innerText } = heading
-        heading.classList.remove(classToken)
+        const { id, tagName } = heading
         const [{ top }] = compute(heading, { block })
         return {
           id,
-          text: innerText.trim(),
+          text: getText(heading),
           level: Number(tagName[1]),
           top: Math.floor(top - diff - bound)
         }

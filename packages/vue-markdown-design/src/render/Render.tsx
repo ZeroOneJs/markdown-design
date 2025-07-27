@@ -15,6 +15,7 @@ import MarkdownIt, {
   type PresetName
 } from 'markdown-it'
 import { runFnWithOptions } from '../utils/functions'
+import { DATA_ANCHOR } from '../utils/constant'
 
 const defaultBoolean = {
   type: Boolean,
@@ -145,9 +146,7 @@ export default defineComponent({
               placement: 'before',
               class: addPrefix('__anchor'),
               space: false,
-              renderAttrs: () => ({
-                'data-vmd-hidden': '' // 适配 toc 组件，使之可以准确获取 HTMLHeadingElement
-              })
+              renderAttrs: () => ({ [DATA_ANCHOR]: '' }) // 适配 toc 组件，使之可以准确获取 HTMLHeadingElement
             })
           }
         : {}
