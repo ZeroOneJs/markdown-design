@@ -1,6 +1,16 @@
 import './index.less'
 import { headers, type MditHeadersEnv } from '@markdown-design/markdown-it-headers'
-import { chain, clamp, inRange, isObject, isString, lte, range, throttle } from 'lodash'
+import {
+  chain,
+  clamp,
+  inRange,
+  isObject,
+  isString,
+  isUndefined,
+  lte,
+  range,
+  throttle
+} from 'lodash'
 import { computeOffset, createNamespace } from '../utils/format'
 import type { TOC, TOCItem } from './type'
 import {
@@ -67,7 +77,7 @@ export const tocProps = {
 
 export const tocEmits = {
   click: (payload: TOCItem) => isObject(payload),
-  change: (payload: string) => isString(payload)
+  change: (payload?: string) => isString(payload) || isUndefined(payload)
 }
 
 export default defineComponent({
@@ -164,7 +174,7 @@ export default defineComponent({
     const resolvedScrollEl = computed(
       () => scrollEl.value || targetEl.value?.ownerDocument.documentElement
     )
-    const activeId = ref('')
+    const activeId = ref<string>()
     const onChange = () => {
       if (scrollStatus === ScrollStatus.Done) {
         emit('change', activeId.value)
@@ -183,7 +193,7 @@ export default defineComponent({
             !(index === 0 && scrollTop === 0)
           )
         })
-      const id = current?.id || ''
+      const id = current?.id || undefined
       if (activeId.value === id) return
       activeId.value = id
       onChange()
@@ -247,7 +257,7 @@ export default defineComponent({
         if (slots.item) return slots.item(tocItem)
         return (
           <li class={[addPrefix('__item'), { [addPrefix('__item--active')]: isActive }]}>
-            {isPlainText.value ? (
+            {isPlainText.value || !id ? (
               <span v-html={plainText} {...attrs}></span>
             ) : (
               <a
