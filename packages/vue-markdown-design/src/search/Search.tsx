@@ -7,17 +7,19 @@ import {
   ref,
   shallowRef,
   watch,
+  watchEffect,
   withKeys,
   type PropType
 } from 'vue'
 import { createNamespace } from '../utils/format'
 import type { UnionStr } from '../utils/types'
-import { useVModels, type MaybeElement } from '@vueuse/core'
+import { useVModel, type MaybeElement } from '@vueuse/core'
 import { chain, debounce, escapeRegExp, isNumber, isString, last, omit, upperFirst } from 'lodash'
 import { useElement } from '../hooks/use-element'
 import { scrollToEl } from '../utils/dom'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { faAngleDown, faAngleUp, faCircleXmark, faXmark } from '@fortawesome/free-solid-svg-icons'
+import type { SearchIndex } from './type'
 
 const { name, addPrefix } = createNamespace('search')
 
@@ -43,10 +45,6 @@ export const searchProps = {
     default: false
   },
   placeholder: String,
-  current: {
-    type: Number,
-    default: 0
-  },
   target: [String, Object] as PropType<string | Exclude<MaybeElement, SVGAElement>>,
   offset: {
     type: [String, Number] as PropType<UnionStr<ScrollLogicalPosition> | number>,
@@ -64,15 +62,15 @@ export const searchProps = {
 }
 export const searchEmits = {
   'update:modelValue': (payload: string) => isString(payload),
-  'update:current': (payload: number) => isNumber(payload),
   input: (payload: Event) => payload instanceof Event,
   blur: (payload: FocusEvent) => payload instanceof FocusEvent,
   focus: (payload: FocusEvent) => payload instanceof FocusEvent,
   change: (payload: Event) => payload instanceof Event,
   clear: () => true,
   close: () => true,
-  toggle: (payload: UnionStr<'prev' | 'next'>) => ['prev', 'next'].includes(payload),
-  totalChange: (payload: number) => isNumber(payload)
+  stepClick: (payload: 'prev' | 'next') => ['prev', 'next'].includes(payload),
+  totalChange: (payload: number) => isNumber(payload),
+  indexChange: (index: number) => isNumber(index)
 }
 
 export default defineComponent({
@@ -80,6 +78,8 @@ export default defineComponent({
   props: searchProps,
   emits: searchEmits,
   setup(props, { emit, expose, attrs }) {
+    const modelValue = useVModel(props, 'modelValue', emit, { passive: true })
+
     const rootClass = computed(() => {
       const { size, disabled, border } = props
       return [
@@ -88,20 +88,6 @@ export default defineComponent({
         { [addPrefix('--disabled')]: disabled, [addPrefix('--border')]: border }
       ]
     })
-
-    const { modelValue, current } = useVModels(props, emit, { passive: true })
-
-    const onToggle = (direction: 'prev' | 'next') => {
-      if (props.disabled) return
-      const directionMap = new Map([
-        ['prev', total.value - 1],
-        ['next', 1]
-      ])
-      const directionNum = directionMap.get(direction) as number
-      current.value = (current.value + directionNum) % total.value
-      selectMark()
-      emit('toggle', direction)
-    }
 
     const eventAttrs = chain(['input', 'blur', 'focus', 'change'])
       .map((key) => [`on${upperFirst(key)}`, (...arg: [any]) => emit(key as any, ...arg)])
@@ -117,10 +103,6 @@ export default defineComponent({
         placeholder
       }
     })
-    const onKeydown = withKeys(
-      (event) => !(event.target as any)?.composing && onToggle('next'), // composing 此处的值为vue3源码中的赋值
-      ['enter']
-    )
 
     const onClear = () => {
       if (props.disabled) return
@@ -128,24 +110,47 @@ export default defineComponent({
       emit('clear')
     }
 
-    let markList: HTMLElement[][] = []
+    const rawIndex = ref(0)
+
+    const markList = ref<HTMLElement[][]>([])
     const escapedVal = computed(() => escapeRegExp(String(modelValue.value)))
     const setMarkList = (el: HTMLElement) => {
-      const item = last(markList)
+      const item = last(markList.value)
       const keyword = item?.map((item) => item.innerText).join('') || ''
       const regexp = new RegExp(`^${escapedVal.value}$`, 'i')
-      !item || regexp.test(keyword) ? markList.push([el]) : item.push(el)
+      !item || regexp.test(keyword) ? markList.value.push([el]) : item.push(el)
     }
 
-    const total = ref(0)
-    const setTotal = () => {
-      total.value = markList.length
-      emit('totalChange', total.value)
-    }
+    const total = computed(() => markList.value.length)
+    watch(total, (val) => emit('totalChange', val))
+
+    const matchesIndex = computed(() => {
+      return total.value && ((rawIndex.value % total.value) + total.value) % total.value
+    })
+    watch(matchesIndex, (val) => emit('indexChange', val))
 
     const matchesCount = computed(
       // modelValue.value !== '' 不直接判断防止值为0的情况
-      () => modelValue.value !== '' && total.value && `${current.value + 1}/${total.value}`
+      () => modelValue.value !== '' && total.value && `${matchesIndex.value + 1}/${total.value}`
+    )
+
+    const stepMap = new Map([
+      ['prev', -1],
+      ['next', 1]
+    ])
+    const toggle = (index: SearchIndex, checkDisabled?: boolean) => {
+      if (checkDisabled && props.disabled) return
+      const offsetVal = stepMap.get(String(index))
+      rawIndex.value = offsetVal ? matchesIndex.value + offsetVal : Number(index)
+    }
+    const onStepClick = (direction: 'prev' | 'next') => {
+      if (props.disabled) return // 同时禁用 stepClick 事件
+      toggle(direction)
+      emit('stepClick', direction)
+    }
+    const onKeydown = withKeys(
+      (event) => !(event.target as any)?.composing && onStepClick('next'), // composing 此处的值为vue3源码中的赋值
+      ['enter']
     )
 
     const { targetEl } = useElement(() => props.target || document.documentElement)
@@ -155,26 +160,13 @@ export default defineComponent({
       return undefined
     })
 
-    let isMounted = false
-    const reset = () => {
-      if (!isMounted) {
-        // 防止首次赋值被重置
-        isMounted = true
-        return
-      }
-      current.value = 0
-      total.value = 0
-      markInstance.value?.unmark()
-      markList = []
-    }
-
     const highlightClass = addPrefix('--highlight')
-    const selectMark = () => {
+    watchEffect(() => {
       // 高亮选中
       targetEl.value
         ?.querySelectorAll(`.${highlightClass}`)
         .forEach((el) => el.classList.remove(highlightClass))
-      const currentMark = markList.find((_, index) => index === current.value)
+      const currentMark = markList.value.find((_, index) => index === matchesIndex.value)
       if (!currentMark) return
       currentMark.forEach((el) => el.classList.add(highlightClass))
       // 滚动到选中
@@ -184,9 +176,19 @@ export default defineComponent({
         smooth,
         scrollMode: 'if-needed'
       })
-    }
-    // watch(current, selectMark)
+    })
 
+    let isFirst = true
+    const reset = () => {
+      if (isFirst) {
+        // 防止首次赋值 rawIndex 被重置
+        isFirst = false
+        return
+      }
+      rawIndex.value = 0
+      markInstance.value?.unmark()
+      markList.value = []
+    }
     const setMark = debounce(() => {
       reset()
       if (!targetEl.value) return
@@ -194,11 +196,7 @@ export default defineComponent({
       markInstance.value?.markRegExp(regexp, {
         className: addPrefix('--mark'),
         acrossElements: true,
-        each: setMarkList,
-        done: () => {
-          setTotal()
-          selectMark()
-        }
+        each: setMarkList
       })
     }, 200)
     watch(() => [modelValue.value, targetEl.value], setMark, { immediate: true })
@@ -210,7 +208,8 @@ export default defineComponent({
         .map((key) => [key, () => inputRef.value?.[key]()])
         .fromPairs()
         .value(),
-      clear: onClear
+      clear: onClear,
+      toggle
     })
 
     return () => (
@@ -232,13 +231,13 @@ export default defineComponent({
             <span class={addPrefix('__count')}>{matchesCount.value}</span>
             <span
               class={[addPrefix('__prev'), addPrefix('__btn')]}
-              onClick={() => onToggle('prev')}
+              onClick={() => onStepClick('prev')}
             >
               <FontAwesomeIcon icon={faAngleUp} />
             </span>
             <span
               class={[addPrefix('__next'), addPrefix('__btn')]}
-              onClick={() => onToggle('next')}
+              onClick={() => onStepClick('next')}
             >
               <FontAwesomeIcon icon={faAngleDown} />
             </span>
