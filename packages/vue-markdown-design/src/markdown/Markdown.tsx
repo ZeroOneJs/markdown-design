@@ -23,6 +23,7 @@ import { useScrollParent } from '../hooks/use-scroll-element'
 import Sticky from '../sticky'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { faList, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
+import type { SearchIndex } from '../search/type'
 
 const { name, addPrefix } = createNamespace('markdown')
 
@@ -31,7 +32,6 @@ export const markdownProps = {
   ...keysAddPrefix(searchProps, 'search'),
   ...keysAddPrefix(tocProps, 'toc'),
   keyword: searchProps.modelValue,
-  current: searchProps.current,
   tocOffset: tocProps.offset.type, // 不设置默认值，toc 需要 undefined 作为判断依据
   showBtn: {
     type: [Boolean, Object] as PropType<ObjectToUnion<MarkdownBtnType>>,
@@ -54,7 +54,6 @@ const emits = {
   ...keysAddPrefix(searchEmits, 'search'),
   ...keysAddPrefix(tocEmits, 'toc'),
   'update:keyword': searchEmits['update:modelValue'],
-  'update:current': searchEmits['update:current'],
   'update:search': (payload: boolean) => isBoolean(payload),
   'update:toc': (payload: boolean) => isBoolean(payload)
 }
@@ -63,7 +62,7 @@ export default defineComponent({
   props: markdownProps,
   emits,
   setup(props, { emit, expose }) {
-    const { search, toc, keyword, current } = useVModels(props, emit, { passive: true })
+    const { search, toc, keyword } = useVModels(props, emit, { passive: true })
 
     const root = shallowRef<HTMLDivElement>()
     const { width: rootWidth, height: rootHeight } = useElementBounding(root)
@@ -187,6 +186,7 @@ export default defineComponent({
       searchFocus: () => searchRef.value?.focus(),
       searchBlur: () => searchRef.value?.blur(),
       searchClear: () => searchRef.value?.clear(),
+      searchToggle: (...arg: [SearchIndex, boolean?]) => searchRef.value?.toggle(...arg),
       getMdit: () => renderRef.value?.getMdit()
     })
 
@@ -201,7 +201,6 @@ export default defineComponent({
                     {...searchAttrs.value}
                     ref={searchRef}
                     v-model={keyword.value}
-                    v-model:current={current.value}
                     target={renderRef.value}
                   />
                 </div>
