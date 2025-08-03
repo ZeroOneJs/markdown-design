@@ -1,6 +1,6 @@
 import Render, { type RenderInstance } from '..'
 
-describe('MdRender', () => {
+describe('Render', () => {
   it('src', () => {
     cy.fixture('commonmark/mini.md').then((src) => {
       cy.mount(() => <Render src={src} />)

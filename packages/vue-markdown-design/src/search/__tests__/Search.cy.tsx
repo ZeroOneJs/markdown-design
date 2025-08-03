@@ -1,6 +1,6 @@
 import Search from '..'
 
-describe('MdSearch', () => {
+describe('Search', () => {
   it('clearable', () => {
     cy.mount(() => <Search modelValue="keyword" />)
     cy.get('.vmd-search__clearable').should('exist')
