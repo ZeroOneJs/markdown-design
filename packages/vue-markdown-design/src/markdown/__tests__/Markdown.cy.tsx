@@ -13,22 +13,6 @@ describe('Markdown', () => {
     cy.get('.vmd-search--mark').should('have.length', 3)
     cy.get('.vmd-search--mark').first().should('have.class', 'vmd-search--highlight')
   })
-  it('current/update:current', () => {
-    cy.mount(() => (
-      <Markdown
-        src="Keyword. Key<br>words for line breaks."
-        search
-        keyword="Keyword"
-        onUpdate:current={cy.spy().as('onUpdateCurrent')}
-      />
-    ))
-    cy.get('.vmd-search--mark').then(() => {
-      cy.get('.vmd-search__next').click()
-    })
-    cy.get('@onUpdateCurrent').should('have.been.calledWith', 1)
-    cy.get('.vmd-search--mark:first-child').should('not.have.class', 'vmd-search--highlight')
-    cy.get('.vmd-search--mark:not(:first-child)').should('have.class', 'vmd-search--highlight')
-  })
   describe('showBtn', () => {
     it('boolean', () => {
       cy.mount(() => <Markdown showBtn />)
@@ -263,6 +247,94 @@ describe('Markdown', () => {
     cy.mount(() => <Markdown search onSearchClose={cy.spy().as('onSearchClose')} />)
     cy.get('.vmd-search__close').click()
     cy.get('@onSearchClose').should('have.been.called')
+  })
+  describe('searchToggle', () => {
+    it('string', () => {
+      cy.fixture('commonmark/keyword.md').then((src) => {
+        cy.mount(Markdown, {
+          props: {
+            src,
+            keyword: 'Keyword',
+            search: true
+          }
+        })
+          .then(({ component }) => {
+            ;(component as MarkdownInstance).searchToggle('next')
+          })
+          .as('vue')
+      })
+      cy.get('.vmd-search--mark:first-child').should('not.have.class', 'vmd-search--highlight')
+      cy.get('.vmd-search--mark:not(:first-child)').should('have.class', 'vmd-search--highlight')
+      cy.get<{ component: MarkdownInstance }>('@vue').then(({ component }) => {
+        ;(component as MarkdownInstance).searchToggle('prev')
+      })
+      cy.get('.vmd-search--mark:first-child').should('have.class', 'vmd-search--highlight')
+      cy.get('.vmd-search--mark:not(:first-child)').should(
+        'not.have.class',
+        'vmd-search--highlight'
+      )
+    })
+    it('number', () => {
+      cy.fixture('commonmark/keyword.md').then((src) => {
+        cy.mount(Markdown, {
+          props: {
+            src,
+            keyword: 'Keyword',
+            search: true
+          }
+        }).then(({ component }) => {
+          ;(component as MarkdownInstance).searchToggle(-11)
+        })
+      })
+      cy.get('.vmd-search--mark:first-child').should('not.have.class', 'vmd-search--highlight')
+      cy.get('.vmd-search--mark:not(:first-child)').should('have.class', 'vmd-search--highlight')
+    })
+    it('checkDisabled', () => {
+      cy.fixture('commonmark/keyword.md').then((src) => {
+        cy.mount(Markdown, {
+          props: {
+            src,
+            keyword: 'Keyword',
+            search: true,
+            searchDisabled: true
+          }
+        }).then(({ component }) => {
+          ;(component as MarkdownInstance).searchToggle('next', true)
+        })
+      })
+      cy.get('.vmd-search--mark:first-child').should('have.class', 'vmd-search--highlight')
+      cy.get('.vmd-search--mark:not(:first-child)').should(
+        'not.have.class',
+        'vmd-search--highlight'
+      )
+    })
+  })
+  it('searchTotalChange', () => {
+    cy.fixture('commonmark/keyword.md').then((src) => {
+      cy.mount(Markdown, {
+        props: {
+          src,
+          keyword: 'Keyword',
+          search: true,
+          onSearchTotalChange: cy.spy().as('onSearchTotalChange')
+        }
+      })
+    })
+    cy.get('@onSearchTotalChange').should('have.been.calledWith', 2)
+  })
+  it('searchIndexChange:', () => {
+    cy.fixture('commonmark/keyword.md').then((src) => {
+      cy.mount(Markdown, {
+        props: {
+          src,
+          keyword: 'Keyword',
+          search: true,
+          onSearchIndexChange: cy.spy().as('onSearchIndexChange')
+        }
+      })
+    })
+    cy.get('.vmd-search__prev').click()
+    cy.get('@onSearchIndexChange').should('have.been.calledWith', 1)
   })
   it('getMdit', () => {
     cy.mount(Markdown).then(({ component }) => {

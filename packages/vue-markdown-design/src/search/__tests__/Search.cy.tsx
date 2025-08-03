@@ -95,24 +95,18 @@ describe('MdSearch', () => {
     cy.get('.vmd-search__clearable').click()
     cy.get('@onClear').should('have.been.called')
   })
-  it('toggle', () => {
+  it('stepClick', () => {
     cy.mount(Search, {
-      props: { modelValue: 'keyword', disabled: true, onToggle: cy.spy().as('onToggle') }
+      props: { modelValue: 'keyword', disabled: true, onStepClick: cy.spy().as('onStepClick') }
     }).as('vue')
     cy.get('.vmd-search__prev').click()
-    cy.get('@onToggle').should('not.have.been.called')
+    cy.get('@onStepClick').should('not.have.been.called')
     cy.get<{ wrapper: typeof Search }>('@vue').then(({ wrapper }) =>
       wrapper.setProps({ disabled: false })
     )
     cy.get('.vmd-search__prev').click()
-    cy.get('@onToggle').should('have.been.calledWith', 'prev')
+    cy.get('@onStepClick').should('have.been.calledWith', 'prev')
     cy.get('.vmd-search__input').type('{enter}')
-    cy.get('@onToggle').should('have.been.calledWith', 'next')
-  })
-  it('totalChange', () => {
-    cy.mount(Search, { props: { onTotalChange: cy.spy().as('onTotalChange') } }).then(
-      ({ wrapper }) => wrapper.setProps({ modelValue: 'keyword' })
-    )
-    cy.get('@onTotalChange').should('have.been.calledWith', 0)
+    cy.get('@onStepClick').should('have.been.calledWith', 'next')
   })
 })
