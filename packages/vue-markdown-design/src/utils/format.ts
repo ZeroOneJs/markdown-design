@@ -44,3 +44,7 @@ export function createNamespace(str: string) {
     addPrefix: (str: string) => name + str
   }
 }
+
+export function allToArray<T>(value: T | T[]) {
+  return Array.isArray(value) ? value : [value]
+}
