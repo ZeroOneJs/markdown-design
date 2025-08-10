@@ -3,7 +3,7 @@ import hljs, { type HLJSOptions } from 'highlight.js'
 import { full, type Options as EmojiOptions } from 'markdown-it-emoji'
 import { sanitize, type SanitizeOptions } from '@markdown-design/markdown-it-sanitize'
 import { defineComponent, ref, watch, watchEffect, type PropType } from 'vue'
-import { createNamespace } from '../utils/format'
+import { allToArray, createNamespace } from '../utils/format'
 import type { UnionStr } from '../utils/types'
 import anchor from 'markdown-it-anchor'
 import type { Anchor } from './type'
@@ -159,8 +159,7 @@ export default defineComponent({
     // 其他插件
     const getPlugins = () => {
       const { plugins } = props
-      if (!Array.isArray(plugins)) return [[plugins]]
-      return plugins.map((plugin) => (Array.isArray(plugin) ? plugin : [plugin]))
+      return Array.isArray(plugins) ? plugins.map(allToArray) : [[plugins]]
     }
     getPlugins().forEach((plugin) => md.use(...(plugin as [PluginWithParams, ...any[]])))
 

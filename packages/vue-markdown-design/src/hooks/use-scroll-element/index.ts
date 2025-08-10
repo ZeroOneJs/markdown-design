@@ -5,6 +5,7 @@ import {
   type UnRefElementReturn
 } from '@vueuse/core'
 import { onMounted, shallowRef, watch, type ShallowRef } from 'vue'
+import { allToArray } from '../../utils/format'
 
 const tagNames = new Set(['HTML', 'BODY'])
 const scrollReg = /scroll|auto|overlay/i
@@ -68,11 +69,9 @@ export function useScrollParent(
     }
   }
   watch(() => unrefElement(target), update, { flush: 'post' })
-  useMutationObserver(
-    () => (Array.isArray(scrollEl.value) ? scrollEl.value : [scrollEl.value]),
-    update,
-    { attributeFilter: ['style', 'class'] }
-  )
+  useMutationObserver(() => allToArray(scrollEl.value), update, {
+    attributeFilter: ['style', 'class']
+  })
   onMounted(update)
   return { scrollEl, update }
 }
