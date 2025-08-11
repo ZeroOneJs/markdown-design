@@ -8,6 +8,20 @@ setTimeout(() => {
 
 # Markdown
 
+## 基本用法
+
+::: demo
+markdown/Basic.vue
+:::
+
+## 关键字搜索
+
+使用 `search` 来显示搜索栏，并且可以通过 `keyword` 来传入关键字或者接收输入的关键字
+
+::: demo
+markdown/Search.vue
+:::
+
 ## SearchOffset
 
 ::: demo
@@ -86,22 +100,10 @@ markdown/Sanitize.vue
 markdown/Plugins.vue
 :::
 
-## 基本用法
-
-::: demo
-markdown/Basic.vue
-:::
-
 ## showBtn
 
 ::: demo
 markdown/ShowBtn.vue
-:::
-
-## search/keyword/current/offsetTop
-
-::: demo
-markdown/Keyword.vue
 :::
 
 ## toc/tocOffset/offsetTop
