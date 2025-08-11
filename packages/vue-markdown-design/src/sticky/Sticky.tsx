@@ -1,6 +1,6 @@
 import './index.less'
 import { computed, defineComponent, ref, shallowRef, watchEffect, type PropType } from 'vue'
-import { addUnit, createNamespace } from '../utils/format'
+import { addUnit, allToArray, createNamespace } from '../utils/format'
 import type { UnionStr } from '../utils/types'
 import {
   clamp,
@@ -11,34 +11,37 @@ import {
 } from '@vueuse/core'
 import { useElement } from '../hooks/use-element'
 import { useScrollParent } from '../hooks/use-scroll-element'
+import type { StickyPosX, StickyPosY } from './type'
 
 const { name, addPrefix } = createNamespace('sticky')
 
+export const stickyProps = {
+  posY: {
+    type: String as PropType<UnionStr<StickyPosY>>,
+    default: 'top'
+  },
+  posX: {
+    type: String as PropType<UnionStr<StickyPosX>>,
+    default: 'left'
+  },
+  offset: {
+    type: [Number, String, Array] as PropType<string | number | (string | number)[]>,
+    default: () => []
+  },
+  flow: {
+    type: Boolean,
+    default: true
+  },
+  target: [String, Object] as PropType<string | MaybeElement>,
+  zIndex: {
+    type: [String, Number],
+    default: 'var(--vmd-base-z-index)'
+  }
+}
+
 export default defineComponent({
   name,
-  props: {
-    posY: {
-      type: String as PropType<UnionStr<'top' | 'bottom'>>,
-      default: 'top'
-    },
-    posX: {
-      type: String as PropType<UnionStr<'left' | 'right'>>,
-      default: 'left'
-    },
-    offset: {
-      type: [String, Number],
-      default: 0
-    },
-    flow: {
-      type: Boolean,
-      default: true
-    },
-    target: [String, Object] as PropType<string | MaybeElement>,
-    zIndex: {
-      type: [String, Number],
-      default: 'var(--vmd-base-z-index)'
-    }
-  },
+  props: stickyProps,
   setup(props, { slots }) {
     const transform = ref(0)
 
@@ -62,21 +65,10 @@ export default defineComponent({
     const targetRect = useElementBounding(targetEl)
 
     const { scrollEl } = useScrollParent(root, { onlyParent: false })
-    const getScrollRect = () => {
-      const tops = [0]
-      const bottoms = [windowHeight.value]
-      scrollEl.value.forEach((el) => {
-        const { top, bottom } = el.getBoundingClientRect()
-        tops.push(top)
-        bottoms.push(bottom)
-      })
-      return {
-        top: Math.max(...tops),
-        bottom: Math.min(...bottoms)
-      }
-    }
 
-    const isBottom = computed(() => props.posY === 'bottom')
+    const isBottom = (posY: typeof props.posY) => posY === 'bottom'
+
+    const isPosBottom = computed(() => isBottom(props.posY))
     const movingRect = ref({
       top: 0,
       bottom: 0
@@ -99,7 +91,7 @@ export default defineComponent({
         position: 'fixed',
         zIndex
       }
-      if (isBottom.value) {
+      if (isPosBottom.value) {
         return {
           ...base,
           display: 'grid',
@@ -113,53 +105,76 @@ export default defineComponent({
       }
     })
 
+    const offsetArr = computed(() => allToArray(props.offset).map(Number))
+    const getBoundaryValues = (posY: StickyPosY) => {
+      const curIsBottom = isBottom(posY)
+      const rawValues = [
+        ...scrollEl.value.map((el) => el.getBoundingClientRect()[posY]),
+        curIsBottom ? windowHeight.value : 0
+      ]
+      const mathFn = Math[curIsBottom ? 'min' : 'max']
+      if (posY !== props.posY) return [mathFn(...rawValues)]
+      const offsetValues = rawValues.map((item, index) => {
+        const offset = offsetArr.value[index] || 0
+        const sign = isPosBottom.value ? -1 : 1
+        return item + offset * sign
+      })
+      const target = mathFn(...offsetValues)
+      return [target, rawValues[offsetValues.indexOf(target)]]
+    }
     const elPositions = computed(() => {
-      const { top, bottom } = getScrollRect()
+      const [scrollTop, scrollRawTop] = getBoundaryValues('top')
+      const [scrollBottom, scrollRawBottom] = getBoundaryValues('bottom')
       return {
         rootTop: rootTop.value,
         rootBottom: rootBottom.value,
         targetTop: targetRect.top.value,
         targetBottom: targetRect.bottom.value,
-        scrollTop: top,
-        scrollBottom: bottom
+        scrollTop,
+        scrollBottom,
+        scrollRawVal: scrollRawTop ?? scrollRawBottom
       }
     })
-    const offsetWithNum = computed(() => Number(props.offset))
     const getTransform = (top: number, bottom: number) => {
       return Math.max(contentHeight.value - (bottom - top), 0)
     }
     const update = () => {
       const { target, flow } = props
-      const { rootTop, rootBottom, targetTop, targetBottom, scrollTop, scrollBottom } =
-        elPositions.value
-      if (isBottom.value) {
-        const bottomOffset = scrollBottom - offsetWithNum.value
-        fixed.value = !flow || (bottomOffset < rootBottom && (!target || scrollBottom > targetTop))
+      const {
+        rootTop,
+        rootBottom,
+        targetTop,
+        targetBottom,
+        scrollTop,
+        scrollBottom,
+        scrollRawVal
+      } = elPositions.value
+      if (isPosBottom.value) {
+        fixed.value = !flow || (scrollBottom < rootBottom && (!target || scrollRawVal > targetTop))
         if (!fixed.value) return
         if (target) {
-          transform.value = getTransform(targetTop, scrollBottom)
-          const contentBottom = clamp(targetTop + contentHeight.value, bottomOffset, scrollBottom)
+          transform.value = getTransform(targetTop, scrollRawVal)
+          const contentBottom = clamp(targetTop + contentHeight.value, scrollBottom, scrollRawVal)
           movingRect.value = {
             top: Math.max(scrollTop, targetTop),
             bottom: Math.min(contentBottom, targetBottom)
           }
         } else {
-          movingRect.value = { top: scrollTop, bottom: bottomOffset }
+          movingRect.value = { top: scrollTop, bottom: scrollBottom }
         }
         return
       }
-      const topOffset = scrollTop + offsetWithNum.value
-      fixed.value = !flow || (topOffset > rootTop && (!target || targetBottom > scrollTop))
+      fixed.value = !flow || (scrollTop > rootTop && (!target || targetBottom > scrollRawVal))
       if (!fixed.value) return
       if (target) {
-        transform.value = -getTransform(scrollTop, targetBottom)
-        const contentTop = clamp(targetBottom - contentHeight.value, scrollTop, topOffset)
+        transform.value = -getTransform(scrollRawVal, targetBottom)
+        const contentTop = clamp(targetBottom - contentHeight.value, scrollRawVal, scrollTop)
         movingRect.value = {
           top: Math.max(contentTop, targetTop),
           bottom: Math.min(scrollBottom, targetBottom)
         }
       } else {
-        movingRect.value = { top: topOffset, bottom: scrollBottom }
+        movingRect.value = { top: scrollTop, bottom: scrollBottom }
       }
     }
 

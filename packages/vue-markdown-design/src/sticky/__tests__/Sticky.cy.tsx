@@ -35,21 +35,46 @@ describe('Sticky', () => {
   })
   it('posX', () => {
     cy.mount(() => (
-      <div data-cy style="width: 500px;height: 500px;position: absolute;left: 0;">
-        <Sticky target="[data-cy]" posX="right" flow={false}>
-          <div data-cy>content</div>
+      <div data-cy="target" style="width: 500px;height: 500px;position: absolute;left: 0;">
+        <Sticky target="[data-cy='target']" posX="right" flow={false}>
+          <div data-cy="content">content</div>
         </Sticky>
       </div>
     ))
-    cy.get('[data-cy]').should('boundary.satisfy', ({ right }) => right === 500)
+    cy.get('[data-cy="content"]').should('boundary.satisfy', ({ right }) => right === 500)
   })
-  it('offset', () => {
-    cy.mount(() => (
-      <Sticky offset="100">
-        <div data-cy>content</div>
-      </Sticky>
-    ))
-    cy.get('[data-cy]').should('boundary.satisfy', ({ top }) => top === 100)
+  describe('offset', () => {
+    it('string', () => {
+      cy.mount(() => (
+        <Sticky offset="100">
+          <div data-cy>content</div>
+        </Sticky>
+      ))
+      cy.get('[data-cy]').should('boundary.satisfy', ({ top }) => top === 100)
+    })
+    it('array', () => {
+      cy.scrollTo('top', { ensureScrollable: false }) // 防止测试之间 <html> 滚动条相互影响
+      cy.mount(() => (
+        <>
+          <div style="height: 50vh">placeholder</div>
+          <div data-cy="scroll" style="height: 100px; overflow: scroll; background:mark;">
+            <Sticky offset={[40, 60]}>
+              <div data-cy="content">content</div>
+            </Sticky>
+          </div>
+          <div style="height: 100vh">placeholder</div>
+        </>
+      ))
+      cy.get('[data-cy="scroll"]').then(($el) => {
+        const { top: scrollTop } = $el.get(0).getBoundingClientRect()
+        cy.get('[data-cy="content"]').should(
+          'boundary.satisfy',
+          ({ top }) => top === scrollTop + 40
+        )
+      })
+      cy.get('[data-cy="scroll"]').scrollIntoView()
+      cy.get('[data-cy="content"]').should('boundary.satisfy', ({ top }) => top === 60)
+    })
   })
   it('flow', () => {
     cy.mount(() => (
@@ -64,8 +89,8 @@ describe('Sticky', () => {
       cy.mount(() => (
         <>
           <div style="height: 100vh">placeholder</div>
-          <div data-cy style="height: 100px">
-            <Sticky target="[data-cy]">
+          <div data-cy="target" style="height: 100px">
+            <Sticky target="[data-cy='target']">
               <div data-cy="content">content</div>
             </Sticky>
           </div>
@@ -84,9 +109,9 @@ describe('Sticky', () => {
       cy.mount(() => (
         <>
           <div style="height: 100vh">placeholder</div>
-          <div data-cy>
+          <div data-cy="target">
             <div style="height: 100px">placeholder</div>
-            <Sticky target="[data-cy]" posY="bottom">
+            <Sticky target="[data-cy='target']" posY="bottom">
               <div data-cy="content">content</div>
             </Sticky>
           </div>

@@ -11,7 +11,7 @@ import {
 import Render, { renderProps, type RenderInstance } from '../render'
 import Search, { searchProps, type SearchInstance } from '../search'
 import TOC, { tocProps, type TOCInstance, type TOCItem } from '../toc'
-import { addUnit, allToObject, createNamespace, keysAddPrefix } from '../utils/format'
+import { addUnit, allToArray, allToObject, createNamespace, keysAddPrefix } from '../utils/format'
 import type { ObjectToUnion } from '../utils/types'
 import type { MarkdownBtnType } from './type'
 import { renderEmits } from '../render/Render'
@@ -20,7 +20,7 @@ import { tocEmits } from '../toc/TOC'
 import { chain, defaults, isBoolean, mapValues, sum, upperFirst, values } from 'lodash'
 import { useElementBounding, useVModels, useWindowSize } from '@vueuse/core'
 import { useScrollParent } from '../hooks/use-scroll-element'
-import Sticky from '../sticky'
+import Sticky, { stickyProps } from '../sticky'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { faList, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
 import type { SearchIndex } from '../search/type'
@@ -39,11 +39,8 @@ export const markdownProps = {
   },
   search: Boolean,
   toc: Boolean,
-  offsetTop: [Number, String], // 不设置默认值，toc 需要 undefined 作为判断依据
-  offsetBottom: {
-    type: [Number, String],
-    default: 0
-  },
+  offsetTop: stickyProps.offset.type, // 不设置默认值，toc 需要 undefined 作为判断依据
+  offsetBottom: stickyProps.offset,
   miniScreenWidth: {
     type: [Number, String],
     default: 960
@@ -109,8 +106,8 @@ export default defineComponent({
     const searchIsOnMiniScreen = computed(() => isMiniScreen.value && toc.value)
 
     const offsetWithNum = computed(() => {
-      const { offsetTop = 0, offsetBottom } = props
-      return [offsetTop, offsetBottom].map(Number)
+      const { offsetTop = [0], offsetBottom } = props
+      return [offsetTop, offsetBottom].map((item) => sum(allToArray(item).map(Number)))
     })
     const tocRef = shallowRef<TOCInstance>()
     const tocRect = useElementBounding(tocRef)
