@@ -3,13 +3,11 @@ import Markdown, { type MarkdownInstance } from '..'
 
 describe('Markdown', () => {
   it('keyword/update:keyword', () => {
-    cy.mount(() => (
-      <Markdown
-        src="Keyword. Key<br>words for line breaks."
-        search
-        onUpdate:keyword={cy.spy().as('onUpdateKeyword')}
-      />
-    ))
+    cy.fixture('commonmark/keyword.md').then((src) => {
+      cy.mount(() => (
+        <Markdown src={src} search onUpdate:keyword={cy.spy().as('onUpdateKeyword')} />
+      ))
+    })
     cy.get('.vmd-search__input').type('Keyword')
     cy.get('@onUpdateKeyword').should('have.been.calledWith', 'Keyword')
     cy.get('.vmd-search--mark').should('have.length', 3)
