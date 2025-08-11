@@ -1,18 +1,13 @@
 <template>
-  <vue-markdown
-    :src="md"
-    v-model:keyword="keyword"
-    v-model:current="current"
-    search
-    offsetTop="112"
-  />
+  <vue-markdown v-model:keyword="keyword" v-model:search="search" offsetTop="112" :src="md" />
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue'
 
+const search = ref(true)
+
 const keyword = ref('先帝')
-const current = ref(3)
 
 const md = `
 # 出师表
