@@ -53,8 +53,7 @@
     "markdown-it": "catalog:",
     "markdown-it-anchor": "^9.2.0",
     "markdown-it-emoji": "^3.0.0",
-    "popmotion": "^11.0.5",
-    "vue": "catalog:"
+    "popmotion": "^11.0.5"
   },
   "peerDependencies": {
     "vue": "^3.0.0"
@@ -73,6 +72,7 @@
     "vite-plugin-dts": "^4.5.0",
     "vite-plugin-istanbul": "^6.0.2",
     "vite-plugin-lib-inject-css": "^2.2.1",
+    "vue": "catalog:",
     "vue-tsc": "^2.0.21"
   }
 }
