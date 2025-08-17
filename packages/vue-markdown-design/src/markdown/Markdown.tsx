@@ -34,7 +34,7 @@ export const markdownProps = {
   keyword: searchProps.modelValue,
   tocOffset: tocProps.offset.type, // 不设置默认值，toc 需要 undefined 作为判断依据
   showBtn: {
-    type: [Boolean, Object] as PropType<ObjectToUnion<MarkdownBtnType>>,
+    type: [Boolean, Array, Object] as PropType<ObjectToUnion<MarkdownBtnType>>,
     default: false
   },
   search: Boolean,
