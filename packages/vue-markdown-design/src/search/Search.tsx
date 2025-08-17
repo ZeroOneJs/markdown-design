@@ -19,7 +19,7 @@ import { useElement } from '../hooks/use-element'
 import { scrollToEl } from '../utils/dom'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { faAngleDown, faAngleUp, faCircleXmark, faXmark } from '@fortawesome/free-solid-svg-icons'
-import type { SearchIndex } from './type'
+import type { SearchExpose } from './type'
 
 const { name, addPrefix } = createNamespace('search')
 
@@ -138,7 +138,7 @@ export default defineComponent({
       ['prev', -1],
       ['next', 1]
     ])
-    const toggle = (index: SearchIndex, checkDisabled?: boolean) => {
+    const toggle: SearchExpose['toggle'] = (index, checkDisabled) => {
       if (checkDisabled && props.disabled) return
       const offsetVal = stepMap.get(String(index))
       rawIndex.value = offsetVal ? matchesIndex.value + offsetVal : Number(index)

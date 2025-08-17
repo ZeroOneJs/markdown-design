@@ -13,7 +13,7 @@ import Search, { searchProps, type SearchInstance } from '../search'
 import TOC, { tocProps, type TOCInstance, type TOCItem } from '../toc'
 import { addUnit, allToObject, createNamespace, keysAddPrefix } from '../utils/format'
 import type { ObjectToUnion } from '../utils/types'
-import type { MarkdownBtnType } from './type'
+import type { MarkdownBtnType, MarkdownExpose } from './type'
 import { renderEmits } from '../render/Render'
 import { searchEmits } from '../search/Search'
 import { tocEmits } from '../toc/TOC'
@@ -23,7 +23,6 @@ import { useScrollParent } from '../hooks/use-scroll-element'
 import Sticky from '../sticky'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { faList, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
-import type { SearchIndex } from '../search/type'
 
 const { name, addPrefix } = createNamespace('markdown')
 
@@ -180,14 +179,14 @@ export default defineComponent({
       { [addPrefix('__btn-icon--active')]: isActive }
     ]
 
-    expose({
-      tocRefresh: () => tocRef.value?.refresh(),
-      tocScrollTo: (href?: string) => tocRef.value?.scrollTo(href),
+    expose<MarkdownExpose>({
+      tocRefresh: () => tocRef.value?.refresh() as ReturnType<MarkdownExpose['tocRefresh']>,
+      tocScrollTo: (href) => tocRef.value?.scrollTo(href),
       searchFocus: () => searchRef.value?.focus(),
       searchBlur: () => searchRef.value?.blur(),
       searchClear: () => searchRef.value?.clear(),
-      searchToggle: (...arg: [SearchIndex, boolean?]) => searchRef.value?.toggle(...arg),
-      getMdit: () => renderRef.value?.getMdit()
+      searchToggle: (...arg) => searchRef.value?.toggle(...arg),
+      getMdit: () => renderRef.value?.getMdit() as ReturnType<MarkdownExpose['getMdit']>
     })
 
     return () => (
