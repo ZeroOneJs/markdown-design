@@ -1,4 +1,4 @@
-import { fromPairs, isBoolean, isNumber, kebabCase, mapKeys, upperFirst } from 'lodash'
+import { fromPairs, isBoolean, isNumber, mapKeys, upperFirst } from 'lodash'
 import type { KeysAddPrefix, ObjectToUnion, UnionStr } from './types'
 
 const scrollLogicalPosition = new Set(['start', 'end', 'center', 'nearest'])
