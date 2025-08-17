@@ -8,7 +8,7 @@ import type { TOCExpose } from '../toc/type'
 type MdSearchExposeWithPrefix = KeysAddPrefix<SearchExpose, 'search'>
 type MdTOCExposeWithPrefix = KeysAddPrefix<TOCExpose, 'toc'>
 
-type MarkdownExpose = RenderExpose & MdSearchExposeWithPrefix & MdTOCExposeWithPrefix
+export type MarkdownExpose = RenderExpose & MdSearchExposeWithPrefix & MdTOCExposeWithPrefix
 
 export type MarkdownProps = ExtractPropTypes<typeof markdownProps>
 export type MarkdownInstance = ComponentPublicInstance<MarkdownProps, MarkdownExpose>
