@@ -115,7 +115,10 @@ export default defineComponent({
     const tocRect = useElementBounding(tocRef)
     watch(
       () => props.src,
-      () => tocRef.value?.refresh()
+      () => {
+        tocRef.value?.refresh()
+        searchRef.value?.refresh()
+      }
     )
     const tocDefaultOffset = computed(() => {
       const [top] = offsetWithNum.value
@@ -182,6 +185,8 @@ export default defineComponent({
     expose<MarkdownExpose>({
       tocRefresh: () => tocRef.value?.refresh() as ReturnType<MarkdownExpose['tocRefresh']>,
       tocScrollTo: (href) => tocRef.value?.scrollTo(href),
+      searchRefresh: (isReset) =>
+        searchRef.value?.refresh(isReset) as ReturnType<MarkdownExpose['searchRefresh']>,
       searchFocus: () => searchRef.value?.focus(),
       searchBlur: () => searchRef.value?.blur(),
       searchClear: () => searchRef.value?.clear(),

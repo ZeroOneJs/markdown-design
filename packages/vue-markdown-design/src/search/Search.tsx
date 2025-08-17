@@ -3,6 +3,7 @@ import Mark from 'mark.js'
 import {
   computed,
   defineComponent,
+  nextTick,
   onBeforeUnmount,
   ref,
   shallowRef,
@@ -178,19 +179,12 @@ export default defineComponent({
       })
     })
 
-    let isFirst = true
-    const reset = () => {
-      if (isFirst) {
-        // 防止首次赋值 rawIndex 被重置
-        isFirst = false
-        return
-      }
-      rawIndex.value = 0
+    const resetMark = () => {
       markInstance.value?.unmark()
       markList.value = []
     }
     const setMark = debounce(() => {
-      reset()
+      resetMark()
       if (!targetEl.value) return
       const regexp = new RegExp(escapedVal.value, 'gi')
       markInstance.value?.markRegExp(regexp, {
@@ -199,17 +193,27 @@ export default defineComponent({
         each: setMarkList
       })
     }, 200)
-    watch(() => [modelValue.value, targetEl.value], setMark, { immediate: true })
-    onBeforeUnmount(reset)
+    watch(targetEl, setMark, { immediate: true })
+    const resetAndMark = () => {
+      rawIndex.value = 0
+      setMark()
+    }
+    watch(modelValue, resetAndMark)
+    onBeforeUnmount(resetMark)
 
     const inputRef = shallowRef<HTMLInputElement>()
+    const refresh: SearchExpose['refresh'] = async (isReset) => {
+      await nextTick()
+      isReset ? resetAndMark() : setMark()
+    }
     expose({
       ...chain(['focus', 'blur'] as const)
         .map((key) => [key, () => inputRef.value?.[key]()])
         .fromPairs()
         .value(),
       clear: onClear,
-      toggle
+      toggle,
+      refresh
     })
 
     return () => (
