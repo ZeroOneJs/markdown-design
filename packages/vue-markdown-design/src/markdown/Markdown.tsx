@@ -11,18 +11,25 @@ import {
 import Render, { renderProps, type RenderInstance } from '../render'
 import Search, { searchProps, type SearchInstance } from '../search'
 import TOC, { tocProps, type TOCInstance, type TOCItem } from '../toc'
-import { addUnit, allToObject, createNamespace, keysAddPrefix } from '../utils/format'
-import type { ObjectToUnion } from '../utils/types'
+import {
+  addUnit,
+  allToObject,
+  computeOffset,
+  createNamespace,
+  keysAddPrefix
+} from '../utils/format'
+import type { ObjectToUnion, Offset } from '../utils/types'
 import type { MarkdownBtnType, MarkdownExpose } from './type'
 import { renderEmits } from '../render/Render'
 import { searchEmits } from '../search/Search'
 import { tocEmits } from '../toc/TOC'
-import { chain, defaults, isBoolean, mapValues, sum, upperFirst, values } from 'lodash'
+import { chain, isBoolean, isUndefined, mapValues, sum, upperFirst, values } from 'lodash'
 import { useElementBounding, useVModels, useWindowSize } from '@vueuse/core'
 import { useScrollParent } from '../hooks/use-scroll-element'
 import Sticky from '../sticky'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { faList, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
+import type { ScrollAction } from 'compute-scroll-into-view'
 
 const { name, addPrefix } = createNamespace('markdown')
 
@@ -38,8 +45,8 @@ export const markdownProps = {
   },
   search: Boolean,
   toc: Boolean,
-  offsetTop: [Number, String], // 不设置默认值，toc 需要 undefined 作为判断依据
-  offsetBottom: {
+  topOffset: [Number, String], // 不设置默认值，toc 需要 undefined 作为判断依据
+  bottomOffset: {
     type: [Number, String],
     default: 0
   },
@@ -96,6 +103,27 @@ export default defineComponent({
     const renderRef = shallowRef<RenderInstance>()
     const renderAttrs = computed(() => createAttrs(renderProps, renderEmits))
 
+    const offsetWithNum = computed(() => {
+      const { topOffset = 0, bottomOffset } = props
+      return [topOffset, bottomOffset].map(Number)
+    })
+
+    const { scrollEl } = useScrollParent(root)
+
+    const getDefaultOffset = (offset?: Offset) => {
+      const { block, getOffset } = computeOffset(offset)
+      if (block !== 'start') return block
+      const [topOffset] = offsetWithNum.value
+      return (scrollAction: ScrollAction) => {
+        const { el } = scrollAction
+        const isParent = (scrollEl.value || document.documentElement) === el
+        const curOffset = getOffset(scrollAction, isParent)
+        if (!isParent) return curOffset
+        const targetOffset = isUndefined(offset) ? topOffset : curOffset
+        return targetOffset + searchRect.height.value
+      }
+    }
+
     const searchAttrs = computed(() => ({
       ...createAttrs(searchProps, searchEmits, 'search'),
       onClose: () => {
@@ -107,10 +135,6 @@ export default defineComponent({
     const searchRect = useElementBounding(searchRef)
     const searchIsOnMiniScreen = computed(() => isMiniScreen.value && toc.value)
 
-    const offsetWithNum = computed(() => {
-      const { offsetTop = 0, offsetBottom } = props
-      return [offsetTop, offsetBottom].map(Number)
-    })
     const tocRef = shallowRef<TOCInstance>()
     const tocRect = useElementBounding(tocRef)
     watch(
@@ -120,12 +144,6 @@ export default defineComponent({
         searchRef.value?.refresh()
       }
     )
-    const tocDefaultOffset = computed(() => {
-      const [top] = offsetWithNum.value
-      const { offsetTop } = props
-      if (!search.value) return offsetTop && top
-      return top + searchRect.height.value
-    })
     const onTOCClick = () => {
       if (!isMiniScreen.value) return
       toc.value = false
@@ -133,16 +151,14 @@ export default defineComponent({
     const tocAttrs = computed(() => {
       const tocAttrs = createAttrs(tocProps, tocEmits, 'toc')
       return {
-        ...defaults(tocAttrs, {
-          offset: tocDefaultOffset.value
-        }),
+        ...tocAttrs,
+        offset: getDefaultOffset(props.tocOffset),
         onClick: (tocItem: TOCItem) => {
           onTOCClick()
           emit('tocClick', tocItem)
         }
       }
     })
-    const { scrollEl } = useScrollParent(root)
     const scrollRect = useElementBounding(scrollEl)
     const windowSize = useWindowSize()
     const tocStyles = computed(() => {
@@ -195,73 +211,75 @@ export default defineComponent({
     })
 
     return () => (
-      <div ref={root} class={[name, { [addPrefix('--large')]: !isMiniScreen.value }]}>
-        <div ref={wrapper} class={addPrefix('__wrapper')}>
-          {search.value && (
-            <Sticky target={wrapper.value} offset={props.offsetTop}>
-              <div class={addPrefix('__search')}>
-                <div class={addPrefix('__search-input')}>
-                  <Search
-                    {...searchAttrs.value}
-                    ref={searchRef}
-                    v-model={keyword.value}
-                    target={renderRef.value}
-                  />
-                </div>
-              </div>
-            </Sticky>
-          )}
-          <Render
-            {...renderAttrs.value}
-            ref={renderRef}
-            class={{ [addPrefix('__render--hidden')]: searchIsOnMiniScreen.value }}
-          />
-          {!!btnCount.value && (
-            <Sticky
-              posY="bottom"
-              posX="right"
-              flow={false}
-              target={wrapper.value}
-              zIndex="var(--vmd-markdown-btn-z-index)"
-              offset={props.offsetBottom}
-            >
-              <div class={addPrefix('__btn')} style={{ width: `${btnCount.value * 40}px` }}>
-                {showBtnWithObj.value.toc && (
-                  <span
-                    class={[addPrefix('__btn-search'), createBtnClass(search.value)]}
-                    onClick={() => (search.value = !search.value)}
-                  >
-                    <FontAwesomeIcon size="xs" icon={faMagnifyingGlass} />
-                  </span>
-                )}
-                {showBtnWithObj.value.search && (
-                  <span
-                    class={[addPrefix('__btn-toc'), createBtnClass(toc.value)]}
-                    onClick={() => (toc.value = !toc.value)}
-                  >
-                    <FontAwesomeIcon size="xs" icon={faList} />
-                  </span>
-                )}
-              </div>
-            </Sticky>
-          )}
-        </div>
-        <Transition name={addPrefix('__ani')}>
-          {toc.value && (
-            <aside class={addPrefix('__aside')}>
-              <Sticky target={root.value} flow={!isMiniScreen.value} offset={props.offsetTop}>
-                <div style={tocStyles.value.wrapper} class={addPrefix('__toc')}>
-                  <TOC
-                    {...tocAttrs.value}
-                    ref={tocRef}
-                    style={tocStyles.value.content}
-                    target={renderRef.value}
-                  />
+      <div class={name}>
+        <div ref={root} class={{ [addPrefix('--large')]: !isMiniScreen.value }}>
+          <div ref={wrapper} class={addPrefix('__wrapper')}>
+            {search.value && (
+              <Sticky target={wrapper.value} offset={props.topOffset}>
+                <div class={addPrefix('__search')}>
+                  <div class={addPrefix('__search-input')}>
+                    <Search
+                      {...searchAttrs.value}
+                      ref={searchRef}
+                      v-model={keyword.value}
+                      target={renderRef.value}
+                    />
+                  </div>
                 </div>
               </Sticky>
-            </aside>
-          )}
-        </Transition>
+            )}
+            <Render
+              {...renderAttrs.value}
+              ref={renderRef}
+              class={{ [addPrefix('__render--hidden')]: searchIsOnMiniScreen.value }}
+            />
+            {!!btnCount.value && (
+              <Sticky
+                posY="bottom"
+                posX="right"
+                flow={false}
+                target={wrapper.value}
+                zIndex="var(--vmd-markdown-btn-z-index)"
+                offset={props.bottomOffset}
+              >
+                <div class={addPrefix('__btn')} style={{ width: `${btnCount.value * 40}px` }}>
+                  {showBtnWithObj.value.toc && (
+                    <span
+                      class={[addPrefix('__btn-search'), createBtnClass(search.value)]}
+                      onClick={() => (search.value = !search.value)}
+                    >
+                      <FontAwesomeIcon size="xs" icon={faMagnifyingGlass} />
+                    </span>
+                  )}
+                  {showBtnWithObj.value.search && (
+                    <span
+                      class={[addPrefix('__btn-toc'), createBtnClass(toc.value)]}
+                      onClick={() => (toc.value = !toc.value)}
+                    >
+                      <FontAwesomeIcon size="xs" icon={faList} />
+                    </span>
+                  )}
+                </div>
+              </Sticky>
+            )}
+          </div>
+          <Transition name={addPrefix('__ani')}>
+            {toc.value && (
+              <aside class={addPrefix('__aside')}>
+                <Sticky target={root.value} flow={!isMiniScreen.value} offset={props.topOffset}>
+                  <div style={tocStyles.value.wrapper} class={addPrefix('__toc')}>
+                    <TOC
+                      {...tocAttrs.value}
+                      ref={tocRef}
+                      style={tocStyles.value.content}
+                      target={renderRef.value}
+                    />
+                  </div>
+                </Sticky>
+              </aside>
+            )}
+          </Transition>
+        </div>
       </div>
     )
   }

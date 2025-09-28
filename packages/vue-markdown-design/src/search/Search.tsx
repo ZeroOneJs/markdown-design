@@ -13,7 +13,7 @@ import {
   type PropType
 } from 'vue'
 import { createNamespace } from '../utils/format'
-import type { UnionStr } from '../utils/types'
+import type { Offset, UnionStr } from '../utils/types'
 import { useVModel, type MaybeElement } from '@vueuse/core'
 import { chain, debounce, escapeRegExp, isNumber, isString, last, omit, upperFirst } from 'lodash'
 import { useElement } from '../hooks/use-element'
@@ -48,7 +48,7 @@ export const searchProps = {
   placeholder: String,
   target: [String, Object] as PropType<string | Exclude<MaybeElement, SVGAElement>>,
   offset: {
-    type: [String, Number] as PropType<UnionStr<ScrollLogicalPosition> | number>,
+    type: [String, Number, Function] as PropType<Offset>,
     default: 'center'
   },
   smooth: Boolean,
