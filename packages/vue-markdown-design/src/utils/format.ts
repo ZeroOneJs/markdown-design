@@ -1,18 +1,22 @@
-import { fromPairs, isBoolean, isNumber, mapKeys, upperFirst } from 'lodash'
-import type { KeysAddPrefix, ObjectToUnion, UnionStr } from './types'
+import { fromPairs, isBoolean, isFunction, isString, mapKeys, upperFirst } from 'lodash'
+import type { KeysAddPrefix, ObjectToUnion, Offset, UnionStr } from './types'
+import type { ScrollAction } from 'compute-scroll-into-view'
 
 const scrollLogicalPosition = new Set(['start', 'end', 'center', 'nearest'])
-export function computeOffset(offset: UnionStr<ScrollLogicalPosition> | number = 'start') {
-  let block: ScrollLogicalPosition = 'start'
-  let diff = 0
-  if (isNumber(offset)) {
-    diff = offset
-  } else if (scrollLogicalPosition.has(offset)) {
-    block = offset as ScrollLogicalPosition
+export function computeOffset(offset: Offset = 'start') {
+  if (isString(offset) && scrollLogicalPosition.has(offset)) {
+    return {
+      block: offset as ScrollLogicalPosition,
+      getOffset: () => 0
+    }
   }
   return {
-    block,
-    diff
+    block: 'start' as ScrollLogicalPosition,
+    getOffset: (scrollAction: ScrollAction, isParent: boolean) => {
+      if (isFunction(offset)) return offset(scrollAction) || 0
+      // 如果 offset 是数值只设置离元素最近的滚动对象的偏移量
+      return isParent ? Number(offset) : 0
+    }
   }
 }
 

@@ -26,7 +26,7 @@ import {
 import { useElement } from '../hooks/use-element'
 import MarkdownIt from 'markdown-it'
 import { toValue, useEventListener, type MaybeElement } from '@vueuse/core'
-import type { UnionStr } from '../utils/types'
+import type { Offset } from '../utils/types'
 import { compute } from 'compute-scroll-into-view'
 import { useScrollParent } from '../hooks/use-scroll-element'
 import { scrollToEl } from '../utils/dom'
@@ -54,7 +54,7 @@ export const tocProps = {
   },
   target: [String, Object, Function] as PropType<MaybeRefOrGetter<string | MaybeElement>>,
   offset: {
-    type: [String, Number] as PropType<UnionStr<ScrollLogicalPosition> | number>,
+    type: [String, Number, Function] as PropType<Offset>,
     default: 'start'
   },
   bound: {
@@ -130,15 +130,16 @@ export default defineComponent({
     const getTOC = (headings: NodeListOf<HTMLHeadingElement>) => {
       if (!headings.length) return []
       const { offset, bound } = props
-      const { block, diff } = computeOffset(offset)
+      const { block, getOffset } = computeOffset(offset)
       return Array.from(headings, (heading) => {
         const { id, tagName } = heading
-        const [{ top }] = compute(heading, { block })
+        const [scrollAction] = compute(heading, { block })
+        const curOffset = getOffset(scrollAction, true)
         return {
           id,
           text: getText(heading),
           level: Number(tagName[1]),
-          top: Math.floor(top - diff - bound)
+          top: scrollAction.top - curOffset - bound - 1
         }
       })
     }

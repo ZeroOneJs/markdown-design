@@ -10,15 +10,18 @@ describe('Sticky', () => {
             <Sticky>
               <div data-cy="content">content</div>
             </Sticky>
+            <div data-cy="inside" style="height: 100vh">
+              placeholder
+            </div>
           </div>
-          <div data-cy="placeholder" style="height: 100vh">
+          <div data-cy="outside" style="height: 100vh">
             placeholder
           </div>
         </>
       ))
-      cy.get('[data-cy="content"]').scrollIntoView()
+      cy.get('[data-cy="inside"]').scrollIntoView()
       cy.get('[data-cy="content"]').should('boundary.satisfy', ({ top }) => top === 0)
-      cy.get('[data-cy="placeholder"]').scrollIntoView()
+      cy.get('[data-cy="outside"]').scrollIntoView()
       cy.get('[data-cy="content"]').should('boundary.satisfy', ({ top }) => top < 0)
     })
     it('bottom', () => {
@@ -26,7 +29,7 @@ describe('Sticky', () => {
       cy.mount(() => (
         <>
           <div style="height: 100vh">placeholder</div>
-          <div data-cy>
+          <div data-cy="target">
             <div style="height: 100px">placeholder</div>
             <Sticky posY="bottom">
               <div data-cy="content">content</div>
@@ -109,7 +112,7 @@ describe('Sticky', () => {
     ))
     const viewportHeight = Cypress.config('viewportHeight')
     cy.get('[data-cy="content"]').should(
-      'boundary.satisfy',
+      'not.boundary.satisfy',
       ({ bottom }) => bottom === viewportHeight
     )
     cy.scrollTo('center')

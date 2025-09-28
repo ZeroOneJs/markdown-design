@@ -43,7 +43,7 @@ describe('Markdown', () => {
     cy.get('@onUpdateToc').should('have.been.calledWith', false)
     cy.get('.vmd-markdown__toc').should('not.exist')
   })
-  it('offsetTop', () => {
+  it('topOffset', () => {
     const id = 'the-tyger'
     cy.fixture('commonmark/poem.md').then((src) => {
       cy.mount(Markdown, {
@@ -51,7 +51,7 @@ describe('Markdown', () => {
           src,
           toc: true,
           search: true,
-          offsetTop: 60
+          topOffset: 60
         },
         global: {
           stubs: { transition: false }
@@ -74,10 +74,10 @@ describe('Markdown', () => {
     cy.get(`li a[href='#${id}']`).click()
     cy.get(`[id='${id}']`).should('boundary.satisfy', ({ top }) => Math.floor(top) === 60)
   })
-  it('offsetBottom', () => {
+  it('bottomOffset', () => {
     cy.scrollTo('top', { ensureScrollable: false }) // 防止测试之间 <html> 滚动条相互影响
     cy.fixture('commonmark/poem.md').then((src) => {
-      cy.mount(() => <Markdown showBtn src={src} offsetBottom="60" />)
+      cy.mount(() => <Markdown showBtn src={src} bottomOffset="60" />)
     })
     cy.get('.vmd-markdown__btn').should(($el) => {
       const marginBottom = parseInt($el.css('margin-bottom'))
