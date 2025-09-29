@@ -20,13 +20,13 @@ describe('Markdown', () => {
     })
     it('array', () => {
       cy.mount(() => <Markdown showBtn={['toc']} />)
-      cy.get('.vmd-markdown__btn-search').should('exist')
-      cy.get('.vmd-markdown__btn-toc').should('not.exist')
+      cy.get('.vmd-markdown__btn-toc').should('exist')
+      cy.get('.vmd-markdown__btn-search').should('not.exist')
     })
     it('object', () => {
       cy.mount(() => <Markdown showBtn={{ search: true }} />)
-      cy.get('.vmd-markdown__btn-toc').should('exist')
-      cy.get('.vmd-markdown__btn-search').should('not.exist')
+      cy.get('.vmd-markdown__btn-search').should('exist')
+      cy.get('.vmd-markdown__btn-toc').should('not.exist')
     })
   })
   it('search/update:search', () => {
