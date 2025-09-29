@@ -1,6 +1,6 @@
 import TOC, { type TOCItem } from '..'
 
-describe('MdTOC', () => {
+describe('TOC', () => {
   it('startLevel', () => {
     cy.fixture('commonmark/toc.md').then((markdown) => {
       cy.mount(() => <TOC markdown={markdown} startLevel="2" />)
