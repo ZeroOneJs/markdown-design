@@ -172,8 +172,8 @@ export default defineComponent({
     const showBtnWithObj = computed(() => {
       const { toc, search } = allToObject(props.showBtn, ['search', 'toc'])
       return {
-        search,
-        toc: toc && !searchIsOnMiniScreen.value
+        search: search && !searchIsOnMiniScreen.value,
+        toc
       }
     })
     const btnCount = computed(() => values(showBtnWithObj.value).filter(Boolean).length)
@@ -225,7 +225,7 @@ export default defineComponent({
               offset={props.offsetBottom}
             >
               <div class={addPrefix('__btn')} style={{ width: `${btnCount.value * 40}px` }}>
-                {showBtnWithObj.value.toc && (
+                {showBtnWithObj.value.search && (
                   <span
                     class={[addPrefix('__btn-search'), createBtnClass(search.value)]}
                     onClick={() => (search.value = !search.value)}
@@ -233,7 +233,7 @@ export default defineComponent({
                     <FontAwesomeIcon size="xs" icon={faMagnifyingGlass} />
                   </span>
                 )}
-                {showBtnWithObj.value.search && (
+                {showBtnWithObj.value.toc && (
                   <span
                     class={[addPrefix('__btn-toc'), createBtnClass(toc.value)]}
                     onClick={() => (toc.value = !toc.value)}
