@@ -188,8 +188,8 @@ export default defineComponent({
     const showBtnWithObj = computed(() => {
       const { toc, search } = allToObject(props.showBtn, ['search', 'toc'])
       return {
-        search,
-        toc: toc && !searchIsOnMiniScreen.value
+        search: search && !searchIsOnMiniScreen.value,
+        toc
       }
     })
     const btnCount = computed(() => values(showBtnWithObj.value).filter(Boolean).length)
