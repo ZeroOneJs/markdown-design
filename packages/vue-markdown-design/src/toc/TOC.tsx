@@ -13,15 +13,7 @@ import {
 } from 'lodash'
 import { computeOffset, createNamespace } from '../utils/format'
 import type { TOC, TOCItem } from './type'
-import {
-  computed,
-  defineComponent,
-  nextTick,
-  ref,
-  watchEffect,
-  watchPostEffect,
-  type PropType
-} from 'vue'
+import { computed, defineComponent, nextTick, ref, watchEffect, type PropType } from 'vue'
 import { useElement } from '../hooks/use-element'
 import MarkdownIt from 'markdown-it'
 import { useEventListener, type MaybeElement } from '@vueuse/core'
@@ -119,38 +111,52 @@ export default defineComponent({
     const isMd = computed(() => !props.target && !!props.markdown)
     const isPlainText = computed(() => isMd.value || props.plainText)
 
-    const toc = ref<Required<TOC>[]>([])
+    const headings = ref<HTMLHeadingElement[]>([])
+    const setHeading = () => {
+      if (headings.value.length && headings.value.every((heading) => document.contains(heading)))
+        return
+      const selectors = levelWithNum.value.map((level) => `h${level}`).join(',')
+      const headingEl = targetEl.value?.querySelectorAll<HTMLHeadingElement>(selectors)
+      headings.value = Array.from(headingEl || [])
+    }
+
+    const offsetResult = computed(() => computeOffset(props.offset))
+    const topMap = ref(new Map<string, number>())
+    const setTop = () => {
+      const { block, getOffset } = offsetResult.value
+      headings.value.forEach((heading) => {
+        const [scrollAction] = compute(heading, { block })
+        const curOffset = getOffset(scrollAction, true)
+        const val = scrollAction.top - curOffset - props.bound
+        topMap.value.set(heading.id, Math.floor(val))
+      })
+    }
+
+    const setTOC = () => {
+      if (isMd.value || !targetEl.value) return
+      setHeading()
+      setTop()
+    }
+    watchEffect(setTOC)
+
     const getText = (el: HTMLElement) => {
       const node = el.cloneNode(true) as HTMLElement
       const anchors = node.querySelectorAll(`[${DATA_ANCHOR}]`)
       anchors.forEach((item) => node.removeChild(item))
       return node.innerText.trim() // https://developer.mozilla.org/zh-CN/docs/Web/API/Node/textContent#与_innertext_的区别
     }
-    const getTOC = (headings: NodeListOf<HTMLHeadingElement>) => {
-      if (!headings.length) return []
-      const { offset, bound } = props
-      const { block, getOffset } = computeOffset(offset)
-      return Array.from(headings, (heading) => {
+    const listData = computed<TOC[]>(() => {
+      if (isMd.value) return mdTOC.value
+      return headings.value.map((heading) => {
         const { id, tagName } = heading
-        const [scrollAction] = compute(heading, { block })
-        const curOffset = getOffset(scrollAction, true)
         return {
           id,
           text: getText(heading),
           level: Number(tagName[1]),
-          top: scrollAction.top - curOffset - bound - 1
+          top: topMap.value.get(id)
         }
       })
-    }
-    const setTOC = () => {
-      if (isMd.value || !targetEl.value) return
-      const selectors = levelWithNum.value.map((level) => `h${level}`).join(',')
-      const headings = targetEl.value.querySelectorAll<HTMLHeadingElement>(selectors)
-      toc.value = getTOC(headings)
-    }
-    watchEffect(setTOC)
-
-    const listData = computed<TOC[]>(() => (isMd.value ? mdTOC.value : toc.value))
+    })
     const runtimeLevel = computed(() => {
       if (!listData.value.length) return [0, 0]
       const level = listData.value.map((item) => item.level)
@@ -183,8 +189,13 @@ export default defineComponent({
     }
     const onScroll = throttle(() => {
       if (scrollStatus === ScrollStatus.Start || isPlainText.value) return
-      const scrollTop = resolvedScrollEl.value?.scrollTop || 0
-      const current = [...toc.value]
+      setTOC()
+      const scrollTop = Math.floor(resolvedScrollEl.value?.scrollTop || 0)
+      const current = listData.value
+        .map((item) => ({
+          ...item,
+          top: item.top || 0
+        }))
         .sort((a, b) => a.top - b.top)
         .find((item, index, arr) => {
           const next = arr[index + 1]
@@ -199,7 +210,7 @@ export default defineComponent({
       activeId.value = id
       onChange()
     }, wait)
-    watchPostEffect(() => onScroll())
+    watchEffect(() => nextTick().then(onScroll))
     useEventListener(() => scrollEl.value || window, 'scroll', onScroll)
 
     const scrollTo = (href?: string) => {
@@ -273,7 +284,11 @@ export default defineComponent({
       })
     })
 
-    const refresh = async () => nextTick().then(setTOC)
+    const refresh = async () => {
+      headings.value = []
+      await nextTick()
+      setTOC()
+    }
     expose({ refresh, scrollTo })
 
     return () => (
