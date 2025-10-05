@@ -45,7 +45,10 @@ export const markdownProps = {
   },
   search: Boolean,
   toc: Boolean,
-  topOffset: [Number, String], // 不设置默认值，toc 需要 undefined 作为判断依据
+  topOffset: {
+    type: [Number, String],
+    default: 0
+  },
   bottomOffset: {
     type: [Number, String],
     default: 0
@@ -103,10 +106,7 @@ export default defineComponent({
     const renderRef = shallowRef<RenderInstance>()
     const renderAttrs = computed(() => createAttrs(renderProps, renderEmits))
 
-    const offsetWithNum = computed(() => {
-      const { topOffset = 0, bottomOffset } = props
-      return [topOffset, bottomOffset].map(Number)
-    })
+    const offsetWithNum = computed(() => [props.topOffset, props.bottomOffset].map(Number))
 
     const { scrollEl } = useScrollParent(root)
 
