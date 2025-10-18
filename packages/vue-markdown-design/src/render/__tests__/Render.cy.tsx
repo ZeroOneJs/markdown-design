@@ -56,16 +56,8 @@ describe('Render', () => {
     cy.get('p').should('not.exist')
     cy.get('strong').should('exist')
   })
-  it('preset', () => {
-    cy.mount(Render, {
-      props: {
-        src: '<br>'
-      }
-    }).as('vue')
-    cy.get('br').should('exist')
-    cy.get<{ wrapper: typeof Render }>('@vue').then(({ wrapper }) => {
-      wrapper.setProps({ preset: 'zero' })
-    })
+  it('presetName', () => {
+    cy.mount(() => <Render src="<br>" presetName="zero" />)
     cy.get('br').should('not.exist')
   })
   it('html', () => {
