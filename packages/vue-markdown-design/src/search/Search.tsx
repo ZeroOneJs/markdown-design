@@ -10,11 +10,12 @@ import {
   watch,
   watchEffect,
   withKeys,
+  type MaybeRefOrGetter,
   type PropType
 } from 'vue'
 import { createNamespace } from '../utils/format'
 import type { Offset, UnionStr } from '../utils/types'
-import { useVModel, type MaybeElement } from '@vueuse/core'
+import { toValue, useVModel, type MaybeElement } from '@vueuse/core'
 import { chain, debounce, escapeRegExp, isNumber, isString, last, omit, upperFirst } from 'lodash'
 import { useElement } from '../hooks/use-element'
 import { scrollToEl } from '../utils/dom'
@@ -46,7 +47,9 @@ export const searchProps = {
     default: false
   },
   placeholder: String,
-  target: [String, Object] as PropType<string | Exclude<MaybeElement, SVGAElement>>,
+  target: [String, Object, Function] as PropType<
+    MaybeRefOrGetter<string | Exclude<MaybeElement, SVGAElement>>
+  >,
   offset: {
     type: [String, Number, Function] as PropType<Offset>,
     default: 'center'
@@ -154,7 +157,7 @@ export default defineComponent({
       ['enter']
     )
 
-    const { targetEl } = useElement(() => props.target || document.documentElement)
+    const { targetEl } = useElement(() => toValue(props.target) || document.documentElement)
     const markInstance = computed(() => {
       if (targetEl.value instanceof HTMLElement) return new Mark(targetEl.value)
       console.error('[vue-markdown-design] Target is not of the HTMLElement type.')

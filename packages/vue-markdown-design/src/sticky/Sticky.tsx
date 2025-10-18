@@ -6,12 +6,14 @@ import {
   shallowRef,
   watchEffect,
   type CSSProperties,
+  type MaybeRefOrGetter,
   type PropType
 } from 'vue'
 import { addUnit, createNamespace } from '../utils/format'
 import type { UnionStr } from '../utils/types'
 import {
   clamp,
+  toValue,
   useElementBounding,
   useResizeObserver,
   useWindowSize,
@@ -41,7 +43,7 @@ export default defineComponent({
       type: Boolean,
       default: true
     },
-    target: [String, Object] as PropType<string | MaybeElement>,
+    target: [String, Object, Function] as PropType<MaybeRefOrGetter<string | MaybeElement>>,
     zIndex: {
       type: [String, Number],
       default: 'var(--vmd-base-z-index)'
@@ -67,7 +69,7 @@ export default defineComponent({
       fixed.value && props.flow ? { height: addUnit(contentHeight.value) } : {}
     )
 
-    const { targetEl } = useElement(() => props.target)
+    const { targetEl } = useElement(() => toValue(props.target))
     const {
       top: targetTop,
       bottom: targetBottom,
