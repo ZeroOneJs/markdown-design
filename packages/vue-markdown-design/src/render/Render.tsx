@@ -36,7 +36,10 @@ export const renderProps = {
     default: () => []
   },
   inline: Boolean,
-  preset: String as PropType<UnionStr<PresetName>>,
+  presetName: {
+    type: String as PropType<UnionStr<PresetName>>,
+    default: 'default'
+  },
   html: {
     type: Boolean,
     default: true
@@ -85,14 +88,7 @@ export default defineComponent({
   props: renderProps,
   emits: renderEmits,
   setup(props, { emit, expose }) {
-    const md = new MarkdownIt()
-
-    // 预设
-    watchEffect(() => {
-      const { preset } = props
-      if (!preset) return
-      md.configure(preset as PresetName)
-    })
+    const md = new MarkdownIt(props.presetName as PresetName)
 
     // mdit 配置
     const optionKeys = [
@@ -163,7 +159,7 @@ export default defineComponent({
     }
     getPlugins().forEach((plugin) => md.use(...(plugin as [PluginWithParams, ...any[]])))
 
-    const refreshKeys = ['src', 'inline', 'preset', 'highlight', ...optionKeys] as const
+    const refreshKeys = ['src', 'inline', 'highlight', ...optionKeys] as const
     const html = ref('')
     watch(
       () => refreshKeys.map((key) => props[key]),
