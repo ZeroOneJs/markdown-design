@@ -20,11 +20,12 @@ import {
   ref,
   watchEffect,
   watchPostEffect,
+  type MaybeRefOrGetter,
   type PropType
 } from 'vue'
 import { useElement } from '../hooks/use-element'
 import MarkdownIt from 'markdown-it'
-import { useEventListener, type MaybeElement } from '@vueuse/core'
+import { toValue, useEventListener, type MaybeElement } from '@vueuse/core'
 import type { UnionStr } from '../utils/types'
 import { compute } from 'compute-scroll-into-view'
 import { useScrollParent } from '../hooks/use-scroll-element'
@@ -51,7 +52,7 @@ export const tocProps = {
     type: Boolean,
     default: true
   },
-  target: [String, Object] as PropType<string | MaybeElement>,
+  target: [String, Object, Function] as PropType<MaybeRefOrGetter<string | MaybeElement>>,
   offset: {
     type: [String, Number] as PropType<UnionStr<ScrollLogicalPosition> | number>,
     default: 'start'
@@ -85,7 +86,7 @@ export default defineComponent({
   props: tocProps,
   emits: tocEmits,
   setup(props, { emit, expose, slots }) {
-    const { targetEl } = useElement(() => props.target || document.documentElement)
+    const { targetEl } = useElement(() => toValue(props.target) || document.documentElement)
 
     const levelWithNum = computed(() => {
       const { startLevel, endLevel, ignore } = props
@@ -116,7 +117,7 @@ export default defineComponent({
       const { headings = [] } = env
       return headings.filter((item) => levelWithNum.value.includes(item.level))
     })
-    const isMd = computed(() => !props.target && !!props.markdown)
+    const isMd = computed(() => !toValue(props.target) && !!props.markdown)
     const isPlainText = computed(() => isMd.value || props.plainText)
 
     const toc = ref<Required<TOC>[]>([])
