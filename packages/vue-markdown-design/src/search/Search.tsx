@@ -157,11 +157,14 @@ export default defineComponent({
       ['enter']
     )
 
-    const { targetEl } = useElement(() => toValue(props.target) || document.documentElement)
+    const { targetEl } = useElement(() => toValue(props.target))
     const markInstance = computed(() => {
-      if (targetEl.value instanceof HTMLElement) return new Mark(targetEl.value)
-      console.error('[vue-markdown-design] Target is not of the HTMLElement type.')
-      return undefined
+      return targetEl.value instanceof HTMLElement ? new Mark(targetEl.value) : undefined
+    })
+    watch(targetEl, (el) => {
+      if (el && !(el instanceof HTMLElement)) {
+        console.error('[vue-markdown-design] Target is not of the HTMLElement type.')
+      }
     })
 
     const highlightClass = addPrefix('--highlight')
