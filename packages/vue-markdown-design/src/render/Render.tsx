@@ -160,25 +160,25 @@ export default defineComponent({
     getPlugins().forEach((plugin) => mdInstance.use(...(plugin as [PluginWithParams, ...any[]])))
 
     const refreshKeys = ['src', 'inline', 'highlight', ...optionKeys] as const
-    const html = ref('')
+    const htmlStr = ref('')
     watch(
       () => refreshKeys.map((key) => props[key]),
       () => {
         const { src, inline } = props
         const env = {}
-        html.value = mdInstance[inline ? 'renderInline' : 'render'](String(src), env)
+        htmlStr.value = mdInstance[inline ? 'renderInline' : 'render'](String(src), env)
         emit('envChange', env)
       },
       { immediate: true }
     )
 
-    expose({ mdInstance })
+    expose({ mdInstance, htmlStr })
 
     return () => (
       <div class={name}>
         <div
           class={[props.markdownClass, { [addPrefix('--permalink')]: props.permalink }]}
-          v-html={html.value}
+          v-html={htmlStr.value}
         ></div>
       </div>
     )

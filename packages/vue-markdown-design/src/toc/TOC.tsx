@@ -18,6 +18,7 @@ import {
   defineComponent,
   nextTick,
   ref,
+  watch,
   watchEffect,
   type MaybeRefOrGetter,
   type PropType
@@ -30,6 +31,7 @@ import { compute } from 'compute-scroll-into-view'
 import { useScrollParent } from '../hooks/use-scroll-element'
 import { scrollToEl } from '../utils/dom'
 import { DATA_ANCHOR } from '../utils/constant'
+import type { RenderInstance } from '../render'
 
 const START_LEVEL = 1
 const END_LEVEL = 6
@@ -85,7 +87,8 @@ export default defineComponent({
   props: tocProps,
   emits: tocEmits,
   setup(props, { emit, expose, slots }) {
-    const { targetEl } = useElement(() => toValue(props.target) || document.documentElement)
+    const target = computed(() => toValue(props.target))
+    const { targetEl } = useElement(() => target.value || document.documentElement)
 
     const levelWithNum = computed(() => {
       const { startLevel, endLevel, ignore } = props
@@ -116,7 +119,7 @@ export default defineComponent({
       const { headings = [] } = env
       return headings.filter((item) => levelWithNum.value.includes(item.level))
     })
-    const isMd = computed(() => !toValue(props.target) && !!props.markdown)
+    const isMd = computed(() => !target.value && !!props.markdown)
     const isPlainText = computed(() => isMd.value || props.plainText)
 
     const headings = ref<HTMLHeadingElement[]>([])
@@ -146,6 +149,12 @@ export default defineComponent({
       setTop()
     }
     watchEffect(setTOC)
+    const refresh = async () => {
+      headings.value = []
+      await nextTick()
+      setTOC()
+    }
+    watch([targetEl, () => (target.value as RenderInstance)?.htmlStr], refresh)
 
     const getText = (el: HTMLElement) => {
       const node = el.cloneNode(true) as HTMLElement
@@ -292,11 +301,6 @@ export default defineComponent({
       })
     })
 
-    const refresh = async () => {
-      headings.value = []
-      await nextTick()
-      setTOC()
-    }
     expose({ refresh, scrollTo })
 
     return () => (
