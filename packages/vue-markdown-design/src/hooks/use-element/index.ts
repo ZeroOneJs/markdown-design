@@ -1,5 +1,5 @@
 import {
-  toRef,
+  toValue,
   unrefElement,
   useMounted,
   type MaybeElement,
@@ -10,15 +10,15 @@ import { shallowRef, watchPostEffect, type MaybeRefOrGetter } from 'vue'
 
 export function useElement(target?: MaybeRefOrGetter<MaybeElement | string>) {
   const targetEl = shallowRef<UnRefElementReturn>()
-  const targetRef = toRef(target)
   const isMounted = useMounted()
   const update = () => {
-    if (!(targetRef.value && isMounted.value)) return
-    if (!isString(targetRef.value)) {
-      targetEl.value = unrefElement(targetRef.value)
+    const targetVal = toValue(target)
+    if (!(targetVal && isMounted.value)) return
+    if (!isString(targetVal)) {
+      targetEl.value = unrefElement(targetVal)
       return
     }
-    targetEl.value = document.querySelector<HTMLElement>(targetRef.value)
+    targetEl.value = document.querySelector<HTMLElement>(targetVal)
     if (!targetEl.value) console.error('[vue-markdown-design] Target does not exist.')
   }
   watchPostEffect(update)
