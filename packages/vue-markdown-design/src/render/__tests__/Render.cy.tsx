@@ -70,7 +70,7 @@ describe('Render', () => {
   })
   it('xhtmlOut', () => {
     cy.mount(Render, { props: { xhtmlOut: true } }).should(({ component }) => {
-      const html = (component as RenderInstance).getMdit().render('---')
+      const html = (component as RenderInstance).mdInstance.render('---')
       expect(html).to.eq('<hr />\n')
     })
   })

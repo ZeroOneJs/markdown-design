@@ -88,7 +88,7 @@ export default defineComponent({
   props: renderProps,
   emits: renderEmits,
   setup(props, { emit, expose }) {
-    const md = new MarkdownIt(props.presetName as PresetName)
+    const mdInstance = new MarkdownIt(props.presetName as PresetName)
 
     // mdit 配置
     const optionKeys = [
@@ -103,7 +103,7 @@ export default defineComponent({
     watch(
       () => optionKeys.map((key) => props[key]),
       () => {
-        md.set(
+        mdInstance.set(
           pickBy(
             props,
             (value, key: (typeof optionKeys)[number]) =>
@@ -126,14 +126,14 @@ export default defineComponent({
           return value
         }
       }
-      md.set({ highlight })
+      mdInstance.set({ highlight })
     })
 
     // 插件
     // sanitize
-    runFnWithOptions(props.sanitize, (options) => md.use(sanitize, options))
+    runFnWithOptions(props.sanitize, (options) => mdInstance.use(sanitize, options))
     // emoji
-    runFnWithOptions(props.emoji, (options) => md.use(full, options))
+    runFnWithOptions(props.emoji, (options) => mdInstance.use(full, options))
     // anchor
     runFnWithOptions(props.anchor, (options = {}) => {
       const permalink = props.permalink
@@ -147,7 +147,7 @@ export default defineComponent({
           }
         : {}
       const anchorOptions = isFunction(options) ? options(anchor) : options
-      md.use(anchor, {
+      mdInstance.use(anchor, {
         ...permalink,
         ...anchorOptions
       })
@@ -157,7 +157,7 @@ export default defineComponent({
       const { plugins } = props
       return Array.isArray(plugins) ? plugins.map(allToArray) : [[plugins]]
     }
-    getPlugins().forEach((plugin) => md.use(...(plugin as [PluginWithParams, ...any[]])))
+    getPlugins().forEach((plugin) => mdInstance.use(...(plugin as [PluginWithParams, ...any[]])))
 
     const refreshKeys = ['src', 'inline', 'highlight', ...optionKeys] as const
     const html = ref('')
@@ -166,13 +166,13 @@ export default defineComponent({
       () => {
         const { src, inline } = props
         const env = {}
-        html.value = md[inline ? 'renderInline' : 'render'](String(src), env)
+        html.value = mdInstance[inline ? 'renderInline' : 'render'](String(src), env)
         emit('envChange', env)
       },
       { immediate: true }
     )
 
-    expose({ getMdit: () => md })
+    expose({ mdInstance })
 
     return () => (
       <div class={name}>

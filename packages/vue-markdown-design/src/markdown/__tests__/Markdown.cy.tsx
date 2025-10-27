@@ -339,9 +339,9 @@ describe('Markdown', () => {
     cy.get('.vmd-search__prev').click()
     cy.get('@onSearchIndexChange').should('have.been.calledWith', 1)
   })
-  it('getMdit', () => {
+  it('mdInstance', () => {
     cy.mount(Markdown).then(({ component }) => {
-      const md = (component as MarkdownInstance).getMdit()
+      const md = (component as MarkdownInstance).mdInstance
       expect(md).to.be.instanceOf(MarkdownIt)
     })
   })
