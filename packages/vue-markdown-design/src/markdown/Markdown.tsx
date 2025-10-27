@@ -4,7 +4,6 @@ import {
   defineComponent,
   shallowRef,
   Transition,
-  watch,
   type ExtractPropTypes,
   type PropType
 } from 'vue'
@@ -135,13 +134,6 @@ export default defineComponent({
 
     const tocRef = shallowRef<TOCInstance>()
     const tocRect = useElementBounding(tocRef)
-    watch(
-      () => props.src,
-      () => {
-        tocRef.value?.refresh()
-        searchRef.value?.refresh()
-      }
-    )
     const onTOCClick = () => {
       if (!isMiniScreen.value) return
       toc.value = false
@@ -204,7 +196,8 @@ export default defineComponent({
       searchBlur: () => searchRef.value?.blur(),
       searchClear: () => searchRef.value?.clear(),
       searchToggle: (...arg) => searchRef.value?.toggle(...arg),
-      mdInstance: computed(() => renderRef.value?.mdInstance!)
+      mdInstance: computed(() => renderRef.value?.mdInstance!),
+      htmlStr: computed(() => renderRef.value?.htmlStr || '')
     })
 
     return () => (

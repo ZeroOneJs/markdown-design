@@ -22,6 +22,7 @@ import { scrollToEl } from '../utils/dom'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { faAngleDown, faAngleUp, faCircleXmark, faXmark } from '@fortawesome/free-solid-svg-icons'
 import type { SearchExpose } from './type'
+import type { RenderInstance } from '../render'
 
 const { name, addPrefix } = createNamespace('search')
 
@@ -157,7 +158,8 @@ export default defineComponent({
       ['enter']
     )
 
-    const { targetEl } = useElement(() => toValue(props.target))
+    const target = computed(() => toValue(props.target))
+    const { targetEl } = useElement(target)
     const markInstance = computed(() => {
       return targetEl.value instanceof HTMLElement ? new Mark(targetEl.value) : undefined
     })
@@ -199,7 +201,6 @@ export default defineComponent({
         each: setMarkList
       })
     }, 200)
-    watch(targetEl, setMark, { immediate: true })
     const resetAndMark = () => {
       rawIndex.value = 0
       setMark()
@@ -207,11 +208,15 @@ export default defineComponent({
     watch(modelValue, resetAndMark)
     onBeforeUnmount(resetMark)
 
-    const inputRef = shallowRef<HTMLInputElement>()
     const refresh: SearchExpose['refresh'] = async (isReset) => {
       await nextTick()
       isReset ? resetAndMark() : setMark()
     }
+    watch([targetEl, () => (target.value as RenderInstance)?.htmlStr], () => refresh(), {
+      immediate: true
+    })
+
+    const inputRef = shallowRef<HTMLInputElement>()
     expose({
       ...chain(['focus', 'blur'] as const)
         .map((key) => [key, () => inputRef.value?.[key]()])
