@@ -207,7 +207,7 @@ export default defineComponent({
       searchBlur: () => searchRef.value?.blur(),
       searchClear: () => searchRef.value?.clear(),
       searchToggle: (...arg) => searchRef.value?.toggle(...arg),
-      getMdit: () => renderRef.value?.getMdit() as ReturnType<MarkdownExpose['getMdit']>
+      mdInstance: computed(() => renderRef.value?.mdInstance!)
     })
 
     return () => (

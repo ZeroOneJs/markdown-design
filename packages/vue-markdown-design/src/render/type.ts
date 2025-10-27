@@ -4,7 +4,7 @@ import type { renderProps } from './Render'
 import type anchor from 'markdown-it-anchor'
 
 export interface RenderExpose {
-  getMdit: () => MarkdownIt
+  mdInstance: MarkdownIt
 }
 
 export type Anchor = typeof anchor
