@@ -152,7 +152,7 @@ export default defineComponent({
       await nextTick()
       setTOC()
     }
-    watch([targetEl, () => (target.value as RenderInstance)?.htmlStr], refresh)
+    watch(() => (target.value as RenderInstance)?.htmlStr, refresh)
 
     const getText = (el: HTMLElement) => {
       const node = el.cloneNode(true) as HTMLElement
