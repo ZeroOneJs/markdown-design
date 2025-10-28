@@ -4,6 +4,7 @@ import {
   chain,
   clamp,
   inRange,
+  isEqual,
   isObject,
   isString,
   isUndefined,
@@ -123,13 +124,6 @@ export default defineComponent({
     const isPlainText = computed(() => isMd.value || props.plainText)
 
     const headings = ref<HTMLHeadingElement[]>([])
-    const setHeading = () => {
-      if (headings.value.length && headings.value.every((heading) => document.contains(heading)))
-        return
-      const selectors = levelWithNum.value.map((level) => `h${level}`).join(',')
-      const headingEl = targetEl.value?.querySelectorAll<HTMLHeadingElement>(selectors)
-      headings.value = Array.from(headingEl || [])
-    }
 
     const offsetResult = computed(() => computeOffset(props.offset))
     const topMap = ref(new Map<string, number>())
@@ -145,7 +139,11 @@ export default defineComponent({
 
     const setTOC = () => {
       if (isMd.value || !targetEl.value) return
-      setHeading()
+      const selectors = levelWithNum.value.map((level) => `h${level}`).join(',')
+      const headingEl = targetEl.value?.querySelectorAll<HTMLHeadingElement>(selectors)
+      const headingToArr = Array.from(headingEl || [])
+      if (isEqual(headings.value, headingToArr)) return
+      headings.value = headingToArr
       setTop()
     }
     watchEffect(setTOC)
