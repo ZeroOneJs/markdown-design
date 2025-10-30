@@ -125,6 +125,13 @@ export default defineComponent({
 
     const headings = ref<HTMLHeadingElement[]>([])
 
+    const getHeadings = () => {
+      if (!levelWithNum.value.length) return []
+      const selectors = levelWithNum.value.map((level) => `h${level}`).join(',')
+      const headingEl = targetEl.value?.querySelectorAll<HTMLHeadingElement>(selectors)
+      return Array.from(headingEl || [])
+    }
+
     const offsetResult = computed(() => computeOffset(props.offset))
     const topMap = ref(new Map<string, number>())
     const setTop = () => {
@@ -139,11 +146,9 @@ export default defineComponent({
 
     const setTOC = () => {
       if (isMd.value || !targetEl.value) return
-      const selectors = levelWithNum.value.map((level) => `h${level}`).join(',')
-      const headingEl = targetEl.value?.querySelectorAll<HTMLHeadingElement>(selectors)
-      const headingToArr = Array.from(headingEl || [])
-      if (isEqual(headings.value, headingToArr)) return
-      headings.value = headingToArr
+      const newHeadings = getHeadings()
+      if (isEqual(headings.value, newHeadings)) return
+      headings.value = newHeadings
       setTop()
     }
     watchEffect(setTOC)
