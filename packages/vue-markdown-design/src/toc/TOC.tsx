@@ -124,12 +124,16 @@ export default defineComponent({
     const isPlainText = computed(() => isMd.value || props.plainText)
 
     const headings = ref<HTMLHeadingElement[]>([])
-
-    const getHeadings = () => {
-      if (!levelWithNum.value.length) return []
+    const setHeading = () => {
+      if (!levelWithNum.value.length) {
+        headings.value = []
+        return
+      }
       const selectors = levelWithNum.value.map((level) => `h${level}`).join(',')
       const headingEl = targetEl.value?.querySelectorAll<HTMLHeadingElement>(selectors)
-      return Array.from(headingEl || [])
+      const newHeadings = Array.from(headingEl || [])
+      if (isEqual(headings.value, newHeadings)) return
+      headings.value = newHeadings
     }
 
     const offsetResult = computed(() => computeOffset(props.offset))
@@ -146,9 +150,7 @@ export default defineComponent({
 
     const setTOC = () => {
       if (isMd.value || !targetEl.value) return
-      const newHeadings = getHeadings()
-      if (isEqual(headings.value, newHeadings)) return
-      headings.value = newHeadings
+      setHeading()
       setTop()
     }
     watchEffect(setTOC)
