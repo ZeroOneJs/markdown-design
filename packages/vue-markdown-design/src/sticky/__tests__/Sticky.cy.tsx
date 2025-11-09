@@ -88,7 +88,7 @@ describe('Sticky', () => {
         </Sticky>
       </div>
     ))
-    cy.get('.vmd-sticky__wrapper').should('have.css', 'z-index', '0')
+    cy.get('.vmd-sticky__visual').should('have.css', 'z-index', '0')
   })
   it('滚动对象', () => {
     cy.scrollTo('top', { ensureScrollable: false }) // 防止测试之间 <html> 滚动条相互影响
