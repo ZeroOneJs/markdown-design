@@ -314,7 +314,7 @@ export default defineComponent({
         {renderItem.value.length ? (
           <ul class={[addPrefix('__list'), addPrefix('--padding')]}>{renderItem.value}</ul>
         ) : (
-          <p class={[addPrefix('__empty'), addPrefix('--padding')]}>{props.emptyText}</p>
+          <div class={[addPrefix('__empty'), addPrefix('--padding')]}>{props.emptyText}</div>
         )}
       </nav>
     )
