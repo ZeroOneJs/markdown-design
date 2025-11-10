@@ -290,18 +290,22 @@ export default defineComponent({
           text: plainText
         }
         if (slots.item) return slots.item(tocItem)
-        return (
-          <li class={[addPrefix('__item'), { [addPrefix('__item--active')]: isActive }]}>
-            {isPlainText.value || !id ? (
+        const className = addPrefix('__item')
+        if (isPlainText.value || !id) {
+          return (
+            <li class={className}>
               <span v-html={plainText} {...attrs}></span>
-            ) : (
-              <a
-                v-html={plainText}
-                {...attrs}
-                href={`#${id}`}
-                onClick={(e) => onClick(tocItem, e)}
-              ></a>
-            )}
+            </li>
+          )
+        }
+        return (
+          <li class={[className, { [addPrefix('__item--active')]: isActive }]}>
+            <a
+              v-html={plainText}
+              {...attrs}
+              href={`#${id}`}
+              onClick={(e) => onClick(tocItem, e)}
+            ></a>
           </li>
         )
       })
