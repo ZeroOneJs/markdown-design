@@ -1,5 +1,5 @@
 <template>
-  <vue-markdown :src="md" offsetTop="112" toc tocOffset="center" />
+  <vue-markdown :src="md" topOffset="112" toc tocOffset="center" />
 </template>
 
 <script setup lang="ts">

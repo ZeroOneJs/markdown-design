@@ -1,5 +1,5 @@
 <template>
-  <vue-markdown :src="md" showBtn offsetBottom="64" />
+  <vue-markdown :src="md" showBtn bottomOffset="64" />
 </template>
 
 <script setup lang="ts">

@@ -1,5 +1,5 @@
 <template>
-  <vue-markdown :src="md" v-model:keyword="keyword" search offsetTop="112" />
+  <vue-markdown :src="md" v-model:keyword="keyword" search topOffset="112" />
 </template>
 
 <script setup lang="ts">

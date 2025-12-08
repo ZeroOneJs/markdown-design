@@ -10,3 +10,4 @@ catalog:
   'less': ^4.2.0
   '@vitejs/plugin-vue-jsx': '^4.0.0'
   'vue': '^3.4.29'
+  'highlight.js': '^11.10.0'

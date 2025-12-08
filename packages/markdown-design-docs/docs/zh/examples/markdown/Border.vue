@@ -1,5 +1,5 @@
 <template>
-  <vue-markdown :src="md" search offsetTop="112" />
+  <vue-markdown :src="md" search topOffset="112" />
 </template>
 
 <script setup lang="ts">

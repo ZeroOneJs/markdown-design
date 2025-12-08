@@ -1,5 +1,5 @@
 <template>
-  <vue-markdown :src="md" search-placeholder="请输入关键字搜索" search offsetTop="112" />
+  <vue-markdown :src="md" search-placeholder="请输入关键字搜索" search topOffset="112" />
 </template>
 
 <script setup lang="ts">

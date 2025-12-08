@@ -20,6 +20,8 @@
     "vitepress": "^1.6.3",
     "vitepress-plugin-group-icons": "^1.6.1",
     "vue": "catalog:",
-    "vue-markdown-design": "workspace:^"
+    "vue-markdown-design": "workspace:^",
+    "highlight.js": "catalog:",
+    "@markdown-design/markdown-it-headers": "workspace:^"
   }
 }

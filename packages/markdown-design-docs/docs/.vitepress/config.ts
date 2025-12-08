@@ -69,7 +69,12 @@ export default defineConfig({
           '/zh/component/': [
             {
               text: '组件',
-              items: [{ text: 'Markdown', link: '/zh/component/markdown' }]
+              items: [
+                { text: 'Markdown', link: '/zh/component/markdown' },
+                { text: 'Render', link: '/zh/component/render' },
+                { text: 'Search', link: '/zh/component/search' },
+                { text: 'TOC', link: '/zh/component/toc' }
+              ]
             }
           ]
         },
