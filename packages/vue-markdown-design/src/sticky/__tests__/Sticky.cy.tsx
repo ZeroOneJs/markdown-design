@@ -7,7 +7,7 @@ describe('Sticky', () => {
         <>
           <div style="height: 100vh">placeholder</div>
           <div data-cy="target" style="height: 200px;">
-            <Sticky target="[data-cy='target']">
+            <Sticky>
               <div data-cy="content">content</div>
             </Sticky>
             <div data-cy="inside" style="height: 100vh">
@@ -31,7 +31,7 @@ describe('Sticky', () => {
           <div style="height: 100vh">placeholder</div>
           <div data-cy="target">
             <div style="height: 100px">placeholder</div>
-            <Sticky target="[data-cy='target']" posY="bottom">
+            <Sticky posY="bottom">
               <div data-cy="content">content</div>
             </Sticky>
           </div>
@@ -53,7 +53,7 @@ describe('Sticky', () => {
   it('posX', () => {
     cy.mount(() => (
       <div data-cy="target" style="width: 500px;height: 500px;position: absolute;left: 0;">
-        <Sticky target="[data-cy='target']" posX="right" flow={false}>
+        <Sticky posX="right" flow={false}>
           <div data-cy="content">content</div>
         </Sticky>
       </div>
@@ -63,7 +63,7 @@ describe('Sticky', () => {
   it('offset', () => {
     cy.mount(() => (
       <div data-cy="target" style="height: 200px;">
-        <Sticky target="[data-cy='target']" offset="100">
+        <Sticky offset="100">
           <div data-cy="content">content</div>
         </Sticky>
       </div>
@@ -72,23 +72,26 @@ describe('Sticky', () => {
   })
   it('flow', () => {
     cy.mount(() => (
-      <div data-cy="target" style="height: 200px;">
-        <Sticky target="[data-cy='target']" flow={false}>
+      <div style="height: 200px;">
+        <Sticky flow={false}>
           <div>content</div>
         </Sticky>
+        <div data-cy style="height: 100vh">
+          placeholder
+        </div>
       </div>
     ))
-    cy.get('.vmd-sticky').should('have.css', 'height', '0px')
+    cy.get('[data-cy]').should('boundary.satisfy', ({ top }) => top === 8)
   })
   it('zIndex', () => {
     cy.mount(() => (
       <div data-cy="target" style="height: 200px;">
-        <Sticky target="[data-cy='target']" zIndex="0" offset="100">
+        <Sticky zIndex="0" offset="100">
           <div>content</div>
         </Sticky>
       </div>
     ))
-    cy.get('.vmd-sticky__visual').should('have.css', 'z-index', '0')
+    cy.get('.vmd-sticky').should('have.css', 'z-index', '0')
   })
   it('滚动对象', () => {
     cy.scrollTo('top', { ensureScrollable: false }) // 防止测试之间 <html> 滚动条相互影响
@@ -98,7 +101,7 @@ describe('Sticky', () => {
         <div data-cy="scroll" style="height: 100px; overflow: scroll; background:mark;">
           <div data-cy="target">
             <div style="height: 90vh">placeholder</div>
-            <Sticky target="[data-cy='target']" posY="bottom">
+            <Sticky posY="bottom">
               <div data-cy="content">content</div>
             </Sticky>
             <div style="height: 90vh">placeholder</div>

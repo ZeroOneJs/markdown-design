@@ -76,8 +76,6 @@ export default defineComponent({
     const { width: rootWidth, height: rootHeight } = useElementBounding(root)
     const isMiniScreen = computed(() => rootWidth.value < Number(props.miniScreenWidth))
 
-    const wrapper = shallowRef<HTMLDivElement>()
-
     const getPrefixedKey = (key: string, prefix?: string) =>
       prefix ? prefix + upperFirst(key) : key
     const createAttrs = <T extends {}, E extends {}, P extends string>(
@@ -204,11 +202,11 @@ export default defineComponent({
     })
 
     return () => (
-      <div class={name}>
-        <div ref={root} class={{ [addPrefix('--large')]: !isMiniScreen.value }}>
-          <div ref={wrapper} class={addPrefix('__wrapper')}>
+      <div ref={root} class={name}>
+        <div class={addPrefix('__wrapper')}>
+          <div class={addPrefix('__main')}>
             {search.value && (
-              <Sticky target={wrapper.value} offset={props.topOffset}>
+              <Sticky offset={props.topOffset}>
                 <div class={addPrefix('__search')}>
                   <div class={addPrefix('__search-input')}>
                     <Search
@@ -221,17 +219,12 @@ export default defineComponent({
                 </div>
               </Sticky>
             )}
-            <Render
-              {...renderAttrs.value}
-              ref={renderRef}
-              class={{ [addPrefix('__render--hidden')]: searchIsOnMiniScreen.value }}
-            />
+            <Render {...renderAttrs.value} ref={renderRef} />
             {!!btnCount.value && (
               <Sticky
                 posY="bottom"
                 posX="right"
                 flow={false}
-                target={wrapper.value}
                 zIndex="var(--vmd-markdown-btn-z-index)"
                 offset={props.bottomOffset}
               >
@@ -258,8 +251,8 @@ export default defineComponent({
           </div>
           <Transition name={addPrefix('__ani')}>
             {toc.value && (
-              <aside class={addPrefix('__aside')}>
-                <Sticky target={root.value} flow={!isMiniScreen.value} offset={props.topOffset}>
+              <aside class={[addPrefix('__aside'), { [addPrefix('--mini')]: isMiniScreen.value }]}>
+                <Sticky class={addPrefix('__aside-sticky')} offset={props.topOffset}>
                   <div style={tocStyles.value.wrapper} class={addPrefix('__toc')}>
                     <TOC
                       {...tocAttrs.value}
