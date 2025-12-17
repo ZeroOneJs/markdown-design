@@ -52,6 +52,9 @@ describe('Markdown', () => {
           toc: true,
           search: true,
           offsetTop: 60
+        },
+        global: {
+          stubs: { transition: false }
         }
       }).as('vue')
     })
@@ -289,7 +292,7 @@ describe('Markdown', () => {
       cy.get('.vmd-search--mark:first-child').should('not.have.class', 'vmd-search--highlight')
       cy.get('.vmd-search--mark:not(:first-child)').should('have.class', 'vmd-search--highlight')
     })
-    it('checkDisabled', () => {
+    it('ignoreDisabled', () => {
       cy.fixture('commonmark/keyword.md').then((src) => {
         cy.mount(Markdown, {
           props: {
@@ -299,7 +302,7 @@ describe('Markdown', () => {
             searchDisabled: true
           }
         }).then(({ component }) => {
-          ;(component as MarkdownInstance).searchToggle('next', true)
+          ;(component as MarkdownInstance).searchToggle('next', false)
         })
       })
       cy.get('.vmd-search--mark:first-child').should('have.class', 'vmd-search--highlight')

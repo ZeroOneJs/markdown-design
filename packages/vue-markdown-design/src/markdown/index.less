@@ -1,4 +1,5 @@
 :root {
+  --vmd-markdown-bg: var(--vmd-bg-color);
   --vmd-markdown-aside-w: 320px;
   --vmd-markdown-aside-wrapper-w: var(--vmd-markdown-aside-w);
   --vmd-markdown-toc-w: var(--vmd-markdown-aside-w);
@@ -6,8 +7,6 @@
   --vmd-markdown-search-bg: var(--vmd-bg-color);
   --vmd-markdown-ani-duration: 0.5s;
   --vmd-markdown-ani-function: ease;
-  --vmd-markdown-render-ani: opacity var(--vmd-markdown-ani-duration)
-    var(--vmd-markdown-ani-function);
   --vmd-markdown-aside-ani: all var(--vmd-markdown-ani-duration) var(--vmd-markdown-ani-function);
   --vmd-markdown-btn-radius: 10px;
   --vmd-markdown-btn-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
@@ -27,24 +26,20 @@
   --vmd-markdown-search-padding: 0 var(--vmd-container-padding);
   --vmd-markdown-search-margin: var(--vmd-container-margin);
   --vmd-markdown-search-max-w: var(--vmd-container-max-w);
+  --vmd-markdown-aside-mini-w: 100%;
+  --vmd-markdown-aside-mini-h: 100%;
+  --vmd-markdown-aside-mini-bg: var(--vmd-bg-color);
+  --vmd-markdown-aside-mini-border: none;
 }
 
 .vmd-markdown {
-  &--large {
-    display: flex;
-    .vmd-markdown {
-      &__wrapper {
-        flex: auto;
-      }
-      &__aside {
-        flex-grow: 0;
-        flex-shrink: 0;
-        width: var(--vmd-markdown-aside-wrapper-w);
-        border-left: var(--vmd-markdown-aside-border);
-      }
-    }
-  }
+  background: var(--vmd-markdown-bg);
   &__wrapper {
+    display: flex;
+    position: relative;
+  }
+  &__main {
+    flex: auto;
     min-width: 0; // 使文本正常换行
   }
   &__search {
@@ -54,10 +49,6 @@
       margin: var(--vmd-markdown-search-margin);
       max-width: var(--vmd-markdown-search-max-w);
     }
-  }
-  &__render--hidden {
-    transition: var(--vmd-markdown-render-ani);
-    opacity: 0;
   }
   &__btn {
     border-radius: var(--vmd-markdown-btn-radius);
@@ -105,6 +96,24 @@
       width: 0 !important;
       opacity: 0;
     }
+  }
+  &__aside {
+    flex-grow: 0;
+    flex-shrink: 0;
+    width: var(--vmd-markdown-aside-wrapper-w);
+    border-left: var(--vmd-markdown-aside-border);
+    &-sticky {
+      overflow: hidden; // 防止播放动画时内容溢出
+    }
+  }
+  &--mini {
+    position: absolute;
+    top: 0;
+    right: 0; // 使目录从右到左切入
+    width: var(--vmd-markdown-aside-mini-w);
+    height: var(--vmd-markdown-aside-mini-h);
+    background: var(--vmd-markdown-aside-mini-bg);
+    border-left: var(--vmd-markdown-aside-mini-border);
   }
   &__toc {
     width: var(--vmd-markdown-toc-w); // 防止播放动画时文字换行

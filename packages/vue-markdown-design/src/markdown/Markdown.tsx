@@ -67,8 +67,6 @@ export default defineComponent({
     const { width: rootWidth, height: rootHeight } = useElementBounding(root)
     const isMiniScreen = computed(() => rootWidth.value < Number(props.miniScreenWidth))
 
-    const wrapper = shallowRef<HTMLDivElement>()
-
     const getPrefixedKey = (key: string, prefix?: string) =>
       prefix ? prefix + upperFirst(key) : key
     const createAttrs = <T extends {}, E extends {}, P extends string>(
@@ -194,73 +192,70 @@ export default defineComponent({
     })
 
     return () => (
-      <div ref={root} class={[name, { [addPrefix('--large')]: !isMiniScreen.value }]}>
-        <div ref={wrapper} class={addPrefix('__wrapper')}>
-          {search.value && (
-            <Sticky target={wrapper.value} offset={props.offsetTop}>
-              <div class={addPrefix('__search')}>
-                <div class={addPrefix('__search-input')}>
-                  <Search
-                    {...searchAttrs.value}
-                    ref={searchRef}
-                    v-model={keyword.value}
-                    target={renderRef.value}
-                  />
-                </div>
-              </div>
-            </Sticky>
-          )}
-          <Render
-            {...renderAttrs.value}
-            ref={renderRef}
-            class={{ [addPrefix('__render--hidden')]: searchIsOnMiniScreen.value }}
-          />
-          {!!btnCount.value && (
-            <Sticky
-              posY="bottom"
-              posX="right"
-              flow={false}
-              target={wrapper.value}
-              zIndex="var(--vmd-markdown-btn-z-index)"
-              offset={props.offsetBottom}
-            >
-              <div class={addPrefix('__btn')} style={{ width: `${btnCount.value * 40}px` }}>
-                {showBtnWithObj.value.search && (
-                  <span
-                    class={[addPrefix('__btn-search'), createBtnClass(search.value)]}
-                    onClick={() => (search.value = !search.value)}
-                  >
-                    <FontAwesomeIcon size="xs" icon={faMagnifyingGlass} />
-                  </span>
-                )}
-                {showBtnWithObj.value.toc && (
-                  <span
-                    class={[addPrefix('__btn-toc'), createBtnClass(toc.value)]}
-                    onClick={() => (toc.value = !toc.value)}
-                  >
-                    <FontAwesomeIcon size="xs" icon={faList} />
-                  </span>
-                )}
-              </div>
-            </Sticky>
-          )}
-        </div>
-        <Transition name={addPrefix('__ani')}>
-          {toc.value && (
-            <aside class={addPrefix('__aside')}>
-              <Sticky target={root.value} flow={!isMiniScreen.value} offset={props.offsetTop}>
-                <div style={tocStyles.value.wrapper} class={addPrefix('__toc')}>
-                  <TOC
-                    {...tocAttrs.value}
-                    ref={tocRef}
-                    style={tocStyles.value.content}
-                    target={renderRef.value}
-                  />
+      <div ref={root} class={name}>
+        <div class={addPrefix('__wrapper')}>
+          <div class={addPrefix('__main')}>
+            {search.value && (
+              <Sticky offset={props.offsetTop}>
+                <div class={addPrefix('__search')}>
+                  <div class={addPrefix('__search-input')}>
+                    <Search
+                      {...searchAttrs.value}
+                      ref={searchRef}
+                      v-model={keyword.value}
+                      target={renderRef.value}
+                    />
+                  </div>
                 </div>
               </Sticky>
-            </aside>
-          )}
-        </Transition>
+            )}
+            <Render {...renderAttrs.value} ref={renderRef} />
+            {!!btnCount.value && (
+              <Sticky
+                posY="bottom"
+                posX="right"
+                flow={false}
+                zIndex="var(--vmd-markdown-btn-z-index)"
+                offset={props.offsetBottom}
+              >
+                <div class={addPrefix('__btn')} style={{ width: `${btnCount.value * 40}px` }}>
+                  {showBtnWithObj.value.search && (
+                    <span
+                      class={[addPrefix('__btn-search'), createBtnClass(search.value)]}
+                      onClick={() => (search.value = !search.value)}
+                    >
+                      <FontAwesomeIcon size="xs" icon={faMagnifyingGlass} />
+                    </span>
+                  )}
+                  {showBtnWithObj.value.toc && (
+                    <span
+                      class={[addPrefix('__btn-toc'), createBtnClass(toc.value)]}
+                      onClick={() => (toc.value = !toc.value)}
+                    >
+                      <FontAwesomeIcon size="xs" icon={faList} />
+                    </span>
+                  )}
+                </div>
+              </Sticky>
+            )}
+          </div>
+          <Transition name={addPrefix('__ani')}>
+            {toc.value && (
+              <aside class={[addPrefix('__aside'), { [addPrefix('--mini')]: isMiniScreen.value }]}>
+                <Sticky class={addPrefix('__aside-sticky')} offset={props.offsetTop}>
+                  <div style={tocStyles.value.wrapper} class={addPrefix('__toc')}>
+                    <TOC
+                      {...tocAttrs.value}
+                      ref={tocRef}
+                      style={tocStyles.value.content}
+                      target={renderRef.value}
+                    />
+                  </div>
+                </Sticky>
+              </aside>
+            )}
+          </Transition>
+        </div>
       </div>
     )
   }
