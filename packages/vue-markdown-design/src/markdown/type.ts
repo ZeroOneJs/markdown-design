@@ -5,10 +5,10 @@ import type { SearchExpose } from '../search/type'
 import type { KeysAddPrefix } from '../utils/types'
 import type { TOCExpose } from '../toc/type'
 
-type MdSearchExposeWithPrefix = KeysAddPrefix<SearchExpose, 'search'>
-type MdTOCExposeWithPrefix = KeysAddPrefix<TOCExpose, 'toc'>
+type SearchExposeWithPrefix = KeysAddPrefix<SearchExpose, 'search'>
+type TOCExposeWithPrefix = KeysAddPrefix<TOCExpose, 'toc'>
 
-export type MarkdownExpose = ToRefs<RenderExpose> & MdSearchExposeWithPrefix & MdTOCExposeWithPrefix
+export type MarkdownExpose = ToRefs<RenderExpose> & SearchExposeWithPrefix & TOCExposeWithPrefix
 
 export type MarkdownProps = ExtractPropTypes<typeof markdownProps>
 export type MarkdownInstance = ComponentPublicInstance<MarkdownProps, MarkdownExpose>

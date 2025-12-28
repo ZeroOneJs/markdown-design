@@ -189,10 +189,9 @@ export default defineComponent({
     ]
 
     expose<MarkdownExpose>({
-      tocRefresh: () => tocRef.value?.refresh() as ReturnType<MarkdownExpose['tocRefresh']>,
+      tocRefresh: async () => tocRef.value?.refresh(),
       tocScrollTo: (href) => tocRef.value?.scrollTo(href),
-      searchRefresh: (isReset) =>
-        searchRef.value?.refresh(isReset) as ReturnType<MarkdownExpose['searchRefresh']>,
+      searchRefresh: async (resetIndex) => searchRef.value?.refresh(resetIndex),
       searchFocus: () => searchRef.value?.focus(),
       searchBlur: () => searchRef.value?.blur(),
       searchClear: () => searchRef.value?.clear(),

@@ -6,8 +6,8 @@ export interface SearchExpose {
   focus: () => void
   blur: () => void
   clear: () => void
-  toggle: (index: UnionStr<'prev' | 'next' | number>, checkDisabled?: boolean) => void
-  refresh: (isReset?: boolean) => Promise<void>
+  toggle: (index: UnionStr<'prev' | 'next' | number>, ignoreDisabled?: boolean) => void
+  refresh: (resetIndex?: boolean) => Promise<void>
 }
 
 export type SearchProps = ExtractPropTypes<typeof searchProps>

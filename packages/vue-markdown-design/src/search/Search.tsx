@@ -77,7 +77,7 @@ export const searchEmits = {
   close: () => true,
   stepClick: (payload: 'prev' | 'next') => ['prev', 'next'].includes(payload),
   totalChange: (payload: number) => isNumber(payload),
-  indexChange: (index: number) => isNumber(index)
+  indexChange: (payload: number) => isNumber(payload)
 }
 
 export default defineComponent({
@@ -146,8 +146,8 @@ export default defineComponent({
       ['prev', -1],
       ['next', 1]
     ])
-    const toggle: SearchExpose['toggle'] = (index, checkDisabled) => {
-      if (checkDisabled && props.disabled) return
+    const toggle: SearchExpose['toggle'] = (index, ignoreDisabled = true) => {
+      if (!ignoreDisabled && props.disabled) return
       const offsetVal = stepMap.get(String(index))
       rawIndex.value = offsetVal ? matchesIndex.value + offsetVal : Number(index)
     }
@@ -211,9 +211,9 @@ export default defineComponent({
     watch(modelValue, resetAndMark)
     onBeforeUnmount(resetMark)
 
-    const refresh: SearchExpose['refresh'] = async (isReset) => {
+    const refresh: SearchExpose['refresh'] = async (resetIndex = true) => {
       await nextTick()
-      isReset ? resetAndMark() : setMark()
+      resetIndex ? resetAndMark() : setMark()
     }
     watch([targetEl, () => (target.value as RenderInstance)?.htmlStr], () => refresh(), {
       immediate: true
