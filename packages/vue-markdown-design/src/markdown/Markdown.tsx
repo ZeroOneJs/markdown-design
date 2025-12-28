@@ -54,7 +54,7 @@ export const markdownProps = {
   },
   miniScreenWidth: {
     type: [Number, String],
-    default: 960
+    default: 768
   }
 }
 const emits = {
@@ -74,7 +74,7 @@ export default defineComponent({
 
     const root = shallowRef<HTMLDivElement>()
     const { width: rootWidth, height: rootHeight } = useElementBounding(root)
-    const isMiniScreen = computed(() => rootWidth.value < Number(props.miniScreenWidth))
+    const isMiniScreen = computed(() => rootWidth.value <= Number(props.miniScreenWidth))
 
     const getPrefixedKey = (key: string, prefix?: string) =>
       prefix ? prefix + upperFirst(key) : key
