@@ -65,7 +65,7 @@ export const renderProps = {
   },
   anchor: {
     type: [Boolean, Object, Function] as PropType<
-      boolean | anchor.AnchorOptions | ((params: Anchor) => anchor.AnchorOptions)
+      boolean | anchor.AnchorOptions | ((anchor: Anchor) => anchor.AnchorOptions)
     >,
     default: true
   },
