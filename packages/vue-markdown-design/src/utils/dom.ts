@@ -46,11 +46,13 @@ export function scrollToEl(target: Element, options: ScrollOptions = {}) {
     block
   }).forEach((scrollAction, index) => {
     const { el, top } = scrollAction
-    const curOffset = getOffset(scrollAction, !index)
-    const scroller = {
-      el,
-      to: Math.max(top - curOffset, 0)
+    let to = el.scrollTop // todo：暂时关闭多层滚动，等加入 boundary 再开放
+    if (!index) {
+      const curOffset = getOffset(scrollAction, !index)
+      // 使用 clientHeight 能正确获取 <html> 的 viewport 高度
+      to = el.scrollHeight - top > el.clientHeight ? Math.max(top - curOffset, 0) : top // 如果容器滚动到最底部则不使用偏移量
     }
+    const scroller = { el, to }
     smooth ? playAnimation(scroller, animationOptions) : setScrollTop(scroller)
   })
 }
