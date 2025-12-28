@@ -15,10 +15,12 @@
 }
 
 .vmd-render {
-  margin: var(--vmd-render-margin);
-  max-width: var(--vmd-render-max-w);
-  padding: var(--vmd-render-padding);
   background: var(--vmd-render-bg);
+  &__wrapper {
+    margin: var(--vmd-render-margin);
+    max-width: var(--vmd-render-max-w);
+    padding: var(--vmd-render-padding);
+  }
   &--permalink {
     & h1,
     & h2,
