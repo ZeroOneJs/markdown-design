@@ -74,13 +74,12 @@ describe('TOC', () => {
       cy.mount(() => (
         <TOC markdown={markdown}>
           {{
-            item: (tocItem: TOCItem) => <li data-cy>{tocItem.text}</li>
+            item: (tocItem: TOCItem) => <span data-cy>{tocItem.text}</span>
           }}
         </TOC>
       ))
     })
-    cy.get('.vmd-toc__list').children('.vmd-toc__item').should('not.exist')
-    cy.get('.vmd-toc__list').children('[data-cy]').should('exist')
+    cy.get('.vmd-toc__text').children('[data-cy]').should('exist')
   })
   it('小标题放在首位', () => {
     cy.mount(() => <TOC markdown={`## Subtitle\n# Title`} />)

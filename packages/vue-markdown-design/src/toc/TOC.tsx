@@ -259,7 +259,7 @@ export default defineComponent({
       emit('click', tocItem)
     }
 
-    const renderItem = computed(() => {
+    const renderItem = () => {
       const { orderedList } = props
       const [startLevel, endLevel] = runtimeLevel.value
       const orderCounter = new Array(endLevel - startLevel + 1).fill(0)
@@ -282,34 +282,32 @@ export default defineComponent({
           isActive,
           text: plainText
         }
-        if (slots.item) return slots.item(tocItem)
+        const itemContent = slots.item ? slots.item(tocItem) : plainText
+
         const className = addPrefix('__item')
         if (isPlainText.value || !id) {
           return (
             <li class={className}>
-              <span v-html={plainText} {...attrs}></span>
+              <span {...attrs}>{itemContent}</span>
             </li>
           )
         }
         return (
           <li class={[className, { [addPrefix('__item--active')]: isActive }]}>
-            <a
-              v-html={plainText}
-              {...attrs}
-              href={`#${id}`}
-              onClick={(e) => onClick(tocItem, e)}
-            ></a>
+            <a {...attrs} href={`#${id}`} onClick={(e) => onClick(tocItem, e)}>
+              {itemContent}
+            </a>
           </li>
         )
       })
-    })
+    }
 
     expose({ refresh, scrollTo })
 
     return () => (
       <nav class={name}>
-        {renderItem.value.length ? (
-          <ul class={[addPrefix('__list'), addPrefix('--padding')]}>{renderItem.value}</ul>
+        {listData.value.length ? (
+          <ul class={[addPrefix('__list'), addPrefix('--padding')]}>{renderItem()}</ul>
         ) : (
           <div class={[addPrefix('__empty'), addPrefix('--padding')]}>{props.emptyText}</div>
         )}
