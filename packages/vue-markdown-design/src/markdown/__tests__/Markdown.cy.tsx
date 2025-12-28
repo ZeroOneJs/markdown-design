@@ -88,12 +88,12 @@ describe('Markdown', () => {
   it(
     'miniScreenWidth',
     {
-      viewportWidth: 960,
-      viewportHeight: 960
+      viewportWidth: 768,
+      viewportHeight: 768
     },
     () => {
       cy.mount(() => <Markdown toc />)
-      cy.get('.vmd-markdown').should('not.have.class', 'vmd-markdown--large')
+      cy.get('.vmd-markdown__aside').should('have.class', 'vmd-markdown--mini')
     }
   )
   it('searchOffset', () => {
@@ -219,8 +219,8 @@ describe('Markdown', () => {
   it(
     '小屏幕点选目录时目录自动关闭',
     {
-      viewportWidth: 960,
-      viewportHeight: 960
+      viewportWidth: 768,
+      viewportHeight: 768
     },
     () => {
       cy.mount(() => <Markdown src={'# Title'} toc />)
