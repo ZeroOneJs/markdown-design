@@ -24,6 +24,8 @@ import { faAngleDown, faAngleUp, faCircleXmark, faXmark } from '@fortawesome/fre
 import type { SearchExpose } from './type'
 import type { RenderInstance } from '../render'
 
+let inputId = 0
+
 const { name, addPrefix } = createNamespace('search')
 
 export const searchProps = {
@@ -101,6 +103,7 @@ export default defineComponent({
     const inputAttrs = computed(() => {
       const { inputAttrs, disabled, placeholder } = props
       return {
+        id: `${name}-${inputId++}`,
         ...omit(attrs, ['class', 'style']),
         ...inputAttrs,
         ...eventAttrs,
