@@ -177,7 +177,11 @@ export default defineComponent({
     return () => (
       <div class={name}>
         <div
-          class={[props.markdownClass, { [addPrefix('--permalink')]: props.permalink }]}
+          class={[
+            addPrefix('__wrapper'),
+            props.markdownClass,
+            { [addPrefix('--permalink')]: props.permalink }
+          ]}
           v-html={htmlStr.value}
         ></div>
       </div>
