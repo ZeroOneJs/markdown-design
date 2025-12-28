@@ -5,6 +5,8 @@
     "test:cy": "pnpm -C ./packages/vue-markdown-design test",
     "test:dev": "pnpm -C ./packages/vue-markdown-design test:dev",
     "test": "run-p test:vi test:cy",
+    "docs:dev": "pnpm -C ./packages/markdown-design-docs dev",
+    "docs:build": "pnpm -C ./packages/markdown-design-docs build",
     "build": "pnpm -r build",
     "prepare": "husky"
   },

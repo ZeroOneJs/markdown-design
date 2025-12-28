@@ -1,9 +1,3 @@
-<script setup>
-// import { initScrollTop } from '../../.vitepress/utils/initScrollTop'
-
-// initScrollTop() // 屏蔽文档中某些组件初始化时改变 scrollTop
-</script>
-
 # Search
 
 为指定的 Markdown 渲染内容提供全文搜索功能。

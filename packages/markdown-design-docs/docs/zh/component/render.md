@@ -127,22 +127,6 @@ render/Anchor.vue
 render/MarkdownClass.vue
 :::
 
-<!-- ## 获取 markdown-it 实例
-
-通过 `mdInstance` 可以获取组件内部的 `markdown-it` 实例，以便为 markdown 解析提供更加灵活的操作
-
-::: demo
-render/MdInstance.vue
-::: -->
-
-<!-- ## 监听 env 变化
-
-通过 `envChange` 可以监听env 的变化，从而可以接收某些 markdown-it 插件通过 env 传递的信息。
-
-::: demo
-render/EnvChange.vue
-::: -->
-
 ## API
 
 ### Props
@@ -180,9 +164,3 @@ render/EnvChange.vue
 | ---------- | ------------------------------- | ------------ |
 | mdInstance | 获取组件内部 `markdown-it` 实例 | `MarkdownIt` |
 | htmlStr    | 获取解析结果的字符串            | `string`     |
-
-<!-- ### 类型定义
-
-```ts [type.ts]
-import type { PluginSimple, PluginWithParams, SanitizeOptions } from 'vue-markdown-design'
-``` -->

@@ -1,9 +1,3 @@
-<script setup>
-// import { initScrollTop } from '../../.vitepress/utils/initScrollTop'
-
-// initScrollTop() // 屏蔽文档中某些组件初始化时改变 scrollTop
-</script>
-
 # Markdown
 
 为 Markdown 提供实时渲染，目录生成和全文搜索等功能。
@@ -52,30 +46,6 @@ markdown/PresetName.vue
 ::: demo
 markdown/Plugins.vue
 :::
-
-<!-- ## 单行模式
-
-使用 `inline` 时会跳过块级元素的解析，并且生成结果不会被包裹到 `<p>` 标签中。
-
-::: demo
-markdown/Inline.vue
-::: -->
-
-<!-- ## XHTML 输出
-
-使用 `xhtml-out` 可以使生成结果符合 XHTML 标准
-
-::: demo
-markdown/XhtmlOut.vue
-::: -->
-
-<!-- ## 换行处理
-
-使用 `breaks` 可以将 markdown 文本中的 `\n` 解析为 `<br>` 标签。
-
-::: demo
-markdown/Breaks.vue
-::: -->
 
 ## 代码块语法高亮
 
@@ -133,18 +103,6 @@ markdown/Anchor.vue
 markdown/RenderMore.vue
 :::
 
-<!-- ## 更多配置
-
-以上介绍的配置都是继承自 VmdRender 组件的同名配置，因此 VmdRender 组件的所有配置在该组件中同样适用，更多配置请参考 VmdRender
-
-::: tip 提示
-vue-markdown 和 VmdRender 组件的区别在于， VmdRender 只拥有单纯的 markdown 渲染功能，而 vue-markdown 除拥有同样的 markdown 渲染功能外，还有集成搜索和目录等功能
-:::
-
-::: demo
-markdown/More.vue
-::: -->
-
 ## 搜索
 
 通过 `search` 可以开启搜索功能。并且可以通过 `keyword` 绑定搜索内容，内容如果存在则会自动滚动到所在位置并高亮标记。
@@ -152,16 +110,6 @@ markdown/More.vue
 ::: demo
 markdown/Search.vue
 :::
-
-<!-- ## 切换选中关键字
-
-除了支持按钮切换选中的关键字，还可通过 `searchToggle` 方法实现手动触发。
-
-该方法接收两个参数，第一个参数为指定索引值，可以传入数值/`prev`（上一个）/`next`（下一个），它会自动处理越界索引，并通过 `searchIndexChange` 返回安全的索引值；第二个参数可以检查当前搜索栏是否禁用，若禁用则阻止切换。
-
-::: demo
-markdown/SearchToggle.vue
-::: -->
 
 ## 搜索更多配置
 
@@ -303,77 +251,3 @@ markdown/MiniScreenWidth.vue
 | searchRefresh | 手动刷新搜索结果                | `(resetIndex?: boolean) => void`                                        |
 | tocScrollTo   | 滚动到指定标题                  | `(href: string) => void`                                                |
 | tocRefresh    | 重新生成目录                    | `() => void`                                                            |
-
-<!-- ## Placeholder
-
-::: demo
-markdown/Placeholder.vue
-:::
-
-## Disabled
-
-::: demo
-markdown/Disabled.vue
-:::
-
-## Size
-
-::: demo
-markdown/Size.vue
-:::
-
-## Border
-
-::: demo
-markdown/Border.vue
-:::
-
-## clearable
-
-::: demo
-markdown/Clearable.vue
-:::
-
-## markdownClass
-
-::: demo
-markdown/MarkdownClass.vue
-:::
-
-## permalink
-
-::: demo
-markdown/Anchor.vue
-:::
-
-## anchor
-
-::: demo
-markdown/Anchor.vue
-:::
-
-
-
-
-
-## sanitize
-
-::: demo
-markdown/Sanitize.vue
-:::
-
-## plugins
-
-::: demo
-markdown/Plugins.vue
-:::
-
-## showBtn/offsetBottom
-
-::: demo
-markdown/OffsetBottom.vue
-:::
-
-
-
-## markdown-it 配置 inline/preset/html/xhtmlOut/breaks/langPrefix/linkify/typographer/quotes -->
