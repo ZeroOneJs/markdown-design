@@ -53,6 +53,7 @@ export function scrollToEl(target: Element, options: ScrollOptions = {}) {
       to = el.scrollHeight - top > el.clientHeight ? Math.max(top - curOffset, 0) : top // 如果容器滚动到最底部则不使用偏移量
     }
     const scroller = { el, to }
-    smooth ? playAnimation(scroller, animationOptions) : setScrollTop(scroller)
+    // 非平滑滚动增加延迟，以确保在锚点跳转并且有默认事件的情况下能够滚动准确位置
+    smooth ? playAnimation(scroller, animationOptions) : setTimeout(() => setScrollTop(scroller), 0)
   })
 }

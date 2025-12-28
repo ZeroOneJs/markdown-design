@@ -253,15 +253,9 @@ export default defineComponent({
           }, wait + 4) // 设置延迟可确保在 onScroll 后面再执行
       })
     }
-    const onScrollTo = (id?: string) => {
-      const { changeHash, smooth } = props
-      if (!(!smooth && changeHash)) return scrollTo(id)
-      // 设置延迟以解决在关闭平滑滚动时 offset 可能不准问题
-      setTimeout(() => scrollTo(id), 0)
-    }
     const onClick = (tocItem: TOCItem, e: MouseEvent) => {
       if (!props.changeHash) e.preventDefault()
-      onScrollTo(tocItem.id)
+      scrollTo(tocItem.id)
       emit('click', tocItem)
     }
 
