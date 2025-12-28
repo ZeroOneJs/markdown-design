@@ -9,7 +9,7 @@
         </select>
       </label>
     </p>
-    <vmd-render :src="md" :lang-prefix="langPrefix" />
+    <vue-markdown :src="md" :lang-prefix="langPrefix" />
   </div>
 </template>
 

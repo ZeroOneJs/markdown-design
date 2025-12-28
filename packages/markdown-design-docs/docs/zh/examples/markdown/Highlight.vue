@@ -1,29 +1,36 @@
 <template>
   <div>
-    <div>
-      <input v-model="highlight" id="checkbox" type="checkbox" />
-      <label for="checkbox">启用 highlight</label>
-    </div>
-    <!-- customHighlight 只是作为函数传参演示，组件已经内置 highlight.js，可以直接传布尔值开启/禁用代码高亮 -->
+    <p>
+      <label>
+        <input v-model="highlight" name="checkbox" type="checkbox" />
+        启用 highlight
+      </label>
+    </p>
+    <h4>布尔值：</h4>
+    <vue-markdown :src="md" :highlight="highlight" />
+    <h4>函数：</h4>
     <vue-markdown :src="md" :highlight="highlight && customHighlight" />
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
+// npm i highlight.js
 import hljs from 'highlight.js'
 import 'highlight.js/styles/github.css'
 import { ref } from 'vue'
 
-const md = `
-\`\`\`javascript
-function hello() {
-  console.log('Hello JavaScript!');
-}
-\`\`\`
-`
-
 const highlight = ref(true)
 const customHighlight = (str, language) => {
-  return hljs.getLanguage(language) ? hljs.highlight(str, { language }).value : ''
+  return hljs.highlight(str, { language }).value
 }
+
+const md = `
+  \`\`\` js
+  var foo = function (bar) {
+    return bar++;
+  };
+
+  console.log(foo(5));
+  \`\`\`
+  `
 </script>

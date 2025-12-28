@@ -1,6 +1,6 @@
 <template>
   <div style="display: flex">
-    <vmd-render ref="renderRef" style="height: 436px; overflow: auto; flex: auto" :src="md" />
+    <vmd-render ref="renderRef" style="height: 436px; overflow: scroll; flex: auto" :src="md" />
     <vmd-toc style="flex: 0 0 250px" :target="renderRef">
       <template #item="tocItem">
         <div style="display: flex; justify-content: space-between">

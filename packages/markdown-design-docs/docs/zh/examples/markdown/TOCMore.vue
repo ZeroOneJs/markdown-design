@@ -1,33 +1,38 @@
 <template>
   <div>
     <p>
-      <label style="margin-right: 10px">
-        请输入索引值：
-        <input v-model="index" name="number" type="number" style="width: 4em" />
+      <label>
+        请选择 start-level：
+        <select v-model="startLevel" name="select">
+          <option v-for="key in options" :key="key" :value="key">h{{ key }}</option>
+        </select>
       </label>
-      <button @click="searchRef.toggle(index)">前往</button>
     </p>
-    <p>当前索引值（从 0 开始计数）：{{ safeIndex }}</p>
-    <vmd-search
-      v-model="keyword"
-      ref="searchRef"
-      :target="renderRef"
-      @index-change="safeIndex = $event"
+    <p>
+      <label>
+        请选择 end-level：
+        <select v-model="endLevel" name="select">
+          <option v-for="key in options" :key="key" :value="key">h{{ key }}</option>
+        </select>
+      </label>
+    </p>
+    <vue-markdown
+      toc
+      style="height: 436px; overflow: scroll"
+      :src="md"
+      :toc-start-level="startLevel"
+      :toc-end-level="endLevel"
     />
-    <vmd-render ref="renderRef" style="height: 436px; overflow: scroll" :src="md" />
   </div>
 </template>
 
 <script setup>
 import { ref } from 'vue'
 
-const renderRef = ref(null)
-const searchRef = ref(null)
+const startLevel = ref(2)
+const endLevel = ref(5)
 
-const keyword = ref('or')
-
-const index = ref(0)
-const safeIndex = ref(0)
+const options = Array.from({ length: 6 }, (_, index) => index + 1)
 
 const md = `
   # h1 Heading 8-)

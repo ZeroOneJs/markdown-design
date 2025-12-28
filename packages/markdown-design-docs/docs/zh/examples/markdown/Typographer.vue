@@ -18,7 +18,7 @@
         />
       </label>
     </p>
-    <vmd-render :src="md" :typographer="typographer" :quotes="[...quotes]" />
+    <vue-markdown :src="md" :typographer="typographer" :quotes="[...quotes]" />
   </div>
 </template>
 

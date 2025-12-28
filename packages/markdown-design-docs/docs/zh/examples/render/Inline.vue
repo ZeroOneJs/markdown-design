@@ -1,11 +1,11 @@
 <template>
   <div>
-    <div style="margin-bottom: 16px">
+    <p>
       <label>
-        <input v-model="inline" type="checkbox" />
+        <input v-model="inline" name="checkbox" type="checkbox" />
         启用 inline
       </label>
-    </div>
+    </p>
     <vmd-render :src="md" :inline="inline" />
   </div>
 </template>

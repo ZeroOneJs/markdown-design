@@ -1,15 +1,15 @@
 <template>
   <div>
-    <div id="ignore" style="margin-bottom: 16px">
-      <label for="ignore">请选择忽略的标题级别：</label>
-      <span v-for="(_, index) in ignoreList" :key="index" style="margin-right: 10px">
-        <input v-model="ignoreList[index]" :id="`ignore-${index}`" type="checkbox" />
-        <label :for="`ignore-${index}`">h{{ index + 1 }}</label>
-      </span>
-    </div>
+    <p>
+      请选择忽略的标题级别：
+      <label v-for="(_, index) in ignoreList" :key="index" style="margin-right: 10px">
+        <input v-model="ignoreList[index]" name="checkbox" type="checkbox" />
+        h{{ index + 1 }}
+      </label>
+    </p>
     <div style="display: flex">
-      <vmd-render ref="renderRef" style="height: 436px; overflow: auto; flex: auto" :src="md" />
-      <vmd-toc style="flex: none" :target="renderRef" :ignore="ignore" />
+      <vmd-render ref="renderRef" style="height: 436px; overflow: scroll; flex: auto" :src="md" />
+      <vmd-toc style="flex: 0 0 250px" :target="renderRef" :ignore="ignore" />
     </div>
   </div>
 </template>

@@ -7,6 +7,12 @@
 .VPLocalNav {
   display: initial !important;
 }
-.vp-doc a:not(:where(.vp-raw, .vp-raw *)) {
-  text-decoration: none;
+.vp-doc {
+  a:not(:where(.vp-raw, .vp-raw *)) {
+    text-decoration: none;
+  }
+  table:not(:where(.vp-raw, .vp-raw *)) {
+    display: table;
+    width: 100%;
+  }
 }

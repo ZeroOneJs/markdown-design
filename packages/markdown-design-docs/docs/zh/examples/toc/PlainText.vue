@@ -1,12 +1,14 @@
 <template>
   <div>
-    <div style="margin-bottom: 16px">
-      <input v-model="plainText" id="plain-text" type="checkbox" />
-      <label for="plain-text"> 启用 plain-text</label>
-    </div>
+    <p>
+      <label>
+        <input v-model="plainText" name="checkbox" type="checkbox" />
+        启用 plain-text
+      </label>
+    </p>
     <div style="display: flex">
       <vmd-render ref="renderRef" style="height: 436px; overflow: auto; flex: auto" :src="md" />
-      <vmd-toc style="flex: none" :target="renderRef" :plain-text="plainText" />
+      <vmd-toc style="flex: 0 0 250px" :target="renderRef" :plain-text="plainText" />
     </div>
   </div>
 </template>

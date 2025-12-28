@@ -1,9 +1,11 @@
 <template>
   <div>
-    <div style="margin-bottom: 16px">
-      <input v-model="clearable" id="clearable" type="checkbox" />
-      <label for="clearable"> 启用 clearable</label>
-    </div>
+    <p>
+      <label>
+        <input v-model="clearable" name="checkbox" type="checkbox" />
+        启用 clearable
+      </label>
+    </p>
     <vmd-search v-model="keyword" :clearable="clearable" />
   </div>
 </template>

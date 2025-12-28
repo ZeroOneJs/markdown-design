@@ -6,11 +6,11 @@
         启用 html
       </label>
     </p>
-    <vmd-render :src="md" :html="html" />
+    <vue-markdown :src="md" :html="html" />
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { ref } from 'vue'
 
 const html = ref(true)

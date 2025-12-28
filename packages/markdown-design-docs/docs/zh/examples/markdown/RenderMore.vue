@@ -10,7 +10,7 @@
         </select>
       </label>
     </p>
-    <vmd-render :src="md" :markdown-class="markdownClass" />
+    <vue-markdown :src="md" :markdown-class="markdownClass" />
   </div>
 </template>
 

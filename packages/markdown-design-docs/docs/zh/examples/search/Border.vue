@@ -1,9 +1,11 @@
 <template>
   <div>
-    <div style="margin-bottom: 16px">
-      <input v-model="border" id="border" type="checkbox" />
-      <label for="border"> 启用 border</label>
-    </div>
+    <p>
+      <label>
+        <input v-model="border" name="checkbox" type="checkbox" />
+        启用 border
+      </label>
+    </p>
     <vmd-search :border="border" />
   </div>
 </template>

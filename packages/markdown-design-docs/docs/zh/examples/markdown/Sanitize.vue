@@ -1,13 +1,17 @@
 <template>
-  <vue-markdown :src="md" />
+  <div>
+    <h4>Markdown 文本：</h4>
+    <pre style="background: #fff"><code>{{ md }}</code></pre>
+    <h4>渲染结果：</h4>
+    <vue-markdown :src="md" />
+  </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 const md = `
-\\<p\\>abc\\<iframe//src=jAva\\&Tab;script:alert(3)\\>def\\<\\/p\\>
-
-以上的 html 内容经过过滤最终会被渲染成：
-
-<p>abc<iframe//src=jAva&Tab;script:alert(3)>def</p>
-`
+  <p style="background: rgba(9, 105, 218, 0.14); padding: 10px">
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+    <iframe//src=jAva&Tab;script:alert(3)>def
+  </p>
+  `
 </script>

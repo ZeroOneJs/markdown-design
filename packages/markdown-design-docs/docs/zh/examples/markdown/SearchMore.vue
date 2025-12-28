@@ -5,25 +5,26 @@
         请输入索引值：
         <input v-model="index" name="number" type="number" style="width: 4em" />
       </label>
-      <button @click="searchRef.toggle(index)">前往</button>
+      <button @click="markdownRef.searchToggle(index)">前往</button>
     </p>
     <p>当前索引值（从 0 开始计数）：{{ safeIndex }}</p>
-    <vmd-search
-      v-model="keyword"
-      ref="searchRef"
-      :target="renderRef"
-      @index-change="safeIndex = $event"
+    <vue-markdown
+      v-model:keyword="keyword"
+      v-model:search="search"
+      ref="markdownRef"
+      style="height: 436px; overflow: scroll"
+      :src="md"
+      @search-index-change="safeIndex = $event"
     />
-    <vmd-render ref="renderRef" style="height: 436px; overflow: scroll" :src="md" />
   </div>
 </template>
 
 <script setup>
 import { ref } from 'vue'
 
-const renderRef = ref(null)
-const searchRef = ref(null)
+const markdownRef = ref(null)
 
+const search = ref(true)
 const keyword = ref('or')
 
 const index = ref(0)

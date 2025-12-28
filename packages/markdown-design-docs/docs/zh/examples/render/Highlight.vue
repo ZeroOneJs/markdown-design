@@ -1,14 +1,14 @@
 <template>
   <div>
-    <div style="margin-bottom: 16px">
+    <p>
       <label>
-        <input v-model="highlight" type="checkbox" />
+        <input v-model="highlight" name="checkbox" type="checkbox" />
         启用 highlight
       </label>
-    </div>
-    <p>布尔值：</p>
+    </p>
+    <h4>布尔值：</h4>
     <vmd-render :src="md" :highlight="highlight" />
-    <p>函数：</p>
+    <h4>函数：</h4>
     <vmd-render :src="md" :highlight="highlight && customHighlight" />
   </div>
 </template>

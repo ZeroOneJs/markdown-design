@@ -1,7 +1,9 @@
 <template>
   <div class="demo">
     <!-- 延迟挂载组件，避免页面导航查询到组件内的 HTMLHeadingElement -->
-    <component v-if="isMounted" class="vp-raw" :is="name" />
+    <div class="demo__wrapper vp-raw">
+      <component v-if="isMounted" :is="name" />
+    </div>
     <details class="demo__details">
       <summary class="demo__details-summary">{{ summary }}</summary>
       <!-- 屏蔽默认插槽 -->
@@ -23,9 +25,13 @@ onMounted(() => {
 
 <style scoped lang="less">
 .demo {
-  padding: 16px 16px 0;
+  padding: 0 16px;
   margin-top: 16px;
   background: #f7f7f7;
+  display: flow-root;
+  &__wrapper {
+    margin-top: 16px;
+  }
   &__details {
     --vp-code-block-bg: #fff;
     border-top: 1px solid #e2e2e3;
@@ -36,6 +42,7 @@ onMounted(() => {
       font-size: 14px;
       color: var(--vp-code-color);
       margin-left: 4px;
+      cursor: pointer;
     }
   }
 }

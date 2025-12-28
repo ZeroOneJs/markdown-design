@@ -6,7 +6,7 @@
         启用 linkify
       </label>
     </p>
-    <vmd-render :src="md" :linkify="linkify" />
+    <vue-markdown :src="md" :linkify="linkify" />
   </div>
 </template>
 

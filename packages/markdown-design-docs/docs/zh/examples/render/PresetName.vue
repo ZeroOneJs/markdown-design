@@ -1,13 +1,13 @@
 <template>
   <div>
-    <div style="margin-bottom: 16px">
+    <p>
       <label>
         请选择预设规则：
-        <select v-model="presetName">
+        <select v-model="presetName" name="select">
           <option v-for="item in options" :key="item" :value="item">{{ item }} 规则</option>
         </select>
       </label>
-    </div>
+    </p>
     <template v-for="item in options" :key="item">
       <vmd-render v-if="item === presetName" :src="md" :preset-name="item" />
     </template>

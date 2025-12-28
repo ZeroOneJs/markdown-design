@@ -1,5 +1,6 @@
 <template>
   <div>
+    <h4>数值偏移量：</h4>
     <div style="margin-bottom: 16px">
       <vmd-search v-model="keyword" :offset="56" :target="renderWhenNumber" />
       <div style="flex: auto; position: relative">
@@ -15,13 +16,18 @@
             z-index: 1;
           "
         >
-          数值偏移量
+          固定页头
         </div>
-        <div style="height: 436px; overflow: auto">
-          <vmd-render ref="renderWhenNumber" style="margin-top: 56px" :src="md" />
+        <div style="height: 436px; overflow: scroll">
+          <vmd-render
+            ref="renderWhenNumber"
+            style="margin-top: 56px; height: 436px; overflow: auto"
+            :src="md"
+          />
         </div>
       </div>
     </div>
+    <h4>字符串位置偏移量：</h4>
     <div>
       <vmd-search v-model="keyword" offset="end" :target="renderWhenPosition" />
       <div style="flex: auto; position: relative">
@@ -37,9 +43,9 @@
             z-index: 1;
           "
         >
-          字符串位置偏移量
+          固定页头
         </div>
-        <div style="height: 436px; overflow: auto">
+        <div style="height: 436px; overflow: scroll">
           <vmd-render ref="renderWhenPosition" style="margin-top: 56px" :src="md" />
         </div>
       </div>

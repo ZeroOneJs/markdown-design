@@ -1,7 +1,7 @@
 <template>
   <div style="display: flex">
     <vmd-render ref="renderRef" style="height: 436px; overflow: scroll; flex: auto" :src="md" />
-    <vmd-toc style="flex: none" :target="renderRef" />
+    <vmd-toc style="flex: 0 0 250px" :target="renderRef" />
   </div>
 </template>
 

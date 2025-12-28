@@ -1,32 +1,30 @@
 <template>
   <div>
-    <div>
-      <input v-model="permalink" id="permalink" type="checkbox" />
-      <label for="permalink">启用永久链接（鼠标悬浮在标题上可显示永久链接符号）</label>
-    </div>
-    <vue-markdown :src="`_启用/禁用永久链接_\n${md}`" :permalink="permalink" />
-    <vue-markdown :src="`_自定义永久链接_\n${md}`" :anchor="anchorOptions" />
+    <h4>默认标题渲染：</h4>
+    <p>
+      <label>
+        <input v-model="permalink" name="checkbox" type="checkbox" />
+        启用 permalink（鼠标悬浮在标题上可显示永久链接符号）
+      </label>
+    </p>
+    <vue-markdown :src="md" :permalink="permalink" />
+    <h4>自定义标题渲染：</h4>
+    <vue-markdown :src="md" :anchor="anchorOptions" />
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { ref } from 'vue'
-import type { MarkdownProps } from 'vue-markdown-design'
-
-const md = `
-# 蜀相
-
-丞相祠堂何处寻？锦官城外柏森森。
-
-映阶碧草自春色，隔叶黄鹂空好音。
-
-三顾频烦天下计，两朝开济老臣心。
-
-出师未捷身先死，长使英雄泪满襟。
-`
 
 const permalink = ref(true)
-const anchorOptions: MarkdownProps['anchor'] = (anchor) => ({
+
+const anchorOptions = (anchor) => ({
   permalink: anchor.permalink.headerLink()
 })
+
+const md = `
+  # Lorem ipsum
+
+  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi maximus elit fermentum pellentesque vehicula. Suspendisse potenti. Donec iaculis consectetur erat nec placerat. Suspendisse facilisis justo sit amet hendrerit sollicitudin. Suspendisse commodo malesuada massa, ac elementum risus. Ut eu facilisis neque. Fusce tincidunt, ligula vitae eleifend venenatis, purus purus ultrices purus, nec maximus tellus lectus nec leo. Sed auctor magna sed quam dapibus dapibus. Nullam ornare ultricies sem, a iaculis sapien volutpat euismod. Sed ac dictum nulla. Duis euismod tellus vitae diam hendrerit, sit amet vestibulum mauris rhoncus.
+  `
 </script>

@@ -1,5 +1,6 @@
 <template>
   <div>
+    <h4>数值偏移量：</h4>
     <div style="display: flex; margin-bottom: 16px">
       <div style="flex: auto; position: relative">
         <div
@@ -14,14 +15,15 @@
             z-index: 1;
           "
         >
-          数值偏移量
+          固定页头
         </div>
-        <div style="height: 436px; overflow: auto">
+        <div style="height: 436px; overflow: scroll">
           <vmd-render ref="basicWhenNumber" style="margin-top: 56px" :src="md" />
         </div>
       </div>
-      <vmd-toc style="flex: none" :offset="56" :target="basicWhenNumber" />
+      <vmd-toc style="flex: 0 0 250px" :offset="56" :target="basicWhenNumber" />
     </div>
+    <h4>字符串位置偏移量：</h4>
     <div style="display: flex">
       <div style="flex: auto; position: relative">
         <div
@@ -36,13 +38,13 @@
             z-index: 1;
           "
         >
-          字符串位置偏移量
+          固定页头
         </div>
-        <div style="height: 436px; overflow: auto">
+        <div style="height: 436px; overflow: scroll">
           <vmd-render ref="basicWhenPosition" style="margin-top: 56px" :src="md" />
         </div>
       </div>
-      <vmd-toc style="flex: none" offset="end" :target="basicWhenPosition" />
+      <vmd-toc style="flex: 0 0 250px" offset="end" :target="basicWhenPosition" />
     </div>
   </div>
 </template>

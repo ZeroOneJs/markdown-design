@@ -1,11 +1,26 @@
 <template>
-  <vue-markdown :src="`# 标题\n内容`" :show-btn="showBtn" />
+  <div>
+    <p>
+      <label>
+        <input v-model="showBtn.search" name="checkbox" type="checkbox" />
+        显示搜索按钮
+      </label>
+      <label>
+        <input v-model="showBtn.toc" name="checkbox" type="checkbox" />
+        显示目录按钮
+      </label>
+    </p>
+    <vue-markdown top-offset="112" :src="md" :show-btn="showBtn" />
+  </div>
 </template>
-<script setup lang="ts">
+<script setup>
 import { ref } from 'vue'
 
-const showBtn = ref(true)
-// 等价于
-// const showBtn = ref(['toc', 'search'])
-// const showBtn = ref({ toc: true, search: true })
+const showBtn = ref({ toc: true, search: true })
+
+const md = `
+  # Lorem ipsum
+
+  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi maximus elit fermentum pellentesque vehicula. Suspendisse potenti. Donec iaculis consectetur erat nec placerat. Suspendisse facilisis justo sit amet hendrerit sollicitudin. Suspendisse commodo malesuada massa, ac elementum risus. Ut eu facilisis neque. Fusce tincidunt, ligula vitae eleifend venenatis, purus purus ultrices purus, nec maximus tellus lectus nec leo. Sed auctor magna sed quam dapibus dapibus. Nullam ornare ultricies sem, a iaculis sapien volutpat euismod. Sed ac dictum nulla. Duis euismod tellus vitae diam hendrerit, sit amet vestibulum mauris rhoncus.
+  `
 </script>

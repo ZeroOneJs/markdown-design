@@ -1,9 +1,8 @@
 <template>
   <div>
-    <div style="margin-bottom: 16px">
-      <b>{{ md }}</b>
-      <p>以上通过 iframe 标签注入的脚本将被过滤</p>
-    </div>
+    <h4>markdown 文本：</h4>
+    <pre style="background: #fff"><code>{{ md }}</code></pre>
+    <h4>渲染结果：</h4>
     <vmd-render :src="md" />
   </div>
 </template>

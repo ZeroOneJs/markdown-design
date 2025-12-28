@@ -1,12 +1,14 @@
 <template>
   <div>
-    <div style="margin-bottom: 16px">
-      <input v-model="smooth" id="smooth" type="checkbox" />
-      <label for="smooth"> 启用 smooth</label>
-    </div>
+    <p>
+      <label>
+        <input v-model="smooth" name="checkbox" type="checkbox" />
+        启用 smooth
+      </label>
+    </p>
     <div>
       <vmd-search v-model="keyword" :target="renderRef" :smooth="smooth" />
-      <vmd-render ref="renderRef" style="height: 436px; overflow: scroll; flex: auto" :src="md" />
+      <vmd-render ref="renderRef" style="height: 436px; overflow: scroll" :src="md" />
     </div>
   </div>
 </template>

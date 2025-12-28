@@ -2,22 +2,17 @@
   <vue-markdown :src="md" :plugins="plugins" />
 </template>
 
-<script setup lang="ts">
+<script setup>
+// npm i markdown-it-container
 import container from 'markdown-it-container'
 
 const md = `
-# 蜀相
+  # Lorem ipsum
 
-::: example
-丞相祠堂何处寻？锦官城外柏森森。
-
-映阶碧草自春色，隔叶黄鹂空好音。
-
-三顾频烦天下计，两朝开济老臣心。
-
-出师未捷身先死，长使英雄泪满襟。
-:::
-`
+  ::: example
+  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi maximus elit fermentum pellentesque vehicula. Suspendisse potenti. Donec iaculis consectetur erat nec placerat. Suspendisse facilisis justo sit amet hendrerit sollicitudin. Suspendisse commodo malesuada massa, ac elementum risus. Ut eu facilisis neque. Fusce tincidunt, ligula vitae eleifend venenatis, purus purus ultrices purus, nec maximus tellus lectus nec leo. Sed auctor magna sed quam dapibus dapibus. Nullam ornare ultricies sem, a iaculis sapien volutpat euismod. Sed ac dictum nulla. Duis euismod tellus vitae diam hendrerit, sit amet vestibulum mauris rhoncus.
+  :::
+  `
 
 const plugins = [
   [

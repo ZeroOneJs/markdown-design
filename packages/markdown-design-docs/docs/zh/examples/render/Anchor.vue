@@ -1,13 +1,14 @@
 <template>
   <div>
-    <div style="margin-bottom: 16px">
+    <h4>默认标题渲染：</h4>
+    <p>
       <label>
-        <input v-model="permalink" type="checkbox" />
+        <input v-model="permalink" name="checkbox" type="checkbox" />
         启用 permalink（鼠标悬浮在标题上可显示永久链接符号）
       </label>
-    </div>
+    </p>
     <vmd-render :src="md" :permalink="permalink" />
-    <p>自定义标题渲染：</p>
+    <h4>自定义标题渲染：</h4>
     <vmd-render :src="md" :anchor="anchorOptions" />
   </div>
 </template>

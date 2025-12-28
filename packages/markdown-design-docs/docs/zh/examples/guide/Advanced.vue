@@ -1,33 +1,19 @@
 <template>
-  <div>
-    <p>
-      <label style="margin-right: 10px">
-        请输入索引值：
-        <input v-model="index" name="number" type="number" style="width: 4em" />
-      </label>
-      <button @click="searchRef.toggle(index)">前往</button>
-    </p>
-    <p>当前索引值（从 0 开始计数）：{{ safeIndex }}</p>
-    <vmd-search
-      v-model="keyword"
-      ref="searchRef"
-      :target="renderRef"
-      @index-change="safeIndex = $event"
-    />
-    <vmd-render ref="renderRef" style="height: 436px; overflow: scroll" :src="md" />
+  <div style="display: flex">
+    <div style="flex: auto">
+      <vmd-search v-model="keyword" :target="renderRef" />
+      <vmd-render ref="renderRef" style="height: 436px; overflow: scroll" :src="md" />
+    </div>
+    <vmd-toc style="flex: 0 0 250px" :target="renderRef" />
   </div>
 </template>
 
 <script setup>
 import { ref } from 'vue'
-
-const renderRef = ref(null)
-const searchRef = ref(null)
+import { VmdRender, VmdSearch, VmdToc } from 'vue-markdown-design'
 
 const keyword = ref('or')
-
-const index = ref(0)
-const safeIndex = ref(0)
+const renderRef = ref(null)
 
 const md = `
   # h1 Heading 8-)

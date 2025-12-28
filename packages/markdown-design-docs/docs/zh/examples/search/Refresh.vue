@@ -1,14 +1,16 @@
 <template>
   <div>
-    <div style="margin-bottom: 16px">
-      <label for="refresh">请选择渲染内容：</label>
-      <select v-model="index" id="refresh" style="width: 100px; margin-right: 10px">
-        <option v-for="(item, index) in options" :key="item.title" :value="index">
-          {{ item.title }}
-        </option>
-      </select>
+    <p>
+      <label style="margin-right: 10px">
+        请选择渲染内容：
+        <select v-model="index" name="select">
+          <option v-for="(item, index) in options" :key="item.title" :value="index">
+            {{ item.title }}
+          </option>
+        </select>
+      </label>
       <button @click="refresh">更新</button>
-    </div>
+    </p>
     <vmd-search v-model="keyword" ref="searchRef" target="#refreshRef" />
     <vmd-render id="refreshRef" :src="md" />
   </div>

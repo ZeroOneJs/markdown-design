@@ -1,21 +1,25 @@
 <template>
   <div>
-    <div style="margin-bottom: 16px">
-      <label for="start-level">请选择 start-level：</label>
-      <select v-model="startLevel" id="start-level">
-        <option v-for="key in options" :key="key" :value="key">h{{ key }}</option>
-      </select>
-    </div>
-    <div style="margin-bottom: 16px">
-      <label for="end-level">请选择 end-level：</label>
-      <select v-model="endLevel" id="end-level">
-        <option v-for="key in options" :key="key" :value="key">h{{ key }}</option>
-      </select>
-    </div>
+    <p>
+      <label>
+        请选择 start-level：
+        <select v-model="startLevel" name="select">
+          <option v-for="key in options" :key="key" :value="key">h{{ key }}</option>
+        </select>
+      </label>
+    </p>
+    <p>
+      <label>
+        请选择 end-level：
+        <select v-model="endLevel" name="select">
+          <option v-for="key in options" :key="key" :value="key">h{{ key }}</option>
+        </select>
+      </label>
+    </p>
     <div style="display: flex">
-      <vmd-render ref="renderRef" style="height: 436px; overflow: auto; flex: auto" :src="md" />
+      <vmd-render ref="renderRef" style="height: 436px; overflow: scroll; flex: auto" :src="md" />
       <vmd-toc
-        style="flex: none"
+        style="flex: 0 0 250px"
         :target="renderRef"
         :start-level="startLevel"
         :end-level="endLevel"
