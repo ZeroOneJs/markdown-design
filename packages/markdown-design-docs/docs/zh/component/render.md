@@ -29,7 +29,7 @@ render/Sanitize.vue
 ## 常用预设规则
 
 使用 `preset-name` 可以快捷地设置 Markdown 规则。内置三种常用规则：
-[default](https://github.com/markdown-it/markdown-it/blob/master/lib/presets/default.mjs) 规则，类似 GFM。[commonmark](https://github.com/markdown-it/markdown-it/blob/master/lib/presets/commonmark.mjs) 规则，详情[请看](https://commonmark.org/)。[zero](https://github.com/markdown-it/markdown-it/blob/master/lib/presets/zero.mjs) 规则，所有规则都不会启用。
+[default](https://github.com/markdown-it/markdown-it/blob/master/lib/presets/default.mjs) 规则，类似 GFM；[commonmark](https://github.com/markdown-it/markdown-it/blob/master/lib/presets/commonmark.mjs) 规则，详情[请看](https://commonmark.org/)；[zero](https://github.com/markdown-it/markdown-it/blob/master/lib/presets/zero.mjs) 规则，所有规则都不会启用。
 
 ::: tip 提示
 和 `markdown-it` 的 default 规则稍有不同，这里的 `html` 选项默认是开启的。
@@ -65,7 +65,7 @@ render/XhtmlOut.vue
 
 ## 换行处理
 
-使用 `breaks` 可以将 markdown 文本中的 `\n` 解析为 `<br>` 标签。
+使用 `breaks` 可以将 Markdown 文本中的 `\n` 解析为 `<br>` 标签。
 
 ::: demo
 render/Breaks.vue

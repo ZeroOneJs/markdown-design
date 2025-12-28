@@ -47,7 +47,7 @@
     "@vueuse/core": "^11.2.0",
     "compute-scroll-into-view": "^3.1.0",
     "github-markdown-css": "^5.6.1",
-    "highlight.js": "^11.10.0",
+    "highlight.js": "catalog:",
     "lodash": "^4.17.21",
     "mark.js": "^8.11.1",
     "markdown-it": "catalog:",

@@ -1,6 +1,6 @@
 # TOC
 
-为指定的 Markdown 渲染内容提供目录生成功能
+为指定的 Markdown 渲染内容提供目录生成功能。
 
 ## 基础用法
 
@@ -20,7 +20,7 @@ toc/PlainText.vue
 
 ## 直接使用 Markdown 文本
 
-通过 `markdown` 可以直接使用 Markdown 文本来生成纯文本目录。如果 `target` 和 `markdown` 同时传参，会优先渲染 `target` 中的内容
+通过 `markdown` 可以直接使用 Markdown 文本来生成纯文本目录。如果 `target` 和 `markdown` 同时传参，会优先渲染 `target` 中的内容。
 
 ::: demo
 toc/Markdown.vue

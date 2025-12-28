@@ -7,6 +7,7 @@ import vueJsx from '@vitejs/plugin-vue-jsx'
 export default defineConfig({
   title: 'Vue Markdown Design',
   description: 'A VitePress Site',
+  appearance: false,
   markdown: {
     config(md) {
       md.use(groupIconMdPlugin)
@@ -27,27 +28,27 @@ export default defineConfig({
   },
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
-    nav: [
-      { text: 'Home', link: '/' },
-      { text: 'Examples', link: '/markdown-examples' }
-    ],
+    // nav: [
+    //   { text: 'Home', link: '/' },
+    //   { text: 'Examples', link: '/markdown-examples' }
+    // ],
 
-    sidebar: [
-      {
-        text: 'Examples',
-        items: [
-          { text: 'Markdown Examples', link: '/markdown-examples' },
-          { text: 'Runtime API Examples', link: '/api-examples' }
-        ]
-      }
-    ],
+    // sidebar: [
+    //   {
+    //     text: 'Examples',
+    //     items: [
+    //       { text: 'Markdown Examples', link: '/markdown-examples' },
+    //       { text: 'Runtime API Examples', link: '/api-examples' }
+    //     ]
+    //   }
+    // ],
 
-    socialLinks: [{ icon: 'github', link: 'https://github.com/vuejs/vitepress' }]
+    socialLinks: [{ icon: 'github', link: 'https://github.com/ZeroOneJs/markdown-design' }]
   },
   locales: {
-    root: {
-      label: 'English'
-    },
+    // root: {
+    //   label: 'English'
+    // },
     zh: {
       label: '简体中文',
       themeConfig: {

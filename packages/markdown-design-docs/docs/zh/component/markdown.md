@@ -35,7 +35,7 @@ markdown/Sanitize.vue
 ## 常用预设规则
 
 使用 `preset-name` 可以快捷地设置 Markdown 规则。内置三种常用规则：
-[default](https://github.com/markdown-it/markdown-it/blob/master/lib/presets/default.mjs) 规则，类似 GFM。[commonmark](https://github.com/markdown-it/markdown-it/blob/master/lib/presets/commonmark.mjs) 规则，详情[请看](https://commonmark.org/)。[zero](https://github.com/markdown-it/markdown-it/blob/master/lib/presets/zero.mjs) 规则，所有规则都不会启用。
+[default](https://github.com/markdown-it/markdown-it/blob/master/lib/presets/default.mjs) 规则，类似 GFM；[commonmark](https://github.com/markdown-it/markdown-it/blob/master/lib/presets/commonmark.mjs) 规则，详情[请看](https://commonmark.org/)；[zero](https://github.com/markdown-it/markdown-it/blob/master/lib/presets/zero.mjs) 规则，所有规则都不会启用。
 
 ::: tip 提示
 和 `markdown-it` 的 default 规则稍有不同，这里的 `html` 选项默认是开启的。
@@ -127,7 +127,7 @@ markdown/Anchor.vue
 
 ## 渲染更多配置
 
-渲染功能支持丰富的配置，包括自定义 markdown 样式、获取组件内部 `markdown-it` 实例、换行处理等。更多用法请参考 [Render 组件](./render)，其 [API](./render#api) 在 Markdown 组件中同样适用。
+渲染功能支持丰富的配置，包括自定义 Markdown 样式、获取组件内部 `markdown-it` 实例、换行处理等。更多用法请参考 [Render 组件](./render)，其 [API](./render#api) 在 Markdown 组件中同样适用。
 
 ::: demo
 markdown/RenderMore.vue
@@ -189,7 +189,7 @@ markdown/TOCMore.vue
 
 ## 交互按钮
 
-通过 `show-btn` 可以在组件底部显示一组交互按钮，用于控制搜索和目录的显示隐藏。当传参为 `true` 时，默认显示搜索和目录按钮，当传参为数组或对象时，则可以自定义任意按钮的显示状态。
+通过 `show-btn` 可以在组件底部显示一组交互按钮，用于控制搜索和目录的显示隐藏。当传参为 `true` 时，默认显示搜索和目录按钮；当传参为数组或对象时，则可以自定义任意按钮的显示状态。
 
 ::: demo
 markdown/ShowBtn.vue
@@ -205,7 +205,7 @@ markdown/StickyOffset.vue
 
 ## 滚动距离偏移量
 
-默认情况下，`top-offset` 的值会自动作为目录锚点跳转的滚动偏移量。如需单独设置目录偏移量，可使用 `toc-offset`。搜索切换索引的滚动偏移量则没有这种默认行为，需要通过 `search-offset` 单独设置。`toc-offset` 和 `search-offset` 均支持数值和字符串位置（包含 `center`、`start`、`end`、`nearest`）。当组件嵌套在多层滚动容器中时，滚动效果和偏移量只对离它最近的滚动容器生效
+默认情况下，`top-offset` 的值会自动作为目录锚点跳转的滚动偏移量。如需单独设置目录偏移量，可使用 `toc-offset`。搜索切换索引的滚动偏移量则没有这种默认行为，需要通过 `search-offset` 单独设置。`toc-offset` 和 `search-offset` 均支持数值和字符串位置（包含 `center`、`start`、`end`、`nearest`）。当组件嵌套在多层滚动容器中时，滚动效果和偏移量只对离它最近的滚动容器生效。
 
 ::: tip 提示
 当显示搜索框且 `toc-offset` 为数值或者 `start` 时，目录会自动叠加搜索框高度作为额外的滚动偏移量
