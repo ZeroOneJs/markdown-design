@@ -98,7 +98,7 @@ describe('Sticky', () => {
     cy.mount(() => (
       <>
         <div style="height: 90vh">placeholder</div>
-        <div data-cy="scroll" style="height: 100px; overflow: scroll; background:mark;">
+        <div data-cy="scroll" style="height: 100px; overflow: auto; background:mark;">
           <div data-cy="target">
             <div style="height: 90vh">placeholder</div>
             <Sticky posY="bottom">
