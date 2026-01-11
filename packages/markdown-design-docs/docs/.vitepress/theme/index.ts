@@ -2,7 +2,7 @@ import type { Theme } from 'vitepress'
 import DefaultTheme from 'vitepress/theme'
 import Demo from '../plugins/demo/Demo.vue'
 import 'virtual:group-icons.css'
-import { VueMarkdown, VmdRender, VmdSearch, VmdTOC } from 'vue-markdown-design'
+import { VueMarkdown, VmdRender, VmdSearch, VmdToc } from 'vue-markdown-design'
 import './custom.less'
 
 export default {
@@ -13,6 +13,6 @@ export default {
     app.use(VueMarkdown)
     app.use(VmdRender)
     app.use(VmdSearch)
-    app.use(VmdTOC)
+    app.use(VmdToc)
   }
 } satisfies Theme

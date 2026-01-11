@@ -89,7 +89,7 @@ markdown/Emoji
 
 ## 标题锚点
 
-通过 `anchor` 可以为所有标题元素添加唯一标识符（ID），这可以帮助导航组件（如 [TOC](./toc.md) 组件）实现锚点定位。当开启 `anchor` 时会默认在所有标题前面添加永久链接，您可以通过 `permalink` 控制它的显示隐藏。`anchor` 还支持传入对象或函数来自定义标题的渲染，更多配置项[请参考](https://github.com/valeriangalliat/markdown-it-anchor?tab=readme-ov-file#usage)。
+通过 `anchor` 可以为所有标题元素添加唯一标识符（ID），这可以帮助导航组件（如 [Toc](./toc.md) 组件）实现锚点定位。当开启 `anchor` 时会默认在所有标题前面添加永久链接，您可以通过 `permalink` 控制它的显示隐藏。`anchor` 还支持传入对象或函数来自定义标题的渲染，更多配置项[请参考](https://github.com/valeriangalliat/markdown-it-anchor?tab=readme-ov-file#usage)。
 
 ::: demo
 markdown/Anchor
@@ -124,15 +124,15 @@ markdown/SearchMore
 通过 `toc` 可以开启目录功能，组件会根据渲染内容生成相应的目录。
 
 ::: demo
-markdown/TOC
+markdown/Toc
 :::
 
 ## 目录更多配置
 
-目录功能支持丰富的配置，包括纯文本目录、有序目录、目录范围等。更多用法请参考 [TOC 组件](./toc)，使用时只需在其 [API](./toc#api) 前面添加 `toc-` 前缀即可。
+目录功能支持丰富的配置，包括纯文本目录、有序目录、目录范围等。更多用法请参考 [Toc 组件](./toc)，使用时只需在其 [API](./toc#api) 前面添加 `toc-` 前缀即可。
 
 ::: demo
-markdown/TOCMore
+markdown/TocMore
 :::
 
 ## 交互按钮
@@ -235,7 +235,7 @@ markdown/MiniScreenWidth
 | search-step-click   | 点击搜索框上一项或下一项按钮时触发                       | value: `'prev' \| 'next'` |
 | search-total-change | 搜索匹配总数变化时触发                                   | value: `number`           |
 | search-index-change | 当前搜索索引值变化时触发                                 | value: `number`           |
-| toc-click           | 点击目录时触发，回调参数[请参考](./toc#tocitem-数据结构) | tocItem: `TOCItem`        |
+| toc-click           | 点击目录时触发，回调参数[请参考](./toc#tocitem-数据结构) | tocItem: `TocItem`        |
 | toc-change          | 选中目录改变时触发                                       | id: `string`              |
 
 ### Expose

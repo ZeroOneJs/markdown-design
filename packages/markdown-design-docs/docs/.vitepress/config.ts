@@ -86,7 +86,7 @@ export default defineConfig({
                 { text: 'Markdown', link: '/zh/component/markdown' },
                 { text: 'Render', link: '/zh/component/render' },
                 { text: 'Search', link: '/zh/component/search' },
-                { text: 'TOC', link: '/zh/component/toc' }
+                { text: 'Toc', link: '/zh/component/toc' }
               ]
             }
           ]

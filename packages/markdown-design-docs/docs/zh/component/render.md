@@ -113,7 +113,7 @@ render/Emoji
 
 ## 标题锚点
 
-通过 `anchor` 可以为所有标题元素添加唯一标识符（ID），这可以帮助导航组件（如 [TOC](./toc.md) 组件）实现锚点定位。当开启 `anchor` 时会默认在所有标题前面添加永久链接，您可以通过 `permalink` 控制它的显示隐藏。`anchor` 还支持传入对象或函数来自定义标题的渲染，更多配置项[请参考](https://github.com/valeriangalliat/markdown-it-anchor?tab=readme-ov-file#usage)。
+通过 `anchor` 可以为所有标题元素添加唯一标识符（ID），这可以帮助导航组件（如 [Toc](./toc.md) 组件）实现锚点定位。当开启 `anchor` 时会默认在所有标题前面添加永久链接，您可以通过 `permalink` 控制它的显示隐藏。`anchor` 还支持传入对象或函数来自定义标题的渲染，更多配置项[请参考](https://github.com/valeriangalliat/markdown-it-anchor?tab=readme-ov-file#usage)。
 
 ::: demo
 render/Anchor

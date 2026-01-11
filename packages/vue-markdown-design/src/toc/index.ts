@@ -1,15 +1,13 @@
 import { withInstall } from '../utils/vue'
-import _TOC from './TOC'
+import _Toc from './Toc'
 
-export const VmdTOC = withInstall(_TOC, ['VmdTOC'])
-export const VmdToc = VmdTOC
-export default VmdTOC
-export { tocProps } from './TOC'
-export type { TOCProps, TOCInstance, TOCItem } from './type'
+export const VmdToc = withInstall(_Toc)
+export default VmdToc
+export { tocProps } from './Toc'
+export type { TocProps, TocInstance, TocItem } from './type'
 
 declare module 'vue' {
   export interface GlobalComponents {
-    VmdTOC: typeof VmdTOC
-    VmdToc: typeof VmdTOC
+    VmdToc: typeof VmdToc
   }
 }
