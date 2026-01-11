@@ -33,22 +33,31 @@ export default defineComponent({
   setup(props, { slots }) {
     const wrapper = shallowRef<HTMLDivElement>()
     const wrapperBounding = useElementBounding(wrapper)
-    const wrapperStyle = computed(() => {
-      const { flow, posY, posX } = props
-      if (flow) return
-      const keys = posY === 'bottom' ? 'marginTop' : 'marginBottom'
-      const rightStyle = posX === 'right' ? { display: 'flex', justifyContent: 'right' } : {}
+
+    const rootStyle = computed(() => {
+      const { flow, posY, posX, zIndex, offset } = props
+      const base = { [posY]: addUnit(Number(offset)), zIndex }
+      if (flow) return base
+      const margin = posX === 'right' ? 'marginLeft' : 'marginRight'
       return {
-        [keys]: `-${addUnit(wrapperBounding.height.value)}`,
-        ...rightStyle
+        ...base,
+        [margin]: 'auto',
+        width: addUnit(wrapperBounding.width.value)
+      }
+    })
+
+    const wrapperStyle = computed(() => {
+      const { flow, posY } = props
+      if (flow) return
+      const margin = posY === 'bottom' ? 'marginTop' : 'marginBottom'
+      return {
+        [margin]: `-${addUnit(wrapperBounding.height.value)}`,
+        display: 'table'
       }
     })
 
     return () => (
-      <div
-        class={name}
-        style={{ [props.posY]: addUnit(Number(props.offset)), zIndex: props.zIndex }}
-      >
+      <div class={name} style={rootStyle.value}>
         <div ref={wrapper} style={wrapperStyle.value}>
           {slots.default?.()}
         </div>
