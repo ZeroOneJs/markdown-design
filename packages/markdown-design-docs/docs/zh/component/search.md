@@ -7,7 +7,7 @@
 通过 `target` 可以指定搜索的目标元素，支持 `CSS 选择器`、`DOM 元素`、`组件实例` 或者返回以上任意一种类型的 `函数`。并且可以通过 `v-model` 绑定搜索内容，内容如果存在则会自动滚动到所在位置并高亮标记。
 
 ::: demo
-search/Basic.vue
+search/Basic
 :::
 
 ## 一键清空
@@ -15,7 +15,7 @@ search/Basic.vue
 使用 `clearable` 可以在搜索框中显示清空按钮，点击可以一键清空搜索内容。
 
 ::: demo
-search/Clearable.vue
+search/Clearable
 :::
 
 ## 关闭按钮
@@ -23,7 +23,7 @@ search/Clearable.vue
 使用 `close-icon` 可以显示关闭按钮，点击后会触发 `close` 事件。
 
 ::: demo
-search/CloseIcon.vue
+search/CloseIcon
 :::
 
 ## 边框样式
@@ -31,7 +31,7 @@ search/CloseIcon.vue
 使用 `border` 可以显示搜索框下边框。
 
 ::: demo
-search/Border.vue
+search/Border
 :::
 
 ## 搜索框尺寸
@@ -39,7 +39,7 @@ search/Border.vue
 使用 `size` 可以设置搜索框尺寸，支持 `huge`、`large`、`normal`、`small` 四种尺寸。
 
 ::: demo
-search/Size.vue
+search/Size
 :::
 
 ## 禁用搜索框
@@ -47,7 +47,7 @@ search/Size.vue
 使用 `disabled` 可以禁用搜索框，禁用状态下无法进行搜索等操作。
 
 ::: demo
-search/Disabled.vue
+search/Disabled
 :::
 
 ## 占位文本
@@ -55,7 +55,7 @@ search/Disabled.vue
 使用 `placeholder` 可以自定义搜索框占位文本。
 
 ::: demo
-search/Placeholder.vue
+search/Placeholder
 :::
 
 ## 滚动距离偏移量
@@ -67,7 +67,7 @@ search/Placeholder.vue
 :::
 
 ::: demo
-search/Offset.vue
+search/Offset
 :::
 
 ## 平滑滚动
@@ -75,7 +75,7 @@ search/Offset.vue
 使用 `smooth` 可以在内容跳转时开启平滑滚动。
 
 ::: demo
-search/Smooth.vue
+search/Smooth
 :::
 
 ## 输入框原生属性
@@ -83,7 +83,7 @@ search/Smooth.vue
 通过 `input-attrs` 将属性传递给组件内部的 input 元素。
 
 ::: demo
-search/InputAttrs.vue
+search/InputAttrs
 :::
 
 ## 切换当前索引
@@ -91,7 +91,7 @@ search/InputAttrs.vue
 通过 `toggle` 方法可以手动切换当前索引。该方法接收两个参数：第一个参数为指定索引值，可以传入数值和字符串（包含 `prev` 和 `next`），它会自动处理越界索引，并通过 `index-change` 返回安全的索引值；第二个参数可以指定是否忽略搜索框禁用状态，默认为 `true`，即在搜索框禁用状态下调用 `toggle` 方法依然可以触发索引值切换。
 
 ::: demo
-search/Toggle.vue
+search/Toggle
 :::
 
 ## 手动刷新
@@ -103,7 +103,7 @@ search/Toggle.vue
 :::
 
 ::: demo
-search/Refresh.vue
+search/Refresh
 :::
 
 ## API

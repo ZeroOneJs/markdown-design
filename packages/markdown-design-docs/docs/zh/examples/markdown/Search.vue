@@ -2,7 +2,7 @@
   <vue-markdown
     v-model:keyword="keyword"
     v-model:search="search"
-    style="height: 436px; overflow: scroll"
+    style="height: 436px; overflow: auto"
     :src="md"
   />
 </template>

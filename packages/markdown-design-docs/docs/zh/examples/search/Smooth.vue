@@ -8,7 +8,7 @@
     </p>
     <div>
       <vmd-search v-model="keyword" :target="renderRef" :smooth="smooth" />
-      <vmd-render ref="renderRef" style="height: 436px; overflow: scroll" :src="md" />
+      <vmd-render ref="renderRef" style="height: 436px; overflow: auto" :src="md" />
     </div>
   </div>
 </template>

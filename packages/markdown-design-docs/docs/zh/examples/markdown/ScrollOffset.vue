@@ -16,7 +16,7 @@
       >
         固定页头
       </header>
-      <div style="height: 436px; overflow: scroll">
+      <div style="height: 436px; overflow: auto">
         <vue-markdown
           v-model:keyword="keyword"
           toc
@@ -50,16 +50,16 @@
           color: #0969da;
           padding: 10px;
           box-sizing: border-box;
-          z-index: 5;
-          text-align: right;
+          z-index: 1;
           border-bottom: 2px solid #0969da;
-          width: calc(100% - 320px);
+          width: 100%;
           font-weight: bold;
+          text-align: center;
         "
       >
         滚动偏移量位置
       </div>
-      <div style="height: 436px; overflow: scroll">
+      <div style="height: 436px; overflow: auto">
         <!-- 57 为搜索框自身的高度 -->
         <vue-markdown
           v-model:keyword="keyword"
@@ -89,7 +89,7 @@
       >
         固定页头
       </header>
-      <div style="height: 436px; overflow: scroll">
+      <div style="height: 436px; overflow: auto">
         <vue-markdown
           v-model:keyword="keyword"
           toc

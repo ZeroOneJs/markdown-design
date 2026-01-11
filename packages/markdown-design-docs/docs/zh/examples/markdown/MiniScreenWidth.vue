@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="overflow: auto">
     <p>
       <label>
         请调整 mini-screen-width：
@@ -15,7 +15,7 @@
     <vue-markdown
       toc
       show-btn
-      :style="{ height: '436px', overflow: 'scroll', width: `${componentWidth}px` }"
+      :style="{ height: '436px', overflow: 'auto', width: `${componentWidth}px` }"
       :src="md"
       :mini-screen-width="miniScreenWidth"
     />

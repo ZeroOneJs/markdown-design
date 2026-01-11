@@ -12,7 +12,7 @@
       v-model:keyword="keyword"
       v-model:search="search"
       ref="markdownRef"
-      style="height: 436px; overflow: scroll"
+      style="height: 436px; overflow: auto"
       :src="md"
       @search-index-change="safeIndex = $event"
     />

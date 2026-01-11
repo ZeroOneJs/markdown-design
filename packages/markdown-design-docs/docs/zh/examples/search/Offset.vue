@@ -18,7 +18,7 @@
         >
           固定页头
         </div>
-        <div style="height: 436px; overflow: scroll">
+        <div style="height: 436px; overflow: auto">
           <vmd-render
             ref="renderWhenNumber"
             style="margin-top: 56px; height: 436px; overflow: auto"
@@ -45,7 +45,7 @@
         >
           固定页头
         </div>
-        <div style="height: 436px; overflow: scroll">
+        <div style="height: 436px; overflow: auto">
           <vmd-render ref="renderWhenPosition" style="margin-top: 56px" :src="md" />
         </div>
       </div>

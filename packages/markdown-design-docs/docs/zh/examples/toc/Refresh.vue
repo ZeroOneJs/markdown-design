@@ -11,9 +11,9 @@
       </label>
       <button @click="refresh">更新</button>
     </p>
-    <div style="display: flex">
-      <vmd-render id="refreshRef" style="height: 436px; overflow: scroll; flex: auto" :src="md" />
-      <vmd-toc ref="tocRef" target="#refreshRef" style="flex: 0 0 250px" />
+    <div style="display: flex; flex-wrap: wrap">
+      <vmd-render id="refreshRef" style="height: 436px; overflow: auto; flex: 70%" :src="md" />
+      <vmd-toc ref="tocRef" target="#refreshRef" style="flex: auto" />
     </div>
   </div>
 </template>

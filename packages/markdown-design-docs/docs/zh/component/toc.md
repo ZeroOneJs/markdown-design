@@ -7,7 +7,7 @@
 通过 `target` 可以指定生成目录的目标元素，支持 `CSS 选择器`、`DOM 元素`、`组件实例` 或者返回以上任意一种类型的 `函数`，默认为 `document.documentElement`。
 
 ::: demo
-toc/Basic.vue
+toc/Basic
 :::
 
 ## 纯文本目录
@@ -15,7 +15,7 @@ toc/Basic.vue
 使用 `plain-text` 可以生成纯文本目录，此时点击目录不会触发锚点跳转。
 
 ::: demo
-toc/PlainText.vue
+toc/PlainText
 :::
 
 ## 直接使用 Markdown 文本
@@ -23,7 +23,7 @@ toc/PlainText.vue
 通过 `markdown` 可以直接使用 Markdown 文本来生成纯文本目录。如果 `target` 和 `markdown` 同时传参，会优先渲染 `target` 中的内容。
 
 ::: demo
-toc/Markdown.vue
+toc/Markdown
 :::
 
 ## 有序目录
@@ -31,7 +31,7 @@ toc/Markdown.vue
 使用 `ordered-list` 可以生成有序目录。
 
 ::: demo
-toc/OrderedList.vue
+toc/OrderedList
 :::
 
 ## 目录获取的范围
@@ -39,7 +39,7 @@ toc/OrderedList.vue
 通过 `start-level` 和 `end-level` 设置开始结束标题级别，来控制目录获取的范围。
 
 ::: demo
-toc/Level.vue
+toc/Level
 :::
 
 ## 忽略指定目录
@@ -47,7 +47,7 @@ toc/Level.vue
 通过 `ignore` 设置忽略的标题级别，可以在目录生成时，过滤指定的目录。
 
 ::: demo
-toc/Ignore.vue
+toc/Ignore
 :::
 
 ## 空目录文本
@@ -55,7 +55,7 @@ toc/Ignore.vue
 使用 `empty-text` 可以自定义目录为空时的文本。
 
 ::: demo
-toc/EmptyText.vue
+toc/EmptyText
 :::
 
 ## 滚动距离偏移量
@@ -63,7 +63,7 @@ toc/EmptyText.vue
 当点击目录触发锚点跳转时，可以通过 `offset` 设置滚动的偏移量，支持数值和字符串位置（包含 `center`、`start`、`end`、`nearest`）。当组件嵌套在多层滚动容器中时，滚动效果和偏移量只对离它最近的滚动容器生效。
 
 ::: demo
-toc/Offset.vue
+toc/Offset
 :::
 
 ## 平滑滚动
@@ -71,7 +71,7 @@ toc/Offset.vue
 使用 `smooth` 可以在锚点跳转时开启平滑滚动。
 
 ::: demo
-toc/Smooth.vue
+toc/Smooth
 :::
 
 ## 改变页面 hash
@@ -79,7 +79,7 @@ toc/Smooth.vue
 当点击目录触发锚点跳转时，可以通过 `change-hash` 来设置是否改变页面的 hash。
 
 ::: demo
-toc/ChangeHash.vue
+toc/ChangeHash
 :::
 
 ## 手动刷新
@@ -91,7 +91,7 @@ toc/ChangeHash.vue
 :::
 
 ::: demo
-toc/Refresh.vue
+toc/Refresh
 :::
 
 ## 自定义目录项内容
@@ -99,7 +99,7 @@ toc/Refresh.vue
 通过设置 `item` 插槽可以自定义目录项的内容。
 
 ::: demo
-toc/Slot.vue
+toc/Slot
 :::
 
 ## API

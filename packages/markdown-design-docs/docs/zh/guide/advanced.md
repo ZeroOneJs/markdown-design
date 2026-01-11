@@ -7,5 +7,5 @@
 :::
 
 ::: demo
-guide/Advanced.vue
+guide/Advanced
 :::

@@ -18,7 +18,7 @@
     </p>
     <vue-markdown
       toc
-      style="height: 436px; overflow: scroll"
+      style="height: 436px; overflow: auto"
       :src="md"
       :toc-start-level="startLevel"
       :toc-end-level="endLevel"

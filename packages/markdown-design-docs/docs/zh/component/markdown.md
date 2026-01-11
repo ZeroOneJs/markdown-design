@@ -7,7 +7,7 @@
 通过 `src` 传入 Markdown 字符串，渲染对应的 HTML 内容。
 
 ::: demo
-markdown/Basic.vue
+markdown/Basic
 :::
 
 ## 解析 HTML 标签
@@ -15,7 +15,7 @@ markdown/Basic.vue
 使用 `html` 可以控制是否解析 Markdown 中的 HTML 标签。
 
 ::: demo
-markdown/Html.vue
+markdown/Html
 :::
 
 ## HTML 标签安全过滤
@@ -23,7 +23,7 @@ markdown/Html.vue
 使用 `sanitize` 可以对生成结果中的 HTML 标签进行安全过滤，以预防 XSS 等网络攻击。开启 `sanitize` 可能会影响 HTML 标签的生成效果，如果最终结果不符合预期且您对安全性要求较低，可以尝试关闭 `sanitize` 选项，但请注意这是非常危险的行为。如果您对安全性要求比较高，建议直接关闭 `html` 选项。
 
 ::: demo
-markdown/Sanitize.vue
+markdown/Sanitize
 :::
 
 ## 常用预设规则
@@ -36,7 +36,7 @@ markdown/Sanitize.vue
 :::
 
 ::: demo
-markdown/PresetName.vue
+markdown/PresetName
 :::
 
 ## markdown-it 插件
@@ -44,7 +44,7 @@ markdown/PresetName.vue
 通过 `plugins` 可以传入 `markdown-it` 插件。支持两种传参方式：第一种是直接传入单个插件。第二种可通过数组传入多个插件，数组中的每一项可以是单个插件，也可以是插件和参数组成的数组（如：`[插件, [插件, 参数1, 参数2, ...], ...]`）。
 
 ::: demo
-markdown/Plugins.vue
+markdown/Plugins
 :::
 
 ## 代码块语法高亮
@@ -52,7 +52,7 @@ markdown/Plugins.vue
 使用 `highlight` 可以将 Markdown 中的代码块根据其编程语言进行语法高亮。当传入布尔值时，会使用 [highlight.js](https://highlightjs.org/) 作为语法高亮工具，此时您可以通过 `highlight-options` 来配置它，详细配置[请参考](https://highlightjs.readthedocs.io/en/latest/api.html#configure)。当默认语法高亮无法满足需求时，`highlight` 也支持通过函数来自定义高亮语法规则。
 
 ::: demo
-markdown/Highlight.vue
+markdown/Highlight
 :::
 
 ## 自定义语法高亮样式
@@ -60,7 +60,7 @@ markdown/Highlight.vue
 通过 `lang-prefix` 修改代码块样式名前缀来自定义语法高亮样式。
 
 ::: demo
-markdown/LangPrefix.vue
+markdown/LangPrefix
 :::
 
 ## 自动转换链接
@@ -68,7 +68,7 @@ markdown/LangPrefix.vue
 使用 `linkify` 可以将 Markdown 中类似 url 的文本转换为链接。
 
 ::: demo
-markdown/Linkify.vue
+markdown/Linkify
 :::
 
 ## 常见符号处理
@@ -76,7 +76,7 @@ markdown/Linkify.vue
 使用 `typographer` 可以将 Markdown 中的一些特定文本替换为[常见的符号](https://github.com/markdown-it/markdown-it/blob/master/lib/rules_core/replacements.mjs)。当 `typographer` 开启时，还可以通过 `quotes` 自定义引号，这在多语言环境中非常实用。
 
 ::: demo
-markdown/Typographer.vue
+markdown/Typographer
 :::
 
 ## Emoji 表情
@@ -84,7 +84,7 @@ markdown/Typographer.vue
 通过 `emoji` 可以将 Markdown 中的[特定文本](https://github.com/markdown-it/markdown-it-emoji/blob/master/lib/data/full.mjs)解析为 Emoji 表情。除了支持布尔值传参外，还可以通过传入对象来配置 Emoji 表情，详细配置[请参考](https://github.com/markdown-it/markdown-it-emoji?tab=readme-ov-file#init)。
 
 ::: demo
-markdown/Emoji.vue
+markdown/Emoji
 :::
 
 ## 标题锚点
@@ -92,7 +92,7 @@ markdown/Emoji.vue
 通过 `anchor` 可以为所有标题元素添加唯一标识符（ID），这可以帮助导航组件（如 [TOC](./toc.md) 组件）实现锚点定位。当开启 `anchor` 时会默认在所有标题前面添加永久链接，您可以通过 `permalink` 控制它的显示隐藏。`anchor` 还支持传入对象或函数来自定义标题的渲染，更多配置项[请参考](https://github.com/valeriangalliat/markdown-it-anchor?tab=readme-ov-file#usage)。
 
 ::: demo
-markdown/Anchor.vue
+markdown/Anchor
 :::
 
 ## 渲染更多配置
@@ -100,7 +100,7 @@ markdown/Anchor.vue
 渲染功能支持丰富的配置，包括自定义 Markdown 样式、获取组件内部 `markdown-it` 实例、换行处理等。更多用法请参考 [Render 组件](./render)，其 [API](./render#api) 在 Markdown 组件中同样适用。
 
 ::: demo
-markdown/RenderMore.vue
+markdown/RenderMore
 :::
 
 ## 搜索
@@ -108,7 +108,7 @@ markdown/RenderMore.vue
 通过 `search` 可以开启搜索功能。并且可以通过 `keyword` 绑定搜索内容，内容如果存在则会自动滚动到所在位置并高亮标记。
 
 ::: demo
-markdown/Search.vue
+markdown/Search
 :::
 
 ## 搜索更多配置
@@ -116,7 +116,7 @@ markdown/Search.vue
 搜索功能支持丰富的配置，包括边框样式、尺寸设置、禁用状态等。更多用法请参考 [Search 组件](./search)，使用时只需在其 [API](./search#api) 前面添加 `search-` 前缀即可。
 
 ::: demo
-markdown/SearchMore.vue
+markdown/SearchMore
 :::
 
 ## 目录
@@ -124,7 +124,7 @@ markdown/SearchMore.vue
 通过 `toc` 可以开启目录功能，组件会根据渲染内容生成相应的目录。
 
 ::: demo
-markdown/TOC.vue
+markdown/TOC
 :::
 
 ## 目录更多配置
@@ -132,7 +132,7 @@ markdown/TOC.vue
 目录功能支持丰富的配置，包括纯文本目录、有序目录、目录范围等。更多用法请参考 [TOC 组件](./toc)，使用时只需在其 [API](./toc#api) 前面添加 `toc-` 前缀即可。
 
 ::: demo
-markdown/TOCMore.vue
+markdown/TOCMore
 :::
 
 ## 交互按钮
@@ -140,7 +140,7 @@ markdown/TOCMore.vue
 通过 `show-btn` 可以在组件底部显示一组交互按钮，用于控制搜索和目录的显示隐藏。当传参为 `true` 时，默认显示搜索和目录按钮；当传参为数组或对象时，则可以自定义任意按钮的显示状态。
 
 ::: demo
-markdown/ShowBtn.vue
+markdown/ShowBtn
 :::
 
 ## 粘性布局偏移量
@@ -148,7 +148,7 @@ markdown/ShowBtn.vue
 所有辅助组件均采用粘性布局，可通过 `top-offset` 控制搜索框和目录的吸顶偏移量，通过 `bottom-offset` 控制交互按钮的吸底偏移量。当组件嵌套在多层滚动容器中时，粘性布局效果和偏移量只对离它最近的滚动容器生效。
 
 ::: demo
-markdown/StickyOffset.vue
+markdown/StickyOffset
 :::
 
 ## 滚动距离偏移量
@@ -156,19 +156,19 @@ markdown/StickyOffset.vue
 默认情况下，`top-offset` 的值会自动作为目录锚点跳转的滚动偏移量。如需单独设置目录偏移量，可使用 `toc-offset`。搜索切换索引的滚动偏移量则没有这种默认行为，需要通过 `search-offset` 单独设置。`toc-offset` 和 `search-offset` 均支持数值和字符串位置（包含 `center`、`start`、`end`、`nearest`）。当组件嵌套在多层滚动容器中时，滚动效果和偏移量只对离它最近的滚动容器生效。
 
 ::: tip 提示
-当显示搜索框且 `toc-offset` 为数值或者 `start` 时，目录会自动叠加搜索框高度作为额外的滚动偏移量
+当显示搜索框且 `toc-offset` 为数值或者 `start` 时，目录会自动叠加搜索框高度作为额外的滚动偏移量。
 :::
 
 ::: demo
-markdown/ScrollOffset.vue
+markdown/ScrollOffset
 :::
 
 ## 移动端布局
 
-通过 `mini-screen-width` 可以设置移动设备的宽度，当组件宽度小于或等于该值时，会自动切换为移动端布局
+通过 `mini-screen-width` 可以设置移动设备的宽度，当组件宽度小于或等于该值时，会自动切换为移动端布局。
 
 ::: demo
-markdown/MiniScreenWidth.vue
+markdown/MiniScreenWidth
 :::
 
 ## API

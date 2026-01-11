@@ -1,7 +1,7 @@
 <template>
-  <div style="display: flex">
-    <vmd-render ref="renderRef" style="flex: auto" :src="md" />
-    <vmd-toc style="flex: 0 0 250px" empty-text="暂无数据" :target="renderRef" />
+  <div style="display: flex; flex-wrap: wrap">
+    <vmd-render ref="renderRef" style="flex: 700px" :src="md" />
+    <vmd-toc style="flex: auto" empty-text="暂无数据" :target="renderRef" />
   </div>
 </template>
 <script setup>

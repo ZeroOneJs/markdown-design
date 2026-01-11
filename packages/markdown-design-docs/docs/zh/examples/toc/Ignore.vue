@@ -7,9 +7,9 @@
         h{{ index + 1 }}
       </label>
     </p>
-    <div style="display: flex">
-      <vmd-render ref="renderRef" style="height: 436px; overflow: scroll; flex: auto" :src="md" />
-      <vmd-toc style="flex: 0 0 250px" :target="renderRef" :ignore="ignore" />
+    <div style="display: flex; flex-wrap: wrap">
+      <vmd-render ref="renderRef" style="height: 436px; overflow: auto; flex: 70%" :src="md" />
+      <vmd-toc style="flex: auto" :target="renderRef" :ignore="ignore" />
     </div>
   </div>
 </template>

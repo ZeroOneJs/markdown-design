@@ -14,7 +14,7 @@
     >
       固定页头
     </header>
-    <div style="height: 492px; overflow: scroll">
+    <div style="height: 492px; overflow: auto">
       <vue-markdown
         toc
         search

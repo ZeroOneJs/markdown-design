@@ -1,12 +1,13 @@
 <template>
-  <div class="demo">
-    <!-- 延迟挂载组件，避免页面导航查询到组件内的 HTMLHeadingElement -->
-    <div class="demo__wrapper vp-raw">
-      <component v-if="isMounted" :is="name" />
+  <div class="vp-demo">
+    <!-- markdown-it-container 下默认插槽会有内容，因此需要使用具名插槽 -->
+    <div class="vp-demo__wrapper vp-raw">
+      <!-- 延迟挂载组件，避免页面导航查询到组件内的 HTMLHeadingElement -->
+      <slot v-if="isMounted" name="component"></slot>
     </div>
-    <details class="demo__details">
-      <summary class="demo__details-summary">{{ summary }}</summary>
-      <!-- 屏蔽默认插槽 -->
+    <details class="vp-demo__details">
+      <summary class="vp-demo__details-summary">{{ summary }}</summary>
+
       <slot name="code"></slot>
     </details>
   </div>
@@ -15,7 +16,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 
-defineProps({ name: String, summary: String })
+defineProps({ summary: String })
 
 const isMounted = ref(false)
 onMounted(() => {
@@ -24,7 +25,7 @@ onMounted(() => {
 </script>
 
 <style scoped lang="less">
-.demo {
+.vp-demo {
   padding: 0 16px;
   margin-top: 16px;
   background: #f7f7f7;

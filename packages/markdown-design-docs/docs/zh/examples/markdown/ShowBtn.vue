@@ -10,7 +10,7 @@
         显示目录按钮
       </label>
     </p>
-    <vue-markdown top-offset="112" :src="md" :show-btn="showBtn" />
+    <vue-markdown :src="md" :show-btn="showBtn" />
   </div>
 </template>
 <script setup>

@@ -1,7 +1,7 @@
 <template>
   <div>
     <h4>Markdown 文本：</h4>
-    <pre style="background: #fff"><code>{{ md }}</code></pre>
+    <pre style="background: #fff; overflow: auto"><code>{{ md }}</code></pre>
     <h4>渲染结果：</h4>
     <vue-markdown :src="md" />
   </div>

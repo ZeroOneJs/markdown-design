@@ -1,10 +1,10 @@
 <template>
-  <div style="display: flex">
-    <div style="flex: auto">
+  <div style="display: flex; flex-wrap: wrap">
+    <div style="flex: 70%; overflow: auto">
       <vmd-search v-model="keyword" :target="renderRef" />
-      <vmd-render ref="renderRef" style="height: 436px; overflow: scroll" :src="md" />
+      <vmd-render ref="renderRef" style="height: 436px; overflow: auto" :src="md" />
     </div>
-    <vmd-toc style="flex: 0 0 250px" :target="renderRef" />
+    <vmd-toc style="flex: auto" :target="renderRef" />
   </div>
 </template>
 

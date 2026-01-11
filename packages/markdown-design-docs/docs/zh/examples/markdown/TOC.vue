@@ -1,5 +1,5 @@
 <template>
-  <vue-markdown toc top-offset="112" :src="md" />
+  <vue-markdown toc top-offset="64" :src="md" />
 </template>
 
 <script setup>

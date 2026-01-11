@@ -1,21 +1,33 @@
 import { defineConfig, postcssIsolateStyles } from 'vitepress'
 import { groupIconMdPlugin, groupIconVitePlugin } from 'vitepress-plugin-group-icons'
-import { demoMdPlugin } from './plugins/vitepress-plugin-demo'
+import { demo } from './plugins/demo'
+import { tableWrapper } from './plugins/table-wrapper'
 import vueJsx from '@vitejs/plugin-vue-jsx'
+import Components from 'unplugin-vue-components/vite'
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
   title: 'Vue Markdown Design',
   description: 'A VitePress Site',
   appearance: false,
+  cleanUrls: true,
   markdown: {
     config(md) {
       md.use(groupIconMdPlugin)
-      md.use(demoMdPlugin)
+      md.use(demo)
+      md.use(tableWrapper)
     }
   },
   vite: {
-    plugins: [groupIconVitePlugin(), vueJsx()],
+    plugins: [
+      groupIconVitePlugin(),
+      vueJsx(),
+      Components({
+        dirs: ['zh/examples'],
+        include: [/\.vue$/, /\.vue\?vue/, /\.md$/],
+        directoryAsNamespace: true
+      })
+    ],
     css: {
       postcss: {
         plugins: [
@@ -79,7 +91,7 @@ export default defineConfig({
             }
           ]
         },
-        aside: false,
+        // aside: false,
         outline: {
           label: '页面导航'
         },
