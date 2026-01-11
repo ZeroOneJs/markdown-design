@@ -23,7 +23,7 @@ export default defineConfig({
     copyPublicDir: false,
     minify: false,
     rollupOptions: {
-      external: Object.keys(pkg.dependencies),
+      external: ['vue', ...Object.keys(pkg.dependencies)],
       output: [
         {
           format: 'es',
