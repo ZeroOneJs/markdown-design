@@ -8,7 +8,7 @@ import Components from 'unplugin-vue-components/vite'
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
   title: 'Vue Markdown Design',
-  description: 'A VitePress Site',
+  description: 'A Vue 3 out-of-the-box Markdown component built on markdown-it',
   appearance: false,
   cleanUrls: true,
   markdown: {
@@ -91,7 +91,6 @@ export default defineConfig({
             }
           ]
         },
-        // aside: false,
         outline: {
           label: '页面导航'
         },

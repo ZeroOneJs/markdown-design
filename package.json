@@ -7,7 +7,7 @@
     "test": "run-p test:vi test:cy",
     "docs:dev": "pnpm -C ./packages/markdown-design-docs dev",
     "docs:build": "pnpm -C ./packages/markdown-design-docs build",
-    "build": "pnpm -r build",
+    "build": "pnpm -r --filter=!markdown-design-docs build",
     "prepare": "husky"
   },
   "lint-staged": {

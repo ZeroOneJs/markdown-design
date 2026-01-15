@@ -1,16 +1,13 @@
 {
-  "name": "markdown-design-docs",
+  "name": "@markdown-design/markdown-design-docs",
   "private": true,
   "type": "module",
   "version": "1.0.0",
-  "description": "",
   "scripts": {
-    "dev": "vitepress dev docs",
-    "build": "vitepress build docs",
-    "preview": "vitepress preview docs"
+    "dev": "vitepress dev",
+    "build": "vitepress build",
+    "preview": "vitepress preview"
   },
-  "keywords": [],
-  "author": "",
   "devDependencies": {
     "@types/markdown-it": "catalog:",
     "@types/markdown-it-container": "^2.0.10",
