@@ -201,6 +201,7 @@ export default defineComponent({
     })
 
     return () => (
+      // 加多一层 div 可保证外部样式不影响内部粘性布局
       <div ref={root} class={name}>
         <div class={addPrefix('__wrapper')}>
           <div class={addPrefix('__main')}>
