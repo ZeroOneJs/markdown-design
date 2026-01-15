@@ -42,4 +42,4 @@ More documentation coming soon!
 
 ## License
 
-[MIT](../../LICENSE).
+[MIT](./LICENSE).
