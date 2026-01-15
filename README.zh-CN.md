@@ -58,4 +58,4 @@ app.mount('#app')
 
 ## 开源协议
 
-本项目基于 [MIT](../../LICENSE) 协议。
+本项目基于 [MIT](./LICENSE) 协议。
