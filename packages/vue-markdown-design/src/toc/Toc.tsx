@@ -13,7 +13,7 @@ import {
   throttle
 } from 'lodash'
 import { computeOffset, createNamespace } from '../utils/format'
-import type { TOC, TOCItem } from './type'
+import type { Toc, TocItem } from './type'
 import {
   computed,
   defineComponent,
@@ -79,7 +79,7 @@ export const tocProps = {
 }
 
 export const tocEmits = {
-  click: (payload: TOCItem) => isObject(payload),
+  click: (payload: TocItem) => isObject(payload),
   change: (payload?: string) => isString(payload) || isUndefined(payload)
 }
 
@@ -114,7 +114,7 @@ export default defineComponent({
 
     const md = new MarkdownIt({ html: true })
     md.use(headers)
-    const mdTOC = computed(() => {
+    const mdToc = computed(() => {
       const env: MditHeadersEnv = {}
       md.render(props.markdown, env)
       const { headings = [] } = env
@@ -149,16 +149,16 @@ export default defineComponent({
       })
     }
 
-    const setTOC = () => {
+    const setToc = () => {
       if (isMd.value || !targetEl.value) return
       setHeading()
       setTop()
     }
-    watchEffect(setTOC)
+    watchEffect(setToc)
     const refresh = async () => {
       headings.value = []
       await nextTick()
-      setTOC()
+      setToc()
     }
     watch(() => (target.value as RenderInstance)?.htmlStr, refresh)
 
@@ -168,8 +168,8 @@ export default defineComponent({
       anchors.forEach((item) => node.removeChild(item))
       return node.innerText.trim() // https://developer.mozilla.org/zh-CN/docs/Web/API/Node/textContent#与_innertext_的区别
     }
-    const listData = computed<TOC[]>(() => {
-      if (isMd.value) return mdTOC.value
+    const listData = computed<Toc[]>(() => {
+      if (isMd.value) return mdToc.value
       return headings.value.map((heading) => {
         const { id, tagName } = heading
         return {
@@ -212,7 +212,7 @@ export default defineComponent({
     }
     const onScroll = throttle(() => {
       if (scrollStatus === ScrollStatus.Start || isPlainText.value) return
-      setTOC()
+      setToc()
       const scrollTop = Math.floor(resolvedScrollEl.value?.scrollTop || 0)
       const current = listData.value
         .map((item) => ({
@@ -254,7 +254,7 @@ export default defineComponent({
           }, wait + 4) // 设置延迟可确保在 onScroll 后面再执行
       })
     }
-    const onClick = (tocItem: TOCItem, e: MouseEvent) => {
+    const onClick = (tocItem: TocItem, e: MouseEvent) => {
       if (!props.changeHash) e.preventDefault()
       scrollTo(tocItem.id)
       emit('click', tocItem)
@@ -275,7 +275,7 @@ export default defineComponent({
         const plainText = orderedList ? `${++orderCounter[relativeLevel]}. ${text}` : text
         const isActive = activeId.value === id
 
-        const tocItem: TOCItem = {
+        const tocItem: TocItem = {
           id,
           top,
           level,

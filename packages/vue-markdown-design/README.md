@@ -2,7 +2,7 @@ English | [中文](./README.zh-CN.md)
 
 # Vue Markdown Design
 
-A Vue 3 out-of-the-box Markdown component built on [markdown-it](https://github.com/markdown-it/markdown-it). It mainly features Markdown rendering, TOC generation, and keyword search. It also includes other common functionalities such as support for markdown-it plugins, emoji, heading permalinks, XSS sanitization, and TypeScript.
+A Vue 3 out-of-the-box Markdown component built on [markdown-it](https://github.com/markdown-it/markdown-it). It mainly features Markdown rendering, toc generation, and keyword search. It also includes other common functionalities such as support for markdown-it plugins, emoji, heading permalinks, XSS sanitization, and TypeScript.
 
 ## Quick Start
 

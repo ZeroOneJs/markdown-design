@@ -9,7 +9,7 @@ import {
 } from 'vue'
 import Render, { renderProps, type RenderInstance } from '../render'
 import Search, { searchProps, type SearchInstance } from '../search'
-import TOC, { tocProps, type TOCInstance, type TOCItem } from '../toc'
+import Toc, { tocProps, type TocInstance, type TocItem } from '../toc'
 import {
   addUnit,
   allToObject,
@@ -21,7 +21,7 @@ import type { ObjectToUnion, Offset } from '../utils/types'
 import type { MarkdownBtnType, MarkdownExpose } from './type'
 import { renderEmits } from '../render/Render'
 import { searchEmits } from '../search/Search'
-import { tocEmits } from '../toc/TOC'
+import { tocEmits } from '../toc/Toc'
 import { chain, isBoolean, isUndefined, mapValues, sum, upperFirst, values } from 'lodash'
 import { useElementBounding, useVModels, useWindowSize } from '@vueuse/core'
 import { useScrollParent } from '../hooks/use-scroll-element'
@@ -132,9 +132,9 @@ export default defineComponent({
     const searchRect = useElementBounding(searchRef)
     const searchIsOnMiniScreen = computed(() => isMiniScreen.value && toc.value)
 
-    const tocRef = shallowRef<TOCInstance>()
+    const tocRef = shallowRef<TocInstance>()
     const tocRect = useElementBounding(tocRef)
-    const onTOCClick = () => {
+    const onTocClick = () => {
       if (!isMiniScreen.value) return
       toc.value = false
     }
@@ -143,8 +143,8 @@ export default defineComponent({
       return {
         ...tocAttrs,
         offset: getDefaultOffset(props.tocOffset),
-        onClick: (tocItem: TOCItem) => {
-          onTOCClick()
+        onClick: (tocItem: TocItem) => {
+          onTocClick()
           emit('tocClick', tocItem)
         }
       }
@@ -254,7 +254,7 @@ export default defineComponent({
               <aside class={[addPrefix('__aside'), { [addPrefix('--mini')]: isMiniScreen.value }]}>
                 <Sticky class={addPrefix('__aside-sticky')} offset={props.topOffset}>
                   <div style={tocStyles.value.wrapper} class={addPrefix('__toc')}>
-                    <TOC
+                    <Toc
                       {...tocAttrs.value}
                       ref={tocRef}
                       style={tocStyles.value.content}
