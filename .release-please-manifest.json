@@ -1,5 +1,5 @@
 {
-  "packages/vue-markdown-design": "0.2.0",
+  "packages/vue-markdown-design": "0.3.0",
   "packages/markdown-it-headers": "0.2.0",
   "packages/markdown-it-sanitize": "0.2.0"
 }

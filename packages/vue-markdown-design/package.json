@@ -1,6 +1,6 @@
 {
   "name": "vue-markdown-design",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Vue 3 markdown component built on markdown-it.",
   "main": "src/index.ts",
   "publishConfig": {
