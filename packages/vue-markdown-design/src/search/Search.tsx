@@ -96,6 +96,7 @@ export default defineComponent({
       ]
     })
 
+    const id = `${name}-${inputId++}`
     const eventAttrs = chain(['input', 'blur', 'focus', 'change'])
       .map((key) => [`on${upperFirst(key)}`, (...arg: [any]) => emit(key as any, ...arg)])
       .fromPairs()
@@ -103,7 +104,7 @@ export default defineComponent({
     const inputAttrs = computed(() => {
       const { inputAttrs, disabled, placeholder } = props
       return {
-        id: `${name}-${inputId++}`,
+        id,
         ...omit(attrs, ['class', 'style']),
         ...inputAttrs,
         ...eventAttrs,
