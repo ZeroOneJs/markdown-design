@@ -35,5 +35,14 @@
     "vite": "catalog:",
     "vitest": "^3.0.5"
   },
+  "pnpm": {
+    "packageExtensions": {
+      "unplugin-vue-components": {
+        "peerDependencies": {
+          "vite": "^7.3.1"
+        }
+      }
+    }
+  },
   "packageManager": "pnpm@9.11.0"
 }

@@ -1,6 +1,4 @@
-English | [中文](./README.zh-CN.md)
-
-# Vue Markdown Design
+# Introduction
 
 Vue Markdown Design is an out-of-the-box Markdown rendering component for Vue 3, built on [markdown-it](https://github.com/markdown-it/markdown-it).
 
@@ -22,42 +20,16 @@ Vue Markdown Design is an out-of-the-box Markdown rendering component for Vue 3,
 
 📋 **Typings** - Written in TypeScript with complete type definitions
 
-## Quick Start
+## What is markdown-it?
 
-### Installation
+[markdown-it](https://github.com/markdown-it/markdown-it) is a JavaScript parser that converts Markdown into HTML. It is fast, secure, and highly extensible, with a rich plugin ecosystem. It is widely used in blogs, documentation sites, and editor previews.
 
-```sh
-npm i vue-markdown-design
-```
+## Community
 
-### Usage
+[Feedback](https://github.com/ZeroOneJs/markdown-design/issues)
 
-```js
-// main.js
-
-// Import component
-import VueMarkdown from 'vue-markdown-design'
-
-import { createApp } from 'vue'
-
-const app = createApp()
-
-// Register component
-app.use(VueMarkdown)
-
-app.mount('#app')
-```
-
-```vue
-<!-- App.vue -->
-
-<vue-markdown :src="`# Title\nContent`" />
-```
-
-## More
-
-For detailed documentation, visit https://markdown-design.pages.dev.
+[Changelog](https://github.com/ZeroOneJs/markdown-design/blob/main/packages/vue-markdown-design/CHANGELOG.md)
 
 ## License
 
-Released under the [MIT](./LICENSE) license.
+Released under the [MIT](https://github.com/ZeroOneJs/markdown-design/blob/main/LICENSE) license.

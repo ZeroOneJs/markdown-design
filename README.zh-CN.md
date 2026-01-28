@@ -54,7 +54,7 @@ app.mount('#app')
 
 ## 更多
 
-详细开发文档请前往 https://markdown-design.pages.dev/zh
+详细开发文档请前往 https://markdown-design.pages.dev/zh-CN
 
 ## 开源协议
 

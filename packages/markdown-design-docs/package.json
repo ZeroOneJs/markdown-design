@@ -16,7 +16,7 @@
     "less": "catalog:",
     "markdown-it-container": "^4.0.0",
     "unplugin-vue-components": "^30.0.0",
-    "vitepress": "^1.6.3",
+    "vitepress": "2.0.0-alpha.15",
     "vitepress-plugin-group-icons": "^1.6.1",
     "vue": "catalog:",
     "vue-markdown-design": "workspace:^"
