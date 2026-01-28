@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.1](https://github.com/ZeroOneJs/markdown-design/compare/vue-markdown-design-v0.3.0...vue-markdown-design-v0.3.1) (2026-01-28)
+
+
+### Bug Fixes
+
+* **search:** stabilize input element ID to prevent unnecessary updates ([2917e42](https://github.com/ZeroOneJs/markdown-design/commit/2917e42f4b99f0dc8a6aebc780f5858c840d25b7))
+
 ## [0.3.0](https://github.com/ZeroOneJs/markdown-design/compare/vue-markdown-design-v0.2.0...vue-markdown-design-v0.3.0) (2026-01-18)
 
 
