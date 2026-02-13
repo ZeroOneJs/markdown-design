@@ -1,6 +1,11 @@
 {
   "extends": "./tsconfig.app.json",
-  "include": ["packages/*/src/**/*", "packages/*/__tests__/**/*", "packages/*/cypress/**/*"],
+  "include": [
+    "packages/*/src/**/*",
+    "env.d.ts",
+    "packages/*/__tests__/**/*",
+    "packages/*/cypress/**/*"
+  ],
   "exclude": [],
   "compilerOptions": {
     "composite": true,
