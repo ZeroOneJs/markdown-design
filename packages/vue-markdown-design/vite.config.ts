@@ -22,7 +22,7 @@ export default defineConfig({
     target: 'es2015',
     copyPublicDir: false,
     minify: false,
-    rollupOptions: {
+    rolldownOptions: {
       external: ['vue', ...Object.keys(pkg.dependencies)],
       output: [
         {

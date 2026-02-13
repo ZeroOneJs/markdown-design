@@ -1,12 +1,12 @@
 import { defineConfig, mergeConfig } from 'vite'
 import pkg from './package.json'
-import baseConfig from '../../vite.config.base'
+import sharedConfig from '../../vite.shared'
 
 export default mergeConfig(
-  baseConfig,
+  sharedConfig,
   defineConfig({
     build: {
-      rollupOptions: {
+      rolldownOptions: {
         external: Object.keys(pkg.dependencies)
       }
     }
