@@ -1,0 +1,34 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Render > src 1`] = `
+<div>
+  <div
+    class="vmd-render"
+  >
+    <div
+      class="vmd-render__wrapper markdown-body vmd-render--permalink"
+    >
+      <h1
+        id="title"
+        tabindex="-1"
+      >
+        <a
+          class="vmd-render__anchor"
+          data-vmd-anchor=""
+          href="#title"
+        >
+          #
+        </a>
+        Title
+      </h1>
+      
+
+      <p>
+        This is a paragraph used to test the rendering effect of markdown.
+      </p>
+      
+
+    </div>
+  </div>
+</div>
+`;

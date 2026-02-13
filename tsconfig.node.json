@@ -1,6 +1,6 @@
 {
   "extends": "@tsconfig/node20/tsconfig.json",
-  "include": ["**/vite.*", "vitest.*", "packages/*/cypress.config.*"],
+  "include": ["**/vite.*", "vitest.*"],
   "compilerOptions": {
     "composite": true,
     "noEmit": true,

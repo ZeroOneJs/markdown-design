@@ -1,10 +1,7 @@
 {
   "private": true,
   "scripts": {
-    "test:vi": "vitest run",
-    "test:cy": "pnpm -C ./packages/vue-markdown-design test",
-    "test:dev": "pnpm -C ./packages/vue-markdown-design test:dev",
-    "test": "run-p test:vi test:cy",
+    "test": "vitest",
     "docs:dev": "pnpm -C ./packages/markdown-design-docs dev",
     "docs:build": "pnpm -C ./packages/markdown-design-docs build",
     "build": "pnpm -r --filter=!markdown-design-docs build",
@@ -19,21 +16,24 @@
     "@commitlint/config-conventional": "^19.8.1",
     "@rushstack/eslint-patch": "^1.8.0",
     "@tsconfig/node20": "^20.1.4",
-    "@types/jsdom": "^21.1.7",
     "@types/node": "^20.14.5",
-    "@vitest/coverage-istanbul": "^4.0.18",
+    "@vitest/browser-playwright": "^4.1.0",
+    "@vitest/coverage-v8": "^4.1.0",
+    "@vitest/ui": "^4.1.0",
     "@vue/eslint-config-prettier": "^9.0.0",
     "@vue/eslint-config-typescript": "^13.0.0",
+    "@vue/test-utils": "^2.4.6",
     "@vue/tsconfig": "^0.5.1",
     "eslint": "^8.57.0",
     "eslint-plugin-vue": "^9.23.0",
     "husky": "^9.1.7",
-    "jsdom": "^24.1.0",
     "lint-staged": "^16.0.0",
     "npm-run-all2": "catalog:",
+    "playwright": "^1.58.2",
     "prettier": "^3.2.5",
     "vite": "catalog:",
-    "vitest": "^4.1.0"
+    "vitest": "^4.1.0",
+    "vitest-browser-vue": "^2.0.2"
   },
   "packageManager": "pnpm@9.11.0"
 }
