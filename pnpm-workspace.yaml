@@ -5,9 +5,9 @@ catalog:
   '@types/markdown-it': ^14.1.2
   'markdown-it': ^14.1.0
   'npm-run-all2': ^6.2.0
-  'vite': ^5.3.1
+  'vite': ^7.3.1
   'typescript': ~5.4.0
   'less': ^4.2.0
-  '@vitejs/plugin-vue-jsx': '^4.0.0'
+  '@vitejs/plugin-vue-jsx': '^5.1.4'
   'vue': '^3.4.29'
   'highlight.js': '^11.10.0'
