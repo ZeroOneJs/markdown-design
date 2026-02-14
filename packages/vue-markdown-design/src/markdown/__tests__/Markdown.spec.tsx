@@ -8,7 +8,7 @@ import { page, userEvent } from 'vitest/browser'
 import Markdown, { type MarkdownInstance } from '..'
 import MarkdownIt from 'markdown-it'
 import { cleanup, render } from 'vitest-browser-vue'
-import { afterEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, describe, expect, test, vi } from 'vitest'
 import { defineComponent, nextTick, reactive, ref, type Ref } from 'vue'
 import { scrollToTop } from '../../__tests__/vitest-utils'
 
@@ -53,36 +53,37 @@ import poemMd from '../../__tests__/fixtures/commonmark/poem.md?raw'
 // }
 
 describe('Markdown', () => {
-  it.only('keyword/update:keyword', async () => {
-    const onUpdateKeyword = vi.fn()
-    const { getByRole } = render(<Markdown src={keywordMd} search />)
-    const input = getByRole('textbox')
-    await input.fill('Keyword')
-    await expect.poll(() => onUpdateKeyword.mock.calls.some((c) => c[0] === 'Keyword')).toBe(true)
-    await expect.poll(() => document.querySelectorAll('mark.vmd-search--mark').length).toBe(3)
-    await expect.poll(() => !!document.querySelector('.vmd-search--highlight')).toBe(true)
+  test('keyword/update:keyword', async () => {
+    const { getByRole, emitted } = render(<Markdown src={keywordMd} search />)
+    await getByRole('textbox').fill('Keyword')
+    expect(emitted()['update:keyword']).toBeDefined()
+    const mark = getByRole('mark')
+    await expect.element(mark).toHaveLength(3)
+    await expect.element(mark.first()).toHaveClass('vmd-search--highlight')
   })
 
   describe('showBtn', () => {
-    it('boolean', () => {
-      render(() => <Markdown showBtn />)
-      expect(document.querySelector('.vmd-markdown__btn')).toBeTruthy()
+    test('boolean', async () => {
+      const { getByRole } = render(<Markdown showBtn />)
+      await expect.element(getByRole('button')).toHaveLength(2)
     })
 
-    it('array', () => {
-      render(() => <Markdown showBtn={['toc']} />)
-      expect(document.querySelector('.vmd-markdown__btn-toc')).toBeTruthy()
-      expect(document.querySelector('.vmd-markdown__btn-search')).toBeNull()
+    test('array', async () => {
+      const { getByRole } = render(<Markdown showBtn={['toc']} />)
+      const button = getByRole('button')
+      await expect.element(button).toHaveClass('vmd-markdown__btn-toc')
+      await expect.element(button).not.toHaveClass('vmd-markdown__btn-search')
     })
 
-    it('object', () => {
-      render(() => <Markdown showBtn={{ search: true }} />)
-      expect(document.querySelector('.vmd-markdown__btn-search')).toBeTruthy()
-      expect(document.querySelector('.vmd-markdown__btn-toc')).toBeNull()
+    test('object', async () => {
+      const { getByRole } = render(<Markdown showBtn={{ search: true }} />)
+      const button = getByRole('button')
+      await expect.element(button).toHaveClass('vmd-markdown__btn-search')
+      await expect.element(button).not.toHaveClass('vmd-markdown__btn-toc')
     })
   })
 
-  it('search/update:search', async () => {
+  test('search/update:search', async () => {
     const onUpdateSearch = vi.fn()
     render(() => <Markdown search showBtn onUpdate:search={onUpdateSearch} />)
     await expect.element(page.getByRole('textbox')).toBeInTheDocument()
@@ -93,7 +94,7 @@ describe('Markdown', () => {
     await expect.poll(() => document.querySelector('.vmd-markdown__search')).toBeNull()
   })
 
-  it('toc/update:toc', async () => {
+  test('toc/update:toc', async () => {
     const onUpdateToc = vi.fn()
     render(() => <Markdown toc showBtn onUpdate:toc={onUpdateToc} />)
     await expect.poll(() => !!document.querySelector('.vmd-markdown__toc')).toBe(true)
@@ -104,7 +105,7 @@ describe('Markdown', () => {
     await expect.poll(() => document.querySelector('.vmd-markdown__toc')).toBeNull()
   })
 
-  it('topOffset', async () => {
+  test('topOffset', async () => {
     const id = 'the-tyger'
     const { setProps } = renderMarkdown(
       {
@@ -170,7 +171,7 @@ describe('Markdown', () => {
       .toBeLessThanOrEqual(1)
   })
 
-  it('bottomOffset', async () => {
+  test('bottomOffset', async () => {
     window.scrollTo(0, 0)
     render(() => <Markdown showBtn src={poemMd} bottomOffset="60" />)
     const btn = document.querySelector<HTMLElement>('.vmd-markdown__btn')
@@ -186,7 +187,7 @@ describe('Markdown', () => {
       .toBe(true)
   })
 
-  it('miniScreenWidth', async () => {
+  test('miniScreenWidth', async () => {
     renderWithWidth(768, () => <Markdown toc />)
     await expect
       .poll(() =>
@@ -197,7 +198,7 @@ describe('Markdown', () => {
       .toBe(true)
   })
 
-  it('searchOffset', async () => {
+  test('searchOffset', async () => {
     window.scrollTo(0, 0)
     render(() => <Markdown src={poemMd} keyword="Perched" search searchOffset={60} />)
     await expect
@@ -218,7 +219,7 @@ describe('Markdown', () => {
       .toBeLessThanOrEqual(1)
   })
 
-  it('searchSmooth', async () => {
+  test('searchSmooth', async () => {
     window.scrollTo(0, 0)
     render(() => <Markdown src={poemMd} keyword="Perched" search searchSmooth searchOffset={0} />)
     await expect
@@ -240,7 +241,7 @@ describe('Markdown', () => {
     expect(sawNonZero).toBe(true)
   })
 
-  it('tocOffset', async () => {
+  test('tocOffset', async () => {
     window.scrollTo(0, 0)
     const id = 'the-tyger'
     render(() => <Markdown src={poemMd} toc tocOffset={60} />)
@@ -256,7 +257,7 @@ describe('Markdown', () => {
       .toBeLessThanOrEqual(1)
   })
 
-  it('tocBound', async () => {
+  test('tocBound', async () => {
     render(() => <Markdown src={poemMd} toc tocBound={60} />)
     const el = document.querySelector<HTMLElement>('[id=the-tyger]')
     expect(el).toBeTruthy()
@@ -267,7 +268,7 @@ describe('Markdown', () => {
       .toContain('The Tyger')
   })
 
-  it('tocSmooth', async () => {
+  test('tocSmooth', async () => {
     window.scrollTo(0, 0)
     const id = 'the-raven'
     render(() => <Markdown src={poemMd} toc tocSmooth />)
@@ -285,7 +286,7 @@ describe('Markdown', () => {
     expect(sawNonZero).toBe(true)
   })
 
-  it('tocPlainText', async () => {
+  test('tocPlainText', async () => {
     render(() => <Markdown src={miniMd} toc tocPlainText />)
     await expect.poll(() => document.querySelector<HTMLElement>('.vmd-toc__item')).toBeTruthy()
     const item = document.querySelector<HTMLElement>('.vmd-toc__item')!
@@ -293,14 +294,14 @@ describe('Markdown', () => {
     expect(item.querySelector('span')).toBeTruthy()
   })
 
-  it('tocChangeHash', async () => {
+  test('tocChangeHash', async () => {
     const id = 'title'
     render(() => <Markdown src={miniMd} toc tocChangeHash={false} />)
     await page.getByRole('link', { name: 'Title' }).click()
     await expect.poll(() => window.location.hash).not.toBe(`#${id}`)
   })
 
-  it('tocClick', async () => {
+  test('tocClick', async () => {
     const id = 'title'
     const onTocClick = vi.fn()
     render(() => <Markdown src={miniMd} toc onTocClick={onTocClick} />)
@@ -309,7 +310,7 @@ describe('Markdown', () => {
     expect(onTocClick).toHaveBeenCalledWith(expect.objectContaining({ id }))
   })
 
-  it('tocChange', async () => {
+  test('tocChange', async () => {
     const id = 'the-tyger'
     const onTocChange = vi.fn()
     render(() => <Markdown src={poemMd} toc onTocChange={onTocChange} />)
@@ -319,7 +320,7 @@ describe('Markdown', () => {
     await expect.poll(() => onTocChange.mock.calls.some((c) => c[0] === id)).toBe(true)
   })
 
-  it('tocRefresh', async () => {
+  test('tocRefresh', async () => {
     const { instance } = renderMarkdown({ src: '# Old Title', toc: true })
     await expect.poll(() => document.querySelector<HTMLElement>('[id=old-title]')).toBeTruthy()
     const el = document.querySelector<HTMLElement>('[id=old-title]')!
@@ -330,7 +331,7 @@ describe('Markdown', () => {
     expect(text).toContain('New Title')
   })
 
-  it('tocScrollTo', async () => {
+  test('tocScrollTo', async () => {
     window.scrollTo(0, 0)
     const id = 'the-tyger'
     const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {})
@@ -366,7 +367,7 @@ describe('Markdown', () => {
       .toContain('The Tyger')
   })
 
-  it('toc 随 src 内容更改', async () => {
+  test('toc 随 src 内容更改', async () => {
     const { setProps } = renderMarkdown({ src: '# Old Title', toc: true })
     await expect
       .poll(() => document.querySelector<HTMLElement>('.vmd-toc__text')?.textContent)
@@ -377,7 +378,7 @@ describe('Markdown', () => {
       .toContain('New Title')
   })
 
-  it('小屏幕点选目录时目录自动关闭', async () => {
+  test('小屏幕点选目录时目录自动关闭', async () => {
     const { container } = renderWithWidth(768, () => <Markdown src={'# Title'} toc />)
     await expect.poll(() => !!container.querySelector('.vmd-markdown__aside')).toBe(true)
     const text = container.querySelector<HTMLElement>('.vmd-toc__text')
@@ -386,7 +387,7 @@ describe('Markdown', () => {
     await expect.poll(() => container.querySelector('.vmd-markdown__aside')).toBeNull()
   })
 
-  it('searchBlur/searchFocus', async () => {
+  test('searchBlur/searchFocus', async () => {
     const { instance } = renderMarkdown({ search: true })
     await expect.poll(() => !!instance.value).toBe(true)
     instance.value!.searchFocus()
@@ -395,14 +396,14 @@ describe('Markdown', () => {
     await expect.element(page.getByRole('textbox')).not.toHaveFocus()
   })
 
-  it('searchClear', async () => {
+  test('searchClear', async () => {
     const { instance } = renderMarkdown({ search: true, keyword: 'keyword' })
     await expect.poll(() => !!instance.value).toBe(true)
     instance.value!.searchClear()
     await expect.element(page.getByRole('textbox')).toHaveValue('')
   })
 
-  it('searchClose', async () => {
+  test('searchClose', async () => {
     const onSearchClose = vi.fn()
     render(() => <Markdown search onSearchClose={onSearchClose} />)
     const closeBtn = document.querySelector<HTMLElement>('.vmd-search__close')
@@ -412,7 +413,7 @@ describe('Markdown', () => {
   })
 
   describe('searchToggle', () => {
-    it('string', async () => {
+    test('string', async () => {
       const { instance } = renderMarkdown({ src: keywordMd, keyword: 'Keyword', search: true })
       await expect
         .poll(() => document.querySelectorAll('.vmd-search--mark').length)
@@ -445,7 +446,7 @@ describe('Markdown', () => {
       ).toBe(false)
     })
 
-    it('number', async () => {
+    test('number', async () => {
       const { instance } = renderMarkdown({ src: keywordMd, keyword: 'Keyword', search: true })
       await expect
         .poll(() => document.querySelectorAll('.vmd-search--mark').length)
@@ -465,7 +466,7 @@ describe('Markdown', () => {
       ).toBe(true)
     })
 
-    it('ignoreDisabled', async () => {
+    test('ignoreDisabled', async () => {
       const { instance } = renderMarkdown({
         src: keywordMd,
         keyword: 'Keyword',
@@ -491,7 +492,7 @@ describe('Markdown', () => {
     })
   })
 
-  it('searchTotalChange', async () => {
+  test('searchTotalChange', async () => {
     const onSearchTotalChange = vi.fn()
     render(() => (
       <Markdown
@@ -505,7 +506,7 @@ describe('Markdown', () => {
     expect(onSearchTotalChange).toHaveBeenCalledWith(2)
   })
 
-  it('searchIndexChange:', async () => {
+  test('searchIndexChange:', async () => {
     const onSearchIndexChange = vi.fn()
     render(() => (
       <Markdown
@@ -521,7 +522,7 @@ describe('Markdown', () => {
     await expect.poll(() => onSearchIndexChange.mock.calls.some((c) => c[0] === 1)).toBe(true)
   })
 
-  it('mdInstance', async () => {
+  test('mdInstance', async () => {
     const { instance } = renderMarkdown({})
     await expect.poll(() => !!instance.value).toBe(true)
     expect(instance.value!.mdInstance).toBeInstanceOf(MarkdownIt)
