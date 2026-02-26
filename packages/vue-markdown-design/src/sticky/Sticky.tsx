@@ -36,14 +36,13 @@ export default defineComponent({
 
     const rootStyle = computed(() => {
       const { flow, posY, posX, zIndex, offset } = props
-      const base = { [posY]: addUnit(Number(offset)), zIndex }
-      if (flow) return base
-      const margin = posX === 'right' ? 'marginLeft' : 'marginRight'
-      return {
-        ...base,
-        [margin]: 'auto',
-        width: addUnit(wrapperBounding.width.value)
+      const style = { [posY]: addUnit(Number(offset)), zIndex }
+      if (!flow) {
+        style[posX === 'right' ? 'marginLeft' : 'marginRight'] = 'auto'
+        const width = wrapperBounding.width.value
+        if (width) style.width = addUnit(width)
       }
+      return style
     })
 
     const wrapperStyle = computed(() => {
