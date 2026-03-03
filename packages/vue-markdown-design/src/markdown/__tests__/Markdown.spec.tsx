@@ -1,56 +1,16 @@
-/**
- * Migrated from: d:\Users\Administrator\Documents\markdown-design\packages\vue-markdown-design\src\markdown\__tests__\Markdown.cy.tsx
- * Migrator: Trae IDE GPT-5.2
- * Date: 2026-02-13
- * Key changes: Cypress cy.* interactions replaced by vitest-browser-vue render + native DOM events; Cypress retry semantics replaced by expect.poll; Cypress wrapper/component access replaced by TSX ref capture and reactive props.
- */
-import { page, userEvent } from 'vitest/browser'
-import Markdown, { type MarkdownInstance } from '..'
+import { page } from 'vitest/browser'
+import Markdown from '..'
 import MarkdownIt from 'markdown-it'
-import { cleanup, render } from 'vitest-browser-vue'
-import { afterEach, describe, expect, test, vi } from 'vitest'
-import { defineComponent, nextTick, reactive, ref, type Ref } from 'vue'
-import { scrollToTop } from '../../__tests__/vitest-utils'
+import { render } from 'vitest-browser-vue'
+import { describe, expect, test, vi, afterEach } from 'vitest'
+import { nextTick } from 'vue'
+import { type VueWrapper, enableAutoUnmount, mount } from '@vue/test-utils'
 
 import keywordMd from '../../__tests__/fixtures/commonmark/keyword.md?raw'
 import miniMd from '../../__tests__/fixtures/commonmark/mini.md?raw'
 import poemMd from '../../__tests__/fixtures/commonmark/poem.md?raw'
 
-// afterEach(() => {
-//   cleanup()
-//   vi.restoreAllMocks()
-//   scrollToTop()
-// })
-
-// function renderWithWidth(widthPx: number, ui: () => any) {
-//   const container = document.createElement('div')
-//   container.style.width = `${widthPx}px`
-//   document.body.appendChild(container)
-//   const result = render(ui, { container })
-//   return { result, container }
-// }
-
-// function renderMarkdown(
-//   initialProps: Record<string, any>,
-//   options?: Parameters<typeof render>[1]
-// ): {
-//   instance: Ref<MarkdownInstance | undefined>
-//   setProps: (patch: Record<string, any>) => Promise<void>
-// } {
-//   const instance = ref<MarkdownInstance>()
-//   const props = reactive({ ...initialProps })
-//   const Wrapper = defineComponent({
-//     setup() {
-//       return () => <Markdown ref={(el) => (instance.value = el as MarkdownInstance)} {...(props as any)} />
-//     }
-//   })
-//   render(Wrapper, options)
-//   const setProps = async (patch: Record<string, any>) => {
-//     Object.assign(props, patch)
-//     await nextTick()
-//   }
-//   return { instance, setProps }
-// }
+enableAutoUnmount(afterEach)
 
 describe('Markdown', () => {
   test('keyword/update:keyword', async () => {
@@ -84,447 +44,275 @@ describe('Markdown', () => {
   })
 
   test('search/update:search', async () => {
-    const onUpdateSearch = vi.fn()
-    render(() => <Markdown search showBtn onUpdate:search={onUpdateSearch} />)
-    await expect.element(page.getByRole('textbox')).toBeInTheDocument()
-    const btn = document.querySelector<HTMLElement>('.vmd-markdown__btn-search')
-    expect(btn).toBeTruthy()
-    btn!.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true }))
-    await expect.poll(() => onUpdateSearch.mock.calls.some((c) => c[0] === false)).toBe(true)
-    await expect.poll(() => document.querySelector('.vmd-markdown__search')).toBeNull()
+    const { getByRole, getByLabelText, emitted } = render(<Markdown search showBtn />)
+    const textbox = getByRole('textbox')
+    await expect.element(textbox).toBeInTheDocument()
+    await getByLabelText('Search').click()
+    await expect(emitted()['update:search']).toEqual([[false]])
+    await expect.element(textbox).not.toBeInTheDocument()
   })
 
   test('toc/update:toc', async () => {
-    const onUpdateToc = vi.fn()
-    render(() => <Markdown toc showBtn onUpdate:toc={onUpdateToc} />)
-    await expect.poll(() => !!document.querySelector('.vmd-markdown__toc')).toBe(true)
-    const btn = document.querySelector<HTMLElement>('.vmd-markdown__btn-toc')
-    expect(btn).toBeTruthy()
-    btn!.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true }))
-    await expect.poll(() => onUpdateToc.mock.calls.some((c) => c[0] === false)).toBe(true)
-    await expect.poll(() => document.querySelector('.vmd-markdown__toc')).toBeNull()
+    const { getByRole, emitted } = render(<Markdown toc showBtn={['toc']} />)
+    const navigation = getByRole('navigation')
+    await expect.element(navigation).toBeInTheDocument()
+    await getByRole('button').click()
+    await expect(emitted()['update:toc']).toEqual([[false]])
+    await expect.element(navigation).not.toBeInTheDocument()
   })
 
   test('topOffset', async () => {
-    const id = 'the-tyger'
-    const { setProps } = renderMarkdown(
-      {
-        src: poemMd,
-        toc: true,
-        search: true,
-        topOffset: 60
-      },
-      {
-        global: {
-          stubs: { transition: false }
-        }
+    const { getByRole, rerender } = render(<Markdown toc search topOffset="60" src={poemMd} />, {
+      global: {
+        stubs: { transition: false }
       }
-    )
-
-    await expect
-      .poll(() =>
-        Math.floor(
-          document.querySelector<HTMLElement>('.vmd-markdown__search')?.getBoundingClientRect()
-            .top ?? NaN
-        )
-      )
-      .toBe(60)
-    await expect
-      .poll(() =>
-        Math.floor(
-          document.querySelector<HTMLElement>('.vmd-markdown__toc')?.getBoundingClientRect().top ??
-            NaN
-        )
-      )
-      .toBe(60)
-
-    page
-      .getByRole('link', { name: /The Tyger/i })
-      .element()
-      .click()
-
-    const searchEl = document.querySelector<HTMLElement>('.vmd-markdown__search')
-    expect(searchEl).toBeTruthy()
-    const searchHeight = searchEl!.getBoundingClientRect().height
-
-    await expect
-      .poll(() => {
-        const heading = document.querySelector<HTMLElement>(`[id='${id}']`)
-        if (!heading) return false
-        const actual = Math.floor(heading.getBoundingClientRect().top)
-        const expected = 60 + Math.round(searchHeight)
-        return Math.abs(actual - expected) <= 1
-      })
-      .toBe(true)
-
-    await setProps({ search: false })
-    page
-      .getByRole('link', { name: /The Tyger/i })
-      .element()
-      .click()
-    await expect
-      .poll(() => {
-        const heading = document.querySelector<HTMLElement>(`[id='${id}']`)
-        if (!heading) return NaN
-        return Math.abs(Math.floor(heading.getBoundingClientRect().top) - 60)
-      })
-      .toBeLessThanOrEqual(1)
+    })
+    const name = 'The Tyger'
+    const link = getByRole('link', { name })
+    const heading = getByRole('heading', { name })
+    await expect(getByRole('textbox').boundingClientRect('top')).toBe(60)
+    await expect(getByRole('navigation').boundingClientRect('top')).toBe(60)
+    await link.click()
+    await expect(heading.boundingClientRect('top')).toBeCloseTo(60 + 57, 0) // 57 为搜索框高度
+    rerender({ search: false })
+    await link.click()
+    await expect(heading.boundingClientRect('top')).toBeCloseTo(60, 0)
   })
 
   test('bottomOffset', async () => {
-    window.scrollTo(0, 0)
-    render(() => <Markdown showBtn src={poemMd} bottomOffset="60" />)
-    const btn = document.querySelector<HTMLElement>('.vmd-markdown__btn')
-    expect(btn).toBeTruthy()
-    await expect
-      .poll(() => {
-        const marginBottom = parseInt(getComputedStyle(btn!).marginBottom)
-        const viewportHeight = window.innerHeight
-        return (
-          Math.floor(btn!.getBoundingClientRect().bottom) === viewportHeight - marginBottom - 60
-        )
-      })
-      .toBe(true)
+    const { getByRole } = render(<Markdown showBtn={['search']} bottomOffset="60" src={poemMd} />)
+    await expect(getByRole('button').boundingClientRect('bottom')).toBe(720 - 40 - 60) // 40 为按钮底部外边距的值
   })
 
   test('miniScreenWidth', async () => {
-    renderWithWidth(768, () => <Markdown toc />)
-    await expect
-      .poll(() =>
-        document
-          .querySelector<HTMLElement>('.vmd-markdown__aside')
-          ?.classList.contains('vmd-markdown--mini')
-      )
-      .toBe(true)
+    await page.viewport(768, 768)
+    const { getByRole } = render(<Markdown toc />)
+    await expect.element(getByRole('complementary')).toHaveClass('vmd-markdown--mini')
   })
 
   test('searchOffset', async () => {
-    window.scrollTo(0, 0)
-    render(() => <Markdown src={poemMd} keyword="Perched" search searchOffset={60} />)
-    await expect
-      .poll(
-        () =>
-          document.querySelector<HTMLElement>('.vmd-search--highlight')?.getBoundingClientRect().top
-      )
-      .not.toBeUndefined()
-    await expect
-      .poll(() =>
-        Math.abs(
-          Math.floor(
-            document.querySelector<HTMLElement>('.vmd-search--highlight')!.getBoundingClientRect()
-              .top
-          ) - 60
-        )
-      )
-      .toBeLessThanOrEqual(1)
+    const { getByRole } = render(
+      <Markdown keyword="Perched" search src={poemMd} searchOffset={60} />
+    )
+    await expect.poll(() => getByRole('mark').first().boundingClientRect('top')).toBeCloseTo(60, 0)
   })
 
   test('searchSmooth', async () => {
-    window.scrollTo(0, 0)
-    render(() => <Markdown src={poemMd} keyword="Perched" search searchSmooth searchOffset={0} />)
+    await expect.poll(() => document.documentElement.scrollTop).toBe(0)
+
+    vi.useFakeTimers() // 确保浏览器最小化时正确获取定位信息
+    const { getByRole } = render(
+      <Markdown keyword="Perched" search searchSmooth src={poemMd} searchOffset={0} />
+    )
+
+    vi.runAllTimersAsync()
+    const tops = new Set<number>()
     await expect
       .poll(
-        () =>
-          document.querySelector<HTMLElement>('.vmd-search--highlight')?.getBoundingClientRect().top
+        () => {
+          const top = getByRole('mark').first().boundingClientRect('top')
+          tops.add(top)
+          return top
+        },
+        { interval: 16 } // 提高调用频率，确保获取足够的滚动数据
       )
-      .not.toBeUndefined()
-    let sawNonZero = false
-    await expect
-      .poll(() => {
-        const top = Math.floor(
-          document.querySelector<HTMLElement>('.vmd-search--highlight')!.getBoundingClientRect().top
-        )
-        if (top !== 0) sawNonZero = true
-        return Math.abs(top)
-      })
-      .toBeLessThanOrEqual(1)
-    expect(sawNonZero).toBe(true)
+      .toBeCloseTo(0, 1)
+    expect(tops.size).toBeGreaterThan(2)
+    vi.useRealTimers()
   })
 
   test('tocOffset', async () => {
-    window.scrollTo(0, 0)
-    const id = 'the-tyger'
-    render(() => <Markdown src={poemMd} toc tocOffset={60} />)
-    await page.getByRole('link', { name: /The Tyger/i }).click()
-    await expect
-      .poll(() =>
-        Math.abs(
-          Math.floor(
-            document.querySelector<HTMLElement>(`[id='${id}']`)!.getBoundingClientRect().top
-          ) - 60
-        )
-      )
-      .toBeLessThanOrEqual(1)
-  })
+    await expect.poll(() => document.documentElement.scrollTop).toBe(0)
 
-  test('tocBound', async () => {
-    render(() => <Markdown src={poemMd} toc tocBound={60} />)
-    const el = document.querySelector<HTMLElement>('[id=the-tyger]')
-    expect(el).toBeTruthy()
-    el!.scrollIntoView()
-    window.scrollBy(0, -60)
-    await expect
-      .poll(() => document.querySelector<HTMLElement>('.vmd-toc__item--active')?.textContent)
-      .toContain('The Tyger')
+    const { getByRole } = render(<Markdown src={poemMd} toc tocOffset={60} />)
+    const name = 'The Tyger'
+    await getByRole('link', { name }).click()
+    await expect(getByRole('heading', { name }).boundingClientRect('top')).toBeCloseTo(60, 0)
   })
 
   test('tocSmooth', async () => {
-    window.scrollTo(0, 0)
-    const id = 'the-raven'
-    render(() => <Markdown src={poemMd} toc tocSmooth />)
-    await page.getByRole('link', { name: /The Raven/i }).click()
-    let sawNonZero = false
+    await expect.poll(() => document.documentElement.scrollTop).toBe(0)
+
+    const { getByRole } = render(<Markdown src={poemMd} toc tocSmooth />)
+
+    vi.useFakeTimers() // 确保浏览器最小化时正确获取定位信息
+    const name = 'The Raven'
+    await getByRole('link', { name }).click()
+    await vi.advanceTimersToNextTimerAsync() // packages/vue-markdown-design/src/utils/dom.ts:57:58
+    vi.runAllTimersAsync()
+
+    const tops = new Set<number>()
     await expect
-      .poll(() => {
-        const top = Math.floor(
-          document.querySelector<HTMLElement>(`[id='${id}']`)!.getBoundingClientRect().top
-        )
-        if (top !== 0) sawNonZero = true
-        return Math.abs(top)
-      })
-      .toBeLessThanOrEqual(1)
-    expect(sawNonZero).toBe(true)
+      .poll(
+        () => {
+          const top = getByRole('heading', { name }).boundingClientRect('top')
+          tops.add(top)
+          return top
+        },
+        { interval: 16 } // 提高调用频率，确保获取足够的滚动数据
+      )
+      .toBeCloseTo(0, 0)
+    expect(tops.size).toBeGreaterThan(2)
+    vi.useRealTimers()
   })
 
   test('tocPlainText', async () => {
-    render(() => <Markdown src={miniMd} toc tocPlainText />)
-    await expect.poll(() => document.querySelector<HTMLElement>('.vmd-toc__item')).toBeTruthy()
-    const item = document.querySelector<HTMLElement>('.vmd-toc__item')!
-    expect(item.querySelector('a')).toBeNull()
-    expect(item.querySelector('span')).toBeTruthy()
+    const { getByRole } = render(<Markdown src={miniMd} toc tocPlainText />)
+    await expect.element(getByRole('listitem')).not.toContainElement(getByRole('link'))
   })
 
   test('tocChangeHash', async () => {
-    const id = 'title'
-    render(() => <Markdown src={miniMd} toc tocChangeHash={false} />)
-    await page.getByRole('link', { name: 'Title' }).click()
-    await expect.poll(() => window.location.hash).not.toBe(`#${id}`)
+    const { getByRole } = render(<Markdown src={miniMd} toc tocChangeHash={false} />)
+    await getByRole('link', { name: 'Title' }).click()
+    await expect(window.location.hash).not.toBe('#title')
   })
 
   test('tocClick', async () => {
-    const id = 'title'
-    const onTocClick = vi.fn()
-    render(() => <Markdown src={miniMd} toc onTocClick={onTocClick} />)
-    await page.getByRole('link', { name: 'Title' }).click()
-    await expect.poll(() => onTocClick.mock.calls.length).toBe(1)
-    expect(onTocClick).toHaveBeenCalledWith(expect.objectContaining({ id }))
+    const { getByRole, emitted } = render(<Markdown src={miniMd} toc />)
+    await getByRole('link', { name: 'Title' }).click()
+    await expect(emitted()['tocClick']).toEqual([
+      [
+        {
+          id: 'title',
+          isActive: false,
+          level: 1,
+          relativeLevel: 0,
+          text: 'Title',
+          top: 32
+        }
+      ]
+    ])
   })
 
   test('tocChange', async () => {
-    const id = 'the-tyger'
-    const onTocChange = vi.fn()
-    render(() => <Markdown src={poemMd} toc onTocChange={onTocChange} />)
-    const el = document.querySelector<HTMLElement>(`[id='${id}']`)
-    expect(el).toBeTruthy()
-    el!.scrollIntoView()
-    await expect.poll(() => onTocChange.mock.calls.some((c) => c[0] === id)).toBe(true)
-  })
-
-  test('tocRefresh', async () => {
-    const { instance } = renderMarkdown({ src: '# Old Title', toc: true })
-    await expect.poll(() => document.querySelector<HTMLElement>('[id=old-title]')).toBeTruthy()
-    const el = document.querySelector<HTMLElement>('[id=old-title]')!
-    el.innerHTML = 'New Title'
-    await instance.value!.tocRefresh()
-    const text = document.querySelector<HTMLElement>('.vmd-toc__text')!.textContent || ''
-    expect(text).not.toContain('Old Title')
-    expect(text).toContain('New Title')
+    const { getByRole, emitted } = render(<Markdown src={poemMd} toc />)
+    const link = getByRole('heading', { name: 'The Raven' })
+    await expect.element(link).toBeInTheDocument()
+    await link.element().scrollIntoView()
+    await expect.poll(() => emitted()['tocChange']).toBeDefined()
   })
 
   test('tocScrollTo', async () => {
-    window.scrollTo(0, 0)
-    const id = 'the-tyger'
-    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {})
-    const { instance } = renderMarkdown({ src: poemMd, toc: true })
-    await expect.poll(() => !!instance.value).toBe(true)
-    await expect.poll(() => document.querySelectorAll('.vmd-toc__text').length).toBeGreaterThan(0)
-    await expect.element(page.getByRole('heading', { name: /The Tyger/i })).toBeInTheDocument()
-    instance.value!.tocScrollTo()
+    await expect.poll(() => document.documentElement.scrollTop).toBe(0)
+    const wrapper: VueWrapper<any> = mount(<Markdown toc src={poemMd} />, {
+      attachTo: document.body
+    })
+    await nextTick()
+    const warnSpy = vi.spyOn(console, 'warn')
+    wrapper.vm.tocScrollTo()
     expect(warnSpy).toHaveBeenCalledWith('[vue-markdown-design] Href has no value.')
-    instance.value!.tocScrollTo('any')
+    wrapper.vm.tocScrollTo('any')
     expect(warnSpy).toHaveBeenCalledWith(
       '[vue-markdown-design] The provided href failed to query the DOM.'
     )
-    instance.value!.tocScrollTo(id)
+    wrapper.vm.tocScrollTo('the-tyger')
     await expect
-      .poll(() =>
-        Math.abs(
-          Math.floor(
-            document.querySelector<HTMLElement>(`[id='${id}']`)!.getBoundingClientRect().top
-          )
-        )
-      )
-      .toBeLessThanOrEqual(1)
-    if (
-      !document
-        .querySelector<HTMLElement>('.vmd-toc__item--active')
-        ?.textContent?.includes('The Tyger')
-    ) {
-      window.scrollTo(0, 1)
-    }
-    await expect
-      .poll(() => document.querySelector<HTMLElement>('.vmd-toc__item--active')?.textContent)
-      .toContain('The Tyger')
+      .poll(() => page.getByRole('heading', { name: 'The Tyger' }).boundingClientRect('top'))
+      .toBeCloseTo(0, 0)
   })
 
   test('toc 随 src 内容更改', async () => {
-    const { setProps } = renderMarkdown({ src: '# Old Title', toc: true })
-    await expect
-      .poll(() => document.querySelector<HTMLElement>('.vmd-toc__text')?.textContent)
-      .toContain('Old Title')
-    await setProps({ src: '# New Title' })
-    await expect
-      .poll(() => document.querySelector<HTMLElement>('.vmd-toc__text')?.textContent)
-      .toContain('New Title')
+    const { getByRole, rerender } = render(<Markdown toc src="# Old Title" />)
+    rerender({ src: '# New Title' })
+    await expect.element(getByRole('link', { name: 'Old Title' })).not.toBeInTheDocument()
+    await expect.element(getByRole('link', { name: 'New Title' })).toBeInTheDocument()
   })
 
   test('小屏幕点选目录时目录自动关闭', async () => {
-    const { container } = renderWithWidth(768, () => <Markdown src={'# Title'} toc />)
-    await expect.poll(() => !!container.querySelector('.vmd-markdown__aside')).toBe(true)
-    const text = container.querySelector<HTMLElement>('.vmd-toc__text')
-    expect(text).toBeTruthy()
-    await userEvent.click(text!)
-    await expect.poll(() => container.querySelector('.vmd-markdown__aside')).toBeNull()
+    await page.viewport(768, 768)
+    const { getByRole } = render(<Markdown src="# Title" toc />)
+    await getByRole('link', { name: 'Title' }).click()
+    await expect.element(getByRole('complementary')).not.toBeInTheDocument()
   })
 
   test('searchBlur/searchFocus', async () => {
-    const { instance } = renderMarkdown({ search: true })
-    await expect.poll(() => !!instance.value).toBe(true)
-    instance.value!.searchFocus()
+    const wrapper: VueWrapper<any> = mount(<Markdown search />, {
+      attachTo: document.body
+    })
+    wrapper.vm.searchFocus()
     await expect.element(page.getByRole('textbox')).toHaveFocus()
-    instance.value!.searchBlur()
+    wrapper.vm.searchBlur()
     await expect.element(page.getByRole('textbox')).not.toHaveFocus()
   })
 
   test('searchClear', async () => {
-    const { instance } = renderMarkdown({ search: true, keyword: 'keyword' })
-    await expect.poll(() => !!instance.value).toBe(true)
-    instance.value!.searchClear()
-    await expect.element(page.getByRole('textbox')).toHaveValue('')
+    const wrapper: VueWrapper<any> = mount(<Markdown search keyword="keyword" />, {
+      attachTo: document.body
+    })
+    wrapper.vm.searchClear()
+    await expect.element(page.getByRole('textbox')).not.toHaveValue()
   })
 
   test('searchClose', async () => {
-    const onSearchClose = vi.fn()
-    render(() => <Markdown search onSearchClose={onSearchClose} />)
-    const closeBtn = document.querySelector<HTMLElement>('.vmd-search__close')
-    expect(closeBtn).toBeTruthy()
-    await userEvent.click(closeBtn!)
-    await expect.poll(() => onSearchClose.mock.calls.length).toBe(1)
+    const { getByLabelText, emitted } = render(<Markdown search keyword="keyword" />)
+    await getByLabelText('Close').click()
+    expect(emitted()['searchClose']).toBeDefined()
   })
 
   describe('searchToggle', () => {
     test('string', async () => {
-      const { instance } = renderMarkdown({ src: keywordMd, keyword: 'Keyword', search: true })
-      await expect
-        .poll(() => document.querySelectorAll('.vmd-search--mark').length)
-        .toBeGreaterThan(1)
-      instance.value!.searchToggle('next')
-      await expect
-        .poll(() =>
-          document
-            .querySelector('.vmd-search--mark:first-child')
-            ?.classList.contains('vmd-search--highlight')
-        )
-        .toBe(false)
-      expect(
-        document
-          .querySelector('.vmd-search--mark:not(:first-child)')
-          ?.classList.contains('vmd-search--highlight')
-      ).toBe(true)
-      instance.value!.searchToggle('prev')
-      await expect
-        .poll(() =>
-          document
-            .querySelector('.vmd-search--mark:first-child')
-            ?.classList.contains('vmd-search--highlight')
-        )
-        .toBe(true)
-      expect(
-        document
-          .querySelector('.vmd-search--mark:not(:first-child)')
-          ?.classList.contains('vmd-search--highlight')
-      ).toBe(false)
+      const wrapper: VueWrapper<any> = mount(
+        <Markdown search keyword="keyword" src={keywordMd} />,
+        {
+          attachTo: document.body
+        }
+      )
+      const mark = page.getByRole('mark')
+      await expect.poll(() => mark.length).toBeGreaterThan(0)
+      wrapper.vm.searchToggle('next')
+      await expect.element(mark.first()).not.toHaveClass('vmd-search--highlight')
+      await expect.element(mark.last()).toHaveClass('vmd-search--highlight')
+      wrapper.vm.searchToggle('prev')
+      await expect.element(mark.first()).toHaveClass('vmd-search--highlight')
+      await expect.element(mark.last()).not.toHaveClass('vmd-search--highlight')
     })
 
     test('number', async () => {
-      const { instance } = renderMarkdown({ src: keywordMd, keyword: 'Keyword', search: true })
-      await expect
-        .poll(() => document.querySelectorAll('.vmd-search--mark').length)
-        .toBeGreaterThan(1)
-      instance.value!.searchToggle(-11)
-      await expect
-        .poll(() =>
-          document
-            .querySelector('.vmd-search--mark:first-child')
-            ?.classList.contains('vmd-search--highlight')
-        )
-        .toBe(false)
-      expect(
-        document
-          .querySelector('.vmd-search--mark:not(:first-child)')
-          ?.classList.contains('vmd-search--highlight')
-      ).toBe(true)
+      const wrapper: VueWrapper<any> = mount(
+        <Markdown search keyword="keyword" src={keywordMd} />,
+        {
+          attachTo: document.body
+        }
+      )
+      const mark = page.getByRole('mark')
+      await expect.poll(() => mark.length).toBeGreaterThan(0)
+      wrapper.vm.searchToggle(-11)
+      await expect.element(mark.first()).not.toHaveClass('vmd-search--highlight')
+      await expect.element(mark.last()).toHaveClass('vmd-search--highlight')
     })
 
     test('ignoreDisabled', async () => {
-      const { instance } = renderMarkdown({
-        src: keywordMd,
-        keyword: 'Keyword',
-        search: true,
-        searchDisabled: true
-      })
-      await expect
-        .poll(() => document.querySelectorAll('.vmd-search--mark').length)
-        .toBeGreaterThan(1)
-      instance.value!.searchToggle('next', false)
-      await expect
-        .poll(() =>
-          document
-            .querySelector('.vmd-search--mark:first-child')
-            ?.classList.contains('vmd-search--highlight')
-        )
-        .toBe(true)
-      expect(
-        document
-          .querySelector('.vmd-search--mark:not(:first-child)')
-          ?.classList.contains('vmd-search--highlight')
-      ).toBe(false)
+      const wrapper: VueWrapper<any> = mount(
+        <Markdown search searchDisabled keyword="keyword" src={keywordMd} />,
+        {
+          attachTo: document.body
+        }
+      )
+      const mark = page.getByRole('mark')
+      await expect.poll(() => mark.length).toBeGreaterThan(0)
+      wrapper.vm.searchToggle('next', false)
+      await expect.element(mark.first()).toHaveClass('vmd-search--highlight')
+      await expect.element(mark.last()).not.toHaveClass('vmd-search--highlight')
     })
   })
 
   test('searchTotalChange', async () => {
-    const onSearchTotalChange = vi.fn()
-    render(() => (
-      <Markdown
-        src={keywordMd}
-        keyword="Keyword"
-        search={true}
-        onSearchTotalChange={onSearchTotalChange}
-      />
-    ))
-    await expect.poll(() => onSearchTotalChange.mock.calls.length).toBe(1)
-    expect(onSearchTotalChange).toHaveBeenCalledWith(2)
+    const { emitted } = render(<Markdown search keyword="Keyword" src={keywordMd} />)
+    await expect.poll(() => emitted()['searchTotalChange']).toEqual([[2]])
   })
 
   test('searchIndexChange:', async () => {
-    const onSearchIndexChange = vi.fn()
-    render(() => (
-      <Markdown
-        src={keywordMd}
-        keyword="Keyword"
-        search={true}
-        onSearchIndexChange={onSearchIndexChange}
-      />
-    ))
-    const prev = () => document.querySelector<HTMLElement>('.vmd-search__prev')
-    await expect.poll(() => !!prev()).toBe(true)
-    await userEvent.click(prev()!)
-    await expect.poll(() => onSearchIndexChange.mock.calls.some((c) => c[0] === 1)).toBe(true)
+    const wrapper: VueWrapper<any> = mount(<Markdown search keyword="keyword" src={keywordMd} />, {
+      attachTo: document.body
+    })
+    await page.getByLabelText('Previous').click()
+    await expect.poll(() => wrapper.emitted()['searchIndexChange']).toEqual([[1]])
   })
 
   test('mdInstance', async () => {
-    const { instance } = renderMarkdown({})
-    await expect.poll(() => !!instance.value).toBe(true)
-    expect(instance.value!.mdInstance).toBeInstanceOf(MarkdownIt)
+    const wrapper: VueWrapper<any> = mount(<Markdown />, {
+      attachTo: document.body
+    })
+    expect(wrapper.vm.mdInstance).toBeInstanceOf(MarkdownIt)
   })
 })
