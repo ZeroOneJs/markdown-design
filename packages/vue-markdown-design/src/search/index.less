@@ -16,6 +16,7 @@
   --vmd-search-clearable-color: var(--vmd-text-secondary-color);
   --vmd-search-count-font-size: 12px;
   --vmd-search-count-color: var(--vmd-text-secondary-color);
+  --vmd-search-btn-icon-size: 14px;
   --vmd-search-btn-hover-opacity: 0.5;
   --vmd-search-mark: mark;
   --vmd-search-highlight: orange;
@@ -78,6 +79,9 @@
   &__btn {
     cursor: pointer;
     color: var(--vmd-icon-color);
+    background: none;
+    border: none;
+    font-size: var(--vmd-search-btn-icon-size); // 设置图标大小
     &:hover {
       opacity: var(--vmd-search-btn-hover-opacity);
     }

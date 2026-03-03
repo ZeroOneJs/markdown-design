@@ -230,20 +230,22 @@ export default defineComponent({
               >
                 <div class={addPrefix('__btn')} style={{ width: `${btnCount.value * 40}px` }}>
                   {showBtnWithObj.value.search && (
-                    <span
+                    <button
+                      aria-label="Search"
                       class={[addPrefix('__btn-search'), createBtnClass(search.value)]}
                       onClick={() => (search.value = !search.value)}
                     >
-                      <FontAwesomeIcon size="xs" icon={faMagnifyingGlass} />
-                    </span>
+                      <FontAwesomeIcon icon={faMagnifyingGlass} />
+                    </button>
                   )}
                   {showBtnWithObj.value.toc && (
-                    <span
+                    <button
+                      aria-label="Table of contents"
                       class={[addPrefix('__btn-toc'), createBtnClass(toc.value)]}
                       onClick={() => (toc.value = !toc.value)}
                     >
-                      <FontAwesomeIcon size="xs" icon={faList} />
-                    </span>
+                      <FontAwesomeIcon icon={faList} />
+                    </button>
                   )}
                 </div>
               </Sticky>

@@ -243,29 +243,39 @@ export default defineComponent({
         {modelValue.value && (
           <>
             {props.clearable && (
-              <span class={[addPrefix('__clearable'), addPrefix('__btn')]} onClick={onClear}>
+              <button
+                aria-label="Clear"
+                class={[addPrefix('__clearable'), addPrefix('__btn')]}
+                onClick={onClear}
+              >
                 <FontAwesomeIcon size="xs" icon={faCircleXmark} />
-              </span>
+              </button>
             )}
             <span class={addPrefix('__count')}>{matchesCount.value}</span>
-            <span
+            <button
+              aria-label="Previous"
               class={[addPrefix('__prev'), addPrefix('__btn')]}
               onClick={() => onStepClick('prev')}
             >
               <FontAwesomeIcon icon={faAngleUp} />
-            </span>
-            <span
+            </button>
+            <button
+              aria-label="Next"
               class={[addPrefix('__next'), addPrefix('__btn')]}
               onClick={() => onStepClick('next')}
             >
               <FontAwesomeIcon icon={faAngleDown} />
-            </span>
+            </button>
           </>
         )}
         {props.closeIcon && (
-          <span class={[addPrefix('__close'), addPrefix('__btn')]} onClick={() => emit('close')}>
+          <button
+            aria-label="Close"
+            class={[addPrefix('__close'), addPrefix('__btn')]}
+            onClick={() => emit('close')}
+          >
             <FontAwesomeIcon icon={faXmark} />
-          </span>
+          </button>
         )}
       </div>
     )
