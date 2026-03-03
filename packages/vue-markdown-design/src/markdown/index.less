@@ -17,6 +17,7 @@
   --vmd-markdown-btn-icon-border-w: 2px;
   --vmd-markdown-btn-icon-border: var(--vmd-markdown-btn-icon-border-w) #fff solid;
   --vmd-markdown-btn-icon-line-left: calc(0px - var(--vmd-markdown-btn-icon-border-w) - 0.5px);
+  --vmd-markdown-btn-icon-size: 12px;
   --vmd-markdown-btn-icon-active: var(--vmd-active-color);
   --vmd-markdown-btn-icon-line-w: 1px;
   --vmd-markdown-btn-icon-line-h: 18px;
@@ -69,6 +70,8 @@
       border-radius: inherit;
       box-sizing: border-box;
       color: var(--vmd-icon-color);
+      background: none;
+      font-size: var(--vmd-markdown-btn-icon-size); // 设置图标大小
       &--active {
         background: var(--vmd-markdown-btn-icon-active);
       }
