@@ -2,7 +2,7 @@ import { page } from 'vitest/browser'
 import Markdown from '..'
 import MarkdownIt from 'markdown-it'
 import { render } from 'vitest-browser-vue'
-import { describe, expect, test, vi, afterEach } from 'vitest'
+import { describe, expect, test, vi, afterEach, beforeEach } from 'vitest'
 import { nextTick } from 'vue'
 import { type VueWrapper, enableAutoUnmount, mount } from '@vue/test-utils'
 
@@ -10,7 +10,7 @@ import keywordMd from '../../__tests__/fixtures/commonmark/keyword.md?raw'
 import miniMd from '../../__tests__/fixtures/commonmark/mini.md?raw'
 import poemMd from '../../__tests__/fixtures/commonmark/poem.md?raw'
 
-enableAutoUnmount(afterEach)
+enableAutoUnmount(beforeEach)
 
 describe('Markdown', () => {
   test('keyword/update:keyword', async () => {
