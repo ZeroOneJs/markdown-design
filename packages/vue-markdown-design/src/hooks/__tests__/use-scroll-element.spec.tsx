@@ -6,39 +6,36 @@
  */
 import { useScrollParent } from '../use-scroll-element'
 import { cleanup, render } from 'vitest-browser-vue'
-import { afterEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, describe, expect, test, vi } from 'vitest'
+import { page } from 'vitest/browser'
 
-afterEach(() => {
-  cleanup()
-  vi.restoreAllMocks()
-})
+// afterEach(() => {
+//   cleanup()
+//   vi.restoreAllMocks()
+// })
 
 describe('use-scroll-element', () => {
-  it('target 为空', () => {
+  test('target 为空', () => {
     const { scrollEl, update } = useScrollParent(null)
     update()
     expect(scrollEl.value).toBeUndefined()
   })
 
-  it('父节点为空', () => {
+  test('父节点为空', () => {
     const node = document.createElement('div')
     const { scrollEl, update } = useScrollParent(node)
     update()
     expect(scrollEl.value).toBeUndefined()
   })
 
-  it('onlyParent', async () => {
+  test('onlyParent', async () => {
     render(() => (
-      <div data-cy="parent" style={{ overflow: 'scroll' }}>
-        <div data-cy="child"></div>
+      <div data-testid="parent" style="overflow: scroll;">
+        <div data-testid="child"></div>
       </div>
     ))
-    const parent = document.querySelector<HTMLElement>('[data-cy="parent"]')
-    const child = document.querySelector<HTMLElement>('[data-cy="child"]')
-    expect(parent).toBeTruthy()
-    expect(child).toBeTruthy()
-    const { scrollEl, update } = useScrollParent(child)
+    const { scrollEl, update } = useScrollParent(page.getByTestId('child').element())
     update()
-    await expect.poll(() => scrollEl.value).toBe(parent)
+    await expect.element(page.getByTestId('parent')).toBe(scrollEl.value)
   })
 })

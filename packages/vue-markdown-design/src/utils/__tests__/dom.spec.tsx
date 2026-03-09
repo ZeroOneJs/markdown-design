@@ -6,30 +6,29 @@
  */
 import { scrollToEl } from '../dom'
 import { cleanup, render } from 'vitest-browser-vue'
-import { afterEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, describe, expect, test, vi } from 'vitest'
 import { scrollToTop } from '../../__tests__/vitest-utils'
+import { page } from 'vitest/browser'
 
-afterEach(() => {
-  cleanup()
-  vi.restoreAllMocks()
-  scrollToTop()
-})
+// afterEach(() => {
+//   cleanup()
+//   vi.restoreAllMocks()
+//   scrollToTop()
+// })
 
 describe('dom', () => {
-  it('scrollToEl', async () => {
+  test('scrollToEl', async () => {
     render(() => (
       <>
         <div style="height: 300px; overflow: scroll;">
           <div style="height: 100vh;"></div>
-          <div data-cy>content</div>
+          <div data-testid="content">content</div>
           <div style="height: 100vh;"></div>
         </div>
       </>
     ))
-    const el = document.querySelector<HTMLElement>('[data-cy]')
-    expect(el).toBeTruthy()
-    scrollToEl(el!)
-    const expectedTop = parseInt(getComputedStyle(document.body).marginTop || '0')
-    await expect.poll(() => Math.floor(el!.getBoundingClientRect().top)).toBe(expectedTop)
+    const locator = page.getByTestId('content')
+    scrollToEl(locator.element())
+    await expect.poll(() => locator.boundingClientRect('top')).toBe(0)
   })
 })
