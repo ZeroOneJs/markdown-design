@@ -82,7 +82,7 @@ describe('Toc', () => {
     await expect.element(page.getByText('No Data')).toBeInTheDocument()
   })
 
-  test('markdown', async () => {
+  test('markdown', () => {
     render(<Toc markdown={tocMd} />)
     expect(page.getByRole('listitem').length).toBe(6)
   })

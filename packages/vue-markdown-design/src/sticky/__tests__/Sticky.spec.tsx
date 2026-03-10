@@ -16,11 +16,18 @@ import { scrollToTop } from '../../__tests__/vitest-utils'
 //   scrollToTop()
 // })
 
+// 防止测试用例之间的滚动条相互干扰
+const style = {
+  width: '100vw',
+  height: '100vh',
+  overflow: 'auto'
+}
+
 describe('Sticky', () => {
   describe('posY', () => {
     test('top', async () => {
       render(() => (
-        <>
+        <div style={style}>
           <div style="height: 100vh">placeholder</div>
           <div data-testid="target" style="height: 200px;">
             <Sticky>
@@ -33,7 +40,7 @@ describe('Sticky', () => {
           <div data-testid="outside" style="height: 100vh">
             placeholder
           </div>
-        </>
+        </div>
       ))
       page.getByTestId('inside').element().scrollIntoView()
       expect(page.getByTestId('content').boundingClientRect('top')).toBe(0)
@@ -42,7 +49,7 @@ describe('Sticky', () => {
     })
 
     test('bottom', async () => {
-      await expect.poll(() => document.documentElement.scrollTop).toBe(0)
+      // await expect.poll(() => document.documentElement.scrollTop).toBe(0)
       render(() => (
         <>
           <div style="height: 100vh">placeholder</div>

@@ -22,14 +22,14 @@ import { enableAutoUnmount, mount, VueWrapper } from '@vue/test-utils'
 enableAutoUnmount(beforeEach)
 
 describe('Render', () => {
-  test('src', async () => {
+  test('src', () => {
     const { container } = render(<Render src={miniMd} />)
     expect(container).toMatchSnapshot()
   })
 
   describe('plugins', () => {
     test('function', async () => {
-      const { getByRole, getByLabelText } = render(
+      render(
         <Render
           src={miniMd}
           plugins={(md) => {
@@ -38,10 +38,10 @@ describe('Render', () => {
           }}
         />
       )
-      await expect.element(getByRole('paragraph')).not.toBeInTheDocument()
+      await expect.element(page.getByRole('paragraph')).not.toBeInTheDocument()
       await expect
         .element(
-          getByLabelText('Test paragraph', {
+          page.getByLabelText('Test paragraph', {
             hasText: 'This is a paragraph used to test the rendering effect of markdown.'
           })
         )
@@ -49,7 +49,7 @@ describe('Render', () => {
     })
 
     test('array', async () => {
-      const { getByRole, getByLabelText } = render(
+      render(
         <Render
           src={miniMd}
           plugins={[
@@ -65,10 +65,10 @@ describe('Render', () => {
           ]}
         />
       )
-      await expect.element(getByRole('paragraph')).not.toBeInTheDocument()
+      await expect.element(page.getByRole('paragraph')).not.toBeInTheDocument()
       await expect
         .element(
-          getByLabelText('Test paragraph', {
+          page.getByLabelText('Test paragraph', {
             hasText: 'This is a paragraph used to test the rendering effect of markdown.'
           })
         )
@@ -77,28 +77,26 @@ describe('Render', () => {
   })
 
   test('inline', async () => {
-    const { getByRole, rerender } = render(<Render src="markdown" />)
-    const paragraph = getByRole('paragraph')
-    await expect.element(paragraph).toBeInTheDocument()
+    const { rerender } = render(<Render src="markdown" />)
+    const locator = page.getByRole('paragraph')
+    await expect.element(locator).toBeInTheDocument()
     rerender({ inline: true })
-    await expect.element(paragraph).not.toBeInTheDocument()
+    await expect.element(locator).not.toBeInTheDocument()
   })
 
   test('presetName', async () => {
-    const { getByRole } = render(<Render src={miniMd} presetName="zero" />)
-    await expect.element(getByRole('heading')).not.toBeInTheDocument()
+    render(<Render src={miniMd} presetName="zero" />)
+    await expect.element(page.getByRole('heading')).not.toBeInTheDocument()
   })
 
   test('html', async () => {
-    const { getByRole } = render(<Render src="<em></em>" />)
-    await expect.element(getByRole('emphasis')).toBeInTheDocument()
+    render(<Render src="<em></em>" />)
+    await expect.element(page.getByRole('emphasis')).toBeInTheDocument()
   })
 
   test('sanitize', async () => {
-    const { getByRole } = render(
-      <Render src="<p>foo<iframe//src=jAva&Tab;script:alert(3)>def</p>" />
-    )
-    await expect.element(getByRole('paragraph')).toHaveTextContent(/^foo$/)
+    render(<Render src="<p>foo<iframe//src=jAva&Tab;script:alert(3)>def</p>" />)
+    await expect.element(page.getByRole('paragraph')).toHaveTextContent(/^foo$/)
   })
 
   test('xhtmlOut', () => {
@@ -109,69 +107,69 @@ describe('Render', () => {
   })
 
   test('breaks', async () => {
-    const { getByRole } = render(<Render src={'a\nb'} breaks />)
-    await expect.element(getByRole('paragraph')).toContainHTML('<br />')
+    render(<Render src={'a\nb'} breaks />)
+    await expect.element(page.getByRole('paragraph')).toContainHTML('<br />')
   })
 
   test('langPrefix', async () => {
-    const { getByRole } = render(<Render src={'```js\nconst = foo\n```'} langPrefix="test-" />)
-    const code = getByRole('code')
-    await expect.element(code).not.toHaveClass(/language/)
-    await expect.element(code).toHaveClass(/test/)
+    render(<Render src={'```js\nconst = foo\n```'} langPrefix="test-" />)
+    const locator = page.getByRole('code')
+    await expect.element(locator).not.toHaveClass(/language/)
+    await expect.element(locator).toHaveClass(/test/)
   })
 
   test('linkify', async () => {
-    const { getByRole } = render(<Render src="foo@example.com" linkify />)
-    await expect.element(getByRole('link', { name: 'foo@example.com' })).toBeInTheDocument()
+    render(<Render src="foo@example.com" linkify />)
+    await expect.element(page.getByRole('link', { name: 'foo@example.com' })).toBeInTheDocument()
   })
 
   test('typographer', async () => {
-    const { getByText } = render(<Render src="(c)" typographer />)
-    await expect.element(getByText('©')).toBeInTheDocument()
+    render(<Render src="(c)" typographer />)
+    await expect.element(page.getByText('©')).toBeInTheDocument()
   })
 
   test('quotes', async () => {
-    const { getByText } = render(
-      <Render src={'"foo" \'bar\''} typographer quotes={['«', '»', '‹', '›']} />
-    )
-    await expect.element(getByText('«foo» ‹bar›')).toBeInTheDocument()
+    render(<Render src={'"foo" \'bar\''} typographer quotes={['«', '»', '‹', '›']} />)
+    await expect.element(page.getByText('«foo» ‹bar›')).toBeInTheDocument()
   })
 
   test('highlight', async () => {
-    const { getByText, rerender } = render(<Render src={'```js\nconst = foo\n```'} />)
-    const span = getByText('const')
-    await expect.element(span).toHaveClass(/hljs/)
+    const { rerender } = render(<Render src={'```js\nconst = foo\n```'} />)
+    const locator = page.getByText('const')
+    await expect.element(locator).toHaveClass(/hljs/)
     rerender({ highlight: false })
-    await expect.element(span).not.toHaveClass(/hljs/)
+    await expect.element(locator).not.toHaveClass(/hljs/)
   })
 
   test('highlightOptions', async () => {
-    const { getByText } = render(
-      <Render src={'```js\nconst = foo\n```'} highlightOptions={{ classPrefix: 'test-' }} />
-    )
-    const span = getByText('const')
-    await expect.element(span).not.toHaveClass(/hljs/)
-    await expect.element(span).toHaveClass(/test/)
+    render(<Render src={'```js\nconst = foo\n```'} highlightOptions={{ classPrefix: 'test-' }} />)
+    const locator = page.getByText('const')
+    await expect.element(locator).not.toHaveClass(/hljs/)
+    await expect.element(locator).toHaveClass(/test/)
   })
 
   test('emoji', async () => {
-    const { getByText } = render(<Render src=":)" />)
-    await expect.element(getByText('😃')).toBeInTheDocument()
+    render(<Render src=":)" />)
+    await expect.element(page.getByText('😃')).toBeInTheDocument()
   })
 
   describe('anchor', () => {
     test('boolean', async () => {
-      const { getByRole } = render(<Render src="# Title" />)
-      await expect.element(getByRole('heading', { name: 'Title' })).toHaveAttribute('id', 'title')
+      render(<Render src="# Title" />)
+      await expect
+        .element(page.getByRole('heading', { name: 'Title' }))
+        .toHaveAttribute('id', 'title')
     })
 
     test('object', async () => {
-      const { getByRole } = render(<Render src="# Title" anchor={{ tabIndex: false }} />)
-      await expect.element(getByRole('heading', { name: 'Title' })).not.toHaveAttribute('tabIndex')
+      render(<Render src="# Title" anchor={{ tabIndex: false }} />)
+      await expect
+        .element(page.getByRole('heading', { name: 'Title' }))
+        .not.toHaveAttribute('tabIndex')
     })
 
     test('function', async () => {
-      const { getByRole } = render(
+      render(
         <Render
           src="# Title"
           anchor={(anchor) => ({
@@ -181,30 +179,30 @@ describe('Render', () => {
           })}
         />
       )
-      await expect.element(getByRole('link', { name: 'Test title' })).toBeInTheDocument()
+      await expect.element(page.getByRole('link', { name: 'Test title' })).toBeInTheDocument()
     })
   })
 
   describe('permalink', () => {
     test('默认', async () => {
-      const { getByRole } = render(<Render src="# Title" />)
-      await expect.element(getByRole('link', { name: '#' })).toBeInTheDocument()
+      render(<Render src="# Title" />)
+      await expect.element(page.getByRole('link', { name: '#' })).toBeInTheDocument()
     })
 
     test('禁用', async () => {
-      const { getByRole } = render(<Render src="# Title" permalink={false} />)
-      await expect.element(getByRole('link', { name: '#' })).not.toBeInTheDocument()
+      render(<Render src="# Title" permalink={false} />)
+      await expect.element(page.getByRole('link', { name: '#' })).not.toBeInTheDocument()
     })
   })
 
   test('markdownClass', async () => {
-    const { getByText } = render(<Render markdownClass="test-class" src="markdown" inline />)
-    const locator = getByText('markdown')
+    render(<Render src="markdown" inline markdownClass="test-class" />)
+    const locator = page.getByText('markdown')
     await expect.element(locator).not.toHaveClass('markdown-body')
     await expect.element(locator).toHaveClass('test-class')
   })
 
-  test('envChange', async () => {
+  test('envChange', () => {
     const { emitted } = render(<Render />)
     expect(emitted()['envChange']).toBeDefined()
   })

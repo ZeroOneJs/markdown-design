@@ -17,8 +17,8 @@ import { afterEach, describe, expect, test, vi } from 'vitest'
 
 describe('Search', () => {
   test('clearable', async () => {
-    const { getByLabelText } = render(<Search modelValue="keyword" />)
-    await expect.element(getByLabelText('Clear')).toBeInTheDocument()
+    render(<Search modelValue="keyword" />)
+    await expect.element(page.getByLabelText('Clear')).toBeInTheDocument()
   })
 
   test('border', async () => {
@@ -30,11 +30,11 @@ describe('Search', () => {
 
   test('size', async () => {
     render(<Search data-testid="search" size="small" />)
-    const textboxLocator = page.getByRole('textbox')
+    const locator = page.getByRole('textbox')
     await expect
-      .element(page.getByTestId('search').filter({ has: textboxLocator }))
+      .element(page.getByTestId('search').filter({ has: locator }))
       .toHaveStyle({ fontSize: '12px' })
-    await expect.element(textboxLocator).toHaveStyle({ height: '24px' })
+    await expect.element(locator).toHaveStyle({ height: '24px' })
   })
 
   test('disabled', async () => {
@@ -55,9 +55,9 @@ describe('Search', () => {
         <div data-testid="other">keyword</div>
       </>
     ))
-    const markLocator = page.getByRole('mark')
-    await expect.element(page.getByTestId('target')).toContainElement(markLocator)
-    await expect.element(page.getByTestId('other')).not.toContainElement(markLocator)
+    const locator = page.getByRole('mark')
+    await expect.element(page.getByTestId('target')).toContainElement(locator)
+    await expect.element(page.getByTestId('other')).not.toContainElement(locator)
   })
 
   test('target 类型错误', async () => {
@@ -125,11 +125,11 @@ describe('Search', () => {
 
   test('stepClick', async () => {
     const { emitted, rerender } = render(<Search disabled modelValue="keyword" />)
-    const previousLocator = page.getByLabelText('Previous')
-    await previousLocator.click()
+    const locator = page.getByLabelText('Previous')
+    await locator.click()
     expect(emitted()['stepClick']).not.toBeDefined()
     rerender({ disabled: false })
-    await previousLocator.click()
+    await locator.click()
     expect(emitted()['stepClick'][0]).toEqual(['prev'])
     await page.getByRole('textbox').click()
     await userEvent.keyboard('{Enter}')
