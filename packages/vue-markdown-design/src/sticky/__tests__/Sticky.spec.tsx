@@ -1,20 +1,7 @@
-/**
- * Migrated from: d:\Users\Administrator\Documents\markdown-design\packages\vue-markdown-design\src\sticky\__tests__\Sticky.cy.tsx
- * Migrator: Trae IDE GPT-5.2
- * Date: 2026-02-13
- * Key changes: Cypress scrolling and boundary assertions replaced by window/element scrolling + getBoundingClientRect; retries implemented with expect.poll for layout stabilization.
- */
 import { page } from 'vitest/browser'
 import Sticky from '..'
-import { cleanup, render } from 'vitest-browser-vue'
-import { afterEach, describe, expect, test, vi } from 'vitest'
-import { scrollToTop } from '../../__tests__/vitest-utils'
-
-// afterEach(() => {
-//   cleanup()
-//   vi.restoreAllMocks()
-//   scrollToTop()
-// })
+import { render } from 'vitest-browser-vue'
+import { describe, expect, test } from 'vitest'
 
 // 防止测试用例之间的滚动条相互干扰
 const style = {
@@ -25,47 +12,44 @@ const style = {
 
 describe('Sticky', () => {
   describe('posY', () => {
-    test('top', async () => {
+    test('top', () => {
       render(() => (
         <div style={style}>
-          <div style="height: 100vh">placeholder</div>
-          <div data-testid="target" style="height: 200px;">
+          <div style="height: 100vh">Placeholder</div>
+          <div>
             <Sticky>
-              <div data-testid="content">content</div>
+              <div>Content</div>
             </Sticky>
-            <div data-testid="inside" style="height: 100vh">
-              placeholder
-            </div>
+            <div style="height: 100px">Inside</div>
           </div>
-          <div data-testid="outside" style="height: 100vh">
-            placeholder
-          </div>
+          <div style="height: 100vh">Outside</div>
         </div>
       ))
-      page.getByTestId('inside').element().scrollIntoView()
-      expect(page.getByTestId('content').boundingClientRect('top')).toBe(0)
-      page.getByTestId('outside').element().scrollIntoView()
-      expect(page.getByTestId('content').boundingClientRect('top')).toBeLessThan(0)
+      const locator = page.getByText('Content')
+      page.getByText('Inside').element().scrollIntoView()
+      expect(locator.boundingClientRect('top')).toBe(0)
+      page.getByText('Outside').element().scrollIntoView()
+      expect(locator.boundingClientRect('top')).toBeLessThan(0)
     })
 
-    test('bottom', async () => {
-      // await expect.poll(() => document.documentElement.scrollTop).toBe(0)
+    test('bottom', () => {
       render(() => (
-        <>
-          <div style="height: 100vh">placeholder</div>
-          <div data-testid="target">
-            <div style="height: 100px">placeholder</div>
+        <div style={style}>
+          <div style="height: 100vh">Placeholder</div>
+          <div>
+            <div style="height: 100px">Inside</div>
             <Sticky posY="bottom">
-              <div data-testid="content">content</div>
+              <div>Content</div>
             </Sticky>
           </div>
-          <div style="height: 100vh">placeholder</div>
-        </>
+          <div style="height: 100vh">Outside</div>
+        </div>
       ))
+      const locator = page.getByText('Content')
       // 720 为窗口高度
-      expect(page.getByTestId('content').boundingClientRect('bottom')).toBeGreaterThan(720)
-      window.scrollTo(0, 50)
-      expect(page.getByTestId('content').boundingClientRect('bottom')).toBe(720)
+      expect(locator.boundingClientRect('bottom')).toBeGreaterThan(720)
+      page.getByText('Inside').element().scrollIntoView(false)
+      expect(locator.boundingClientRect('bottom')).toBe(720)
     })
   })
 
@@ -73,36 +57,34 @@ describe('Sticky', () => {
     render(() => (
       <div style="width: 500px;height: 500px;">
         <Sticky posX="right" flow={false}>
-          <div data-testid="content">content</div>
+          <div>Content</div>
         </Sticky>
       </div>
     ))
-    await expect.poll(() => page.getByTestId('content').boundingClientRect('right')).toBe(500)
+    await expect.poll(() => page.getByText('Content').boundingClientRect('right')).toBe(500)
   })
 
-  test('offset', async () => {
+  test('offset', () => {
     render(() => (
       <div style="height: 200px;">
         <Sticky offset="100">
-          <div data-testid="content">content</div>
+          <div>Content</div>
         </Sticky>
       </div>
     ))
-    expect(page.getByTestId('content').boundingClientRect('top')).toBe(100)
+    expect(page.getByText('Content').boundingClientRect('top')).toBe(100)
   })
 
   test('flow', async () => {
     render(() => (
       <div style="height: 200px;">
         <Sticky flow={false}>
-          <div>content</div>
+          <div>Content</div>
         </Sticky>
-        <div data-testid="placeholder" style="height: 100vh">
-          placeholder
-        </div>
+        <div style="height: 100vh">Placeholder</div>
       </div>
     ))
-    await expect.poll(() => page.getByTestId('placeholder').boundingClientRect('top')).toBe(0)
+    await expect.poll(() => page.getByText('Placeholder').boundingClientRect('top')).toBe(0)
   })
 
   test('zIndex', async () => {

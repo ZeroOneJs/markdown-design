@@ -2,8 +2,7 @@ import { page } from 'vitest/browser'
 import Markdown from '..'
 import MarkdownIt from 'markdown-it'
 import { render } from 'vitest-browser-vue'
-import { describe, expect, test, vi, afterEach, beforeEach } from 'vitest'
-import { nextTick } from 'vue'
+import { describe, expect, test, vi, beforeEach } from 'vitest'
 import { type VueWrapper, enableAutoUnmount, mount } from '@vue/test-utils'
 
 import keywordMd from '../../__tests__/fixtures/commonmark/keyword.md?raw'
@@ -104,8 +103,6 @@ describe('Markdown', () => {
   })
 
   test('searchSmooth', async () => {
-    // await expect.poll(() => document.documentElement.scrollTop).toBe(0)
-
     vi.useFakeTimers() // 确保浏览器最小化时正确获取定位信息
     render(
       <Markdown src={poemMd} search searchSmooth keyword="Perched" style={style} searchOffset={0} />
@@ -128,8 +125,6 @@ describe('Markdown', () => {
   })
 
   test('tocOffset', async () => {
-    // await expect.poll(() => document.documentElement.scrollTop).toBe(0)
-
     render(<Markdown src={poemMd} toc style={style} tocOffset={60} />)
     const name = 'The Tyger'
     await page.getByRole('link', { name }).click()
@@ -137,8 +132,6 @@ describe('Markdown', () => {
   })
 
   test('tocSmooth', async () => {
-    // await expect.poll(() => document.documentElement.scrollTop).toBe(0)
-
     render(<Markdown src={poemMd} toc tocSmooth />)
 
     vi.useFakeTimers() // 确保浏览器最小化时正确获取定位信息
@@ -197,7 +190,6 @@ describe('Markdown', () => {
   })
 
   test('tocScrollTo', async () => {
-    // await expect.poll(() => document.documentElement.scrollTop).toBe(0)
     const wrapper: VueWrapper<any> = mount(<Markdown src={poemMd} toc style={style} />, {
       attachTo: document.body
     })
@@ -234,9 +226,10 @@ describe('Markdown', () => {
       attachTo: document.body
     })
     wrapper.vm.searchFocus()
-    await expect.element(page.getByRole('textbox')).toHaveFocus()
+    const locator = page.getByRole('textbox')
+    await expect.element(locator).toHaveFocus()
     wrapper.vm.searchBlur()
-    await expect.element(page.getByRole('textbox')).not.toHaveFocus()
+    await expect.element(locator).not.toHaveFocus()
   })
 
   test('searchClear', async () => {
@@ -262,7 +255,7 @@ describe('Markdown', () => {
         }
       )
       const locator = page.getByRole('mark')
-      await expect.poll(() => locator.length).toBeGreaterThan(0)
+      await expect.poll(() => locator).toHaveLength(3)
       wrapper.vm.searchToggle('next')
       await expect.element(locator.first()).not.toHaveClass('vmd-search--highlight')
       await expect.element(locator.last()).toHaveClass('vmd-search--highlight')
@@ -279,7 +272,7 @@ describe('Markdown', () => {
         }
       )
       const locator = page.getByRole('mark')
-      await expect.poll(() => locator.length).toBeGreaterThan(0)
+      await expect.poll(() => locator).toHaveLength(3)
       wrapper.vm.searchToggle(-11)
       await expect.element(locator.first()).not.toHaveClass('vmd-search--highlight')
       await expect.element(locator.last()).toHaveClass('vmd-search--highlight')
@@ -293,7 +286,7 @@ describe('Markdown', () => {
         }
       )
       const locator = page.getByRole('mark')
-      await expect.poll(() => locator.length).toBeGreaterThan(0)
+      await expect.poll(() => locator).toHaveLength(3)
       wrapper.vm.searchToggle('next', false)
       await expect.element(locator.first()).toHaveClass('vmd-search--highlight')
       await expect.element(locator.last()).not.toHaveClass('vmd-search--highlight')

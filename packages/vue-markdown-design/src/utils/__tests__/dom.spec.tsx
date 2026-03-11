@@ -1,33 +1,25 @@
-/**
- * Migrated from: d:\Users\Administrator\Documents\markdown-design\packages\vue-markdown-design\src\utils\__tests__\dom.cy.tsx
- * Migrator: Trae IDE GPT-5.2
- * Date: 2026-02-13
- * Key changes: Cypress mount and boundary assertions replaced by vitest-browser-vue render + getBoundingClientRect; async scrollToEl(setTimeout) handled with expect.poll.
- */
 import { scrollToEl } from '../dom'
-import { cleanup, render } from 'vitest-browser-vue'
-import { afterEach, describe, expect, test, vi } from 'vitest'
-import { scrollToTop } from '../../__tests__/vitest-utils'
+import { render } from 'vitest-browser-vue'
+import { describe, expect, test } from 'vitest'
 import { page } from 'vitest/browser'
 
-// afterEach(() => {
-//   cleanup()
-//   vi.restoreAllMocks()
-//   scrollToTop()
-// })
+// 防止测试用例之间的滚动条相互干扰
+const style = {
+  width: '100vw',
+  height: '100vh',
+  overflow: 'auto'
+}
 
 describe('dom', () => {
   test('scrollToEl', async () => {
     render(() => (
-      <>
-        <div style="height: 300px; overflow: scroll;">
-          <div style="height: 100vh;"></div>
-          <div data-testid="content">content</div>
-          <div style="height: 100vh;"></div>
-        </div>
-      </>
+      <div style={style}>
+        <div style="height: 100vh;"></div>
+        <div>Content</div>
+        <div style="height: 100vh;"></div>
+      </div>
     ))
-    const locator = page.getByTestId('content')
+    const locator = page.getByText('Content')
     scrollToEl(locator.element())
     await expect.poll(() => locator.boundingClientRect('top')).toBe(0)
   })

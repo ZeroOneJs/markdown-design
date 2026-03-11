@@ -1,24 +1,11 @@
-/**
- * Migrated from: d:\Users\Administrator\Documents\markdown-design\packages\vue-markdown-design\src\render\__tests__\Render.cy.tsx
- * Migrator: Trae IDE GPT-5.2
- * Date: 2026-02-13
- * Key changes: Cypress cy.* interactions replaced by vitest-browser-vue render + DOM assertions; Cypress wrapper/component access replaced by TSX ref capture; retry semantics handled with expect.poll where needed.
- */
 import { page } from 'vitest/browser'
-import Render, { type RenderInstance } from '..'
-import { cleanup, render } from 'vitest-browser-vue'
-import { beforeEach, describe, expect, test, vi } from 'vitest'
-
-import keywordMd from '../../__tests__/fixtures/commonmark/keyword.md?raw'
-import miniMd from '../../__tests__/fixtures/commonmark/mini.md?raw'
-import poemMd from '../../__tests__/fixtures/commonmark/poem.md?raw'
+import Render from '..'
+import { render } from 'vitest-browser-vue'
+import { beforeEach, describe, expect, test } from 'vitest'
 import { enableAutoUnmount, mount, VueWrapper } from '@vue/test-utils'
 
-// afterEach(() => {
-//   cleanup()
-//   vi.restoreAllMocks()
-//   window.scrollTo(0, 0)
-// })
+import miniMd from '../../__tests__/fixtures/commonmark/mini.md?raw'
+
 enableAutoUnmount(beforeEach)
 
 describe('Render', () => {
@@ -33,19 +20,13 @@ describe('Render', () => {
         <Render
           src={miniMd}
           plugins={(md) => {
-            md.renderer.rules.paragraph_open = () => '<div aria-label="Test paragraph">'
+            md.renderer.rules.paragraph_open = () => '<div data-testid="paragraph">'
             md.renderer.rules.paragraph_close = () => '</div>'
           }}
         />
       )
       await expect.element(page.getByRole('paragraph')).not.toBeInTheDocument()
-      await expect
-        .element(
-          page.getByLabelText('Test paragraph', {
-            hasText: 'This is a paragraph used to test the rendering effect of markdown.'
-          })
-        )
-        .toBeInTheDocument()
+      await expect.element(page.getByTestId('paragraph')).toBeInTheDocument()
     })
 
     test('array', async () => {
@@ -54,7 +35,7 @@ describe('Render', () => {
           src={miniMd}
           plugins={[
             (md) => {
-              md.renderer.rules.paragraph_open = () => '<div aria-label="Test paragraph">'
+              md.renderer.rules.paragraph_open = () => '<div data-testid="paragraph">'
             },
             [
               (md, params) => {
@@ -66,22 +47,13 @@ describe('Render', () => {
         />
       )
       await expect.element(page.getByRole('paragraph')).not.toBeInTheDocument()
-      await expect
-        .element(
-          page.getByLabelText('Test paragraph', {
-            hasText: 'This is a paragraph used to test the rendering effect of markdown.'
-          })
-        )
-        .toBeInTheDocument()
+      await expect.element(page.getByTestId('paragraph')).toBeInTheDocument()
     })
   })
 
   test('inline', async () => {
-    const { rerender } = render(<Render src="markdown" />)
-    const locator = page.getByRole('paragraph')
-    await expect.element(locator).toBeInTheDocument()
-    rerender({ inline: true })
-    await expect.element(locator).not.toBeInTheDocument()
+    render(<Render src="foo" inline />)
+    await expect.element(page.getByRole('paragraph')).not.toBeInTheDocument()
   })
 
   test('presetName', async () => {
@@ -107,15 +79,15 @@ describe('Render', () => {
   })
 
   test('breaks', async () => {
-    render(<Render src={'a\nb'} breaks />)
+    render(<Render src={'foo\nbar'} breaks />)
     await expect.element(page.getByRole('paragraph')).toContainHTML('<br />')
   })
 
   test('langPrefix', async () => {
-    render(<Render src={'```js\nconst = foo\n```'} langPrefix="test-" />)
+    render(<Render src={'```js\nconst = foo\n```'} langPrefix="vi-" />)
     const locator = page.getByRole('code')
     await expect.element(locator).not.toHaveClass(/language/)
-    await expect.element(locator).toHaveClass(/test/)
+    await expect.element(locator).toHaveClass(/vi/)
   })
 
   test('linkify', async () => {
@@ -142,10 +114,10 @@ describe('Render', () => {
   })
 
   test('highlightOptions', async () => {
-    render(<Render src={'```js\nconst = foo\n```'} highlightOptions={{ classPrefix: 'test-' }} />)
+    render(<Render src={'```js\nconst = foo\n```'} highlightOptions={{ classPrefix: 'vi-' }} />)
     const locator = page.getByText('const')
     await expect.element(locator).not.toHaveClass(/hljs/)
-    await expect.element(locator).toHaveClass(/test/)
+    await expect.element(locator).toHaveClass(/vi/)
   })
 
   test('emoji', async () => {
@@ -174,12 +146,12 @@ describe('Render', () => {
           src="# Title"
           anchor={(anchor) => ({
             permalink: anchor.permalink.headerLink({
-              renderAttrs: () => ({ 'aria-label': 'Test title' })
+              renderAttrs: () => ({ 'aria-label': 'Vi link' })
             })
           })}
         />
       )
-      await expect.element(page.getByRole('link', { name: 'Test title' })).toBeInTheDocument()
+      await expect.element(page.getByRole('link', { name: 'Vi link' })).toBeInTheDocument()
     })
   })
 
@@ -196,10 +168,10 @@ describe('Render', () => {
   })
 
   test('markdownClass', async () => {
-    render(<Render src="markdown" inline markdownClass="test-class" />)
+    render(<Render src="markdown" inline markdownClass="vi-class" />)
     const locator = page.getByText('markdown')
     await expect.element(locator).not.toHaveClass('markdown-body')
-    await expect.element(locator).toHaveClass('test-class')
+    await expect.element(locator).toHaveClass('vi-class')
   })
 
   test('envChange', () => {

@@ -1,21 +1,9 @@
-/**
- * Migrated from: d:\Users\Administrator\Documents\markdown-design\packages\vue-markdown-design\src\toc\__tests__\Toc.cy.tsx
- * Migrator: Trae IDE GPT-5.2
- * Date: 2026-02-13
- * Key changes: Cypress cy.* assertions replaced by vitest-browser-vue render + DOM assertions; console spies use vi.spyOn; retries use expect.poll for async layout.
- */
 import { page } from 'vitest/browser'
 import Toc, { type TocItem } from '..'
-import { cleanup, render } from 'vitest-browser-vue'
-import { afterEach, describe, expect, test, vi } from 'vitest'
+import { render } from 'vitest-browser-vue'
+import { describe, expect, test, vi } from 'vitest'
 
 import tocMd from '../../__tests__/fixtures/commonmark/toc.md?raw'
-
-// afterEach(() => {
-//   cleanup()
-//   vi.restoreAllMocks()
-//   window.scrollTo(0, 0)
-// })
 
 describe('Toc', () => {
   test('startLevel', async () => {
@@ -28,7 +16,7 @@ describe('Toc', () => {
     await expect.element(page.getByText('Title 6')).not.toBeInTheDocument()
   })
 
-  test('level 超出范围', async () => {
+  test('level 超出范围', () => {
     const warnSpy = vi.spyOn(console, 'warn')
     render(<Toc startLevel="-1" />)
     expect(warnSpy).toHaveBeenCalledWith(
@@ -36,7 +24,7 @@ describe('Toc', () => {
     )
   })
 
-  test('startLevel 小于 endLevel', async () => {
+  test('startLevel 小于 endLevel', () => {
     const warnSpy = vi.spyOn(console, 'warn')
     render(<Toc startLevel="6" endLevel="1" />)
     expect(warnSpy).toHaveBeenCalledWith(
@@ -47,7 +35,7 @@ describe('Toc', () => {
   test('orderedList', async () => {
     render(<Toc markdown={'# Title\n# Title'} orderedList />)
     const locator = page.getByRole('listitem')
-    expect(locator.length).toBe(2)
+    expect(locator).toHaveLength(2)
     await Promise.all(
       locator
         .all()
@@ -60,16 +48,16 @@ describe('Toc', () => {
       <>
         <Toc target="[data-testid='target']" />
         <div data-testid="target">
-          <h1>target</h1>
+          <h1>Target</h1>
         </div>
         <div data-testid="other">
-          <h1>other</h1>
+          <h1>Other</h1>
         </div>
       </>
     ))
     const locator = page.getByRole('listitem')
-    await expect.element(locator).toHaveTextContent('target')
-    await expect.element(locator).not.toHaveTextContent('other')
+    await expect.element(locator).toHaveTextContent('Target')
+    await expect.element(locator).not.toHaveTextContent('Other')
   })
 
   test('ignore', async () => {
@@ -78,13 +66,13 @@ describe('Toc', () => {
   })
 
   test('emptyText', async () => {
-    render(<Toc markdown="text" />)
+    render(<Toc markdown="foo" />)
     await expect.element(page.getByText('No Data')).toBeInTheDocument()
   })
 
   test('markdown', () => {
     render(<Toc markdown={tocMd} />)
-    expect(page.getByRole('listitem').length).toBe(6)
+    expect(page.getByRole('listitem')).toHaveLength(6)
   })
 
   test('slots', async () => {
@@ -95,7 +83,7 @@ describe('Toc', () => {
         }}
       </Toc>
     )
-    await expect.element(page.getByTestId('slot').first()).toBeInTheDocument()
+    await expect.element(page.getByTestId('slot')).toHaveLength(6)
   })
 
   test('小标题放在首位', async () => {
@@ -108,7 +96,7 @@ describe('Toc', () => {
 
   test('英文长文本换行', () => {
     render(
-      <Toc markdown="# lonnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnng" />
+      <Toc markdown="# Lonnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnng" />
     )
     expect(page.getByRole('listitem').boundingClientRect('height')).toBeGreaterThan(36)
   })

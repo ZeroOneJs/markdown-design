@@ -1,19 +1,7 @@
-/**
- * Migrated from: d:\Users\Administrator\Documents\markdown-design\packages\vue-markdown-design\src\search\__tests__\Search.cy.tsx
- * Migrator: Trae IDE GPT-5.2
- * Date: 2026-02-13
- * Key changes: Cypress DOM queries and event assertions replaced by vitest-browser-vue render + native DOM events; async mark.js highlighting uses expect.poll to match Cypress retry behavior.
- */
 import { page, userEvent } from 'vitest/browser'
 import Search from '..'
-import { cleanup, render } from 'vitest-browser-vue'
-import { afterEach, describe, expect, test, vi } from 'vitest'
-
-// afterEach(() => {
-//   cleanup()
-//   vi.restoreAllMocks()
-//   window.scrollTo(0, 0)
-// })
+import { render } from 'vitest-browser-vue'
+import { describe, expect, test, vi } from 'vitest'
 
 describe('Search', () => {
   test('clearable', async () => {
@@ -43,16 +31,16 @@ describe('Search', () => {
   })
 
   test('placeholder', async () => {
-    render(<Search placeholder="placeholder" />)
-    await expect.element(page.getByPlaceholder('placeholder')).toBeInTheDocument()
+    render(<Search placeholder="Search" />)
+    await expect.element(page.getByPlaceholder('Search')).toBeInTheDocument()
   })
 
   test('target', async () => {
     render(() => (
       <>
-        <Search target="[data-testid='target']" modelValue="keyword" />
-        <div data-testid="target">keyword</div>
-        <div data-testid="other">keyword</div>
+        <Search target="[data-testid='target']" modelValue="Keyword" />
+        <div data-testid="target">Keyword</div>
+        <div data-testid="other">Keyword</div>
       </>
     ))
     const locator = page.getByRole('mark')
@@ -82,8 +70,10 @@ describe('Search', () => {
   })
 
   test('closeIcon', async () => {
-    render(<Search />)
+    const { rerender } = render(<Search />)
     await expect.element(page.getByLabelText('Close')).toBeInTheDocument()
+    rerender({ closeIcon: false })
+    await expect.element(page.getByLabelText('Close')).not.toBeInTheDocument()
   })
 
   test('inputAttrs', async () => {
@@ -99,10 +89,9 @@ describe('Search', () => {
 
   test('focus/blur', async () => {
     const { emitted } = render(<Search />)
-    const locator = page.getByRole('textbox')
-    await locator.click()
+    await page.getByRole('textbox').click()
     expect(emitted()['focus']).toBeDefined()
-    locator.element().blur()
+    await page.getByLabelText('Close').click()
     expect(emitted()['blur']).toBeDefined()
   })
 
