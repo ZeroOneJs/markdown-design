@@ -57,18 +57,15 @@
     "vue": "^3.0.0"
   },
   "devDependencies": {
-    "@cypress/code-coverage": "^3.13.10",
     "@types/lodash": "^4.17.7",
     "@types/mark.js": "^8.11.12",
     "@vitejs/plugin-vue": "^6.0.4",
     "@vitejs/plugin-vue-jsx": "catalog:",
-    "cypress": "^14.5.0",
     "less": "catalog:",
     "npm-run-all2": "catalog:",
     "typescript": "catalog:",
     "vite": "catalog:",
     "vite-plugin-dts": "^4.5.0",
-    "vite-plugin-istanbul": "^7.2.1",
     "vite-plugin-lib-inject-css": "^2.2.1",
     "vue": "catalog:",
     "vue-tsc": "^2.0.21"

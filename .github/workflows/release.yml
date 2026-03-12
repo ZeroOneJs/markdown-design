@@ -19,7 +19,7 @@ jobs:
 
       - name: Checkout
         if: ${{ steps.release.outputs.releases_created == 'true' }}
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Install pnpm
         if: ${{ steps.release.outputs.releases_created == 'true' }}
@@ -27,7 +27,7 @@ jobs:
 
       - name: Install Node.js
         if: ${{ steps.release.outputs.releases_created == 'true' }}
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: '18'
           cache: 'pnpm'
