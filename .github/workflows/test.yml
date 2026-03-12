@@ -28,5 +28,8 @@ jobs:
       - name: Install dependencies
         run: pnpm i
 
+      - name: Install playwright dependencies
+        run: pnpm exec playwright install
+
       - name: Run test
         run: pnpm test
