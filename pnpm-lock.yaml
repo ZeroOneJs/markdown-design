@@ -95,6 +95,9 @@ importers:
       npm-run-all2:
         specifier: 'catalog:'
         version: 6.2.6
+      playwright:
+        specifier: ^1.58.2
+        version: 1.58.2
       prettier:
         specifier: ^3.2.5
         version: 3.8.1

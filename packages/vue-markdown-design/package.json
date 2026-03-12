@@ -13,8 +13,6 @@
     "lib"
   ],
   "scripts": {
-    "test": "cypress run --component",
-    "test:dev": "cypress open --component",
     "type-check": "vue-tsc -p tsconfig.build.json",
     "build-only": "vite build",
     "build": "run-p type-check build-only"

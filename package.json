@@ -1,10 +1,7 @@
 {
   "private": true,
   "scripts": {
-    "test:vi": "vitest run",
-    "test:cy": "pnpm -C ./packages/vue-markdown-design test",
-    "test:dev": "pnpm -C ./packages/vue-markdown-design test:dev",
-    "test": "run-p test:vi test:cy",
+    "test": "vitest",
     "docs:dev": "pnpm -C ./packages/markdown-design-docs dev",
     "docs:build": "pnpm -C ./packages/markdown-design-docs build",
     "build": "pnpm -r --filter=!markdown-design-docs build",
@@ -34,6 +31,7 @@
     "jsdom": "^24.1.0",
     "lint-staged": "^16.0.0",
     "npm-run-all2": "catalog:",
+    "playwright": "^1.58.2",
     "prettier": "^3.2.5",
     "vite": "catalog:",
     "vitest": "^4.0.18",

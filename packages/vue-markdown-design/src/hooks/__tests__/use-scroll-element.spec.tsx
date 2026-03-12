@@ -1,30 +1,65 @@
 import { useScrollParent } from '../use-scroll-element'
-import { render } from 'vitest-browser-vue'
-import { describe, expect, test } from 'vitest'
+import { describe, expect, test, beforeEach } from 'vitest'
 import { page } from 'vitest/browser'
+import { enableAutoUnmount, mount } from '@vue/test-utils'
+import { shallowRef, type SetupContext } from 'vue'
+
+enableAutoUnmount(beforeEach)
 
 describe('use-scroll-element', () => {
   test('target 为空', () => {
-    const { scrollEl, update } = useScrollParent(null)
-    update()
-    expect(scrollEl.value).toBeUndefined()
+    const wrapper = mount(
+      {
+        render: () => null,
+        setup() {
+          const { scrollEl, update } = useScrollParent(null)
+          update()
+          return { scrollEl }
+        }
+      },
+      {
+        attachTo: document.body
+      }
+    )
+    expect(wrapper.vm.scrollEl).toBeUndefined()
   })
 
   test('父节点为空', () => {
-    const node = document.createElement('div')
-    const { scrollEl, update } = useScrollParent(node)
-    update()
-    expect(scrollEl.value).toBeUndefined()
+    const wrapper = mount(
+      {
+        setup(_: unknown, { expose }: SetupContext) {
+          const target = shallowRef<HTMLDivElement>()
+          const { scrollEl, update } = useScrollParent(target)
+          update()
+          expose({ scrollEl })
+          return () => <div ref={target}></div>
+        }
+      },
+      {
+        attachTo: document.body
+      }
+    )
+    expect(wrapper.vm.scrollEl).toBeUndefined()
   })
 
   test('onlyParent', async () => {
-    render(() => (
-      <div data-testid="parent" style="overflow: scroll;">
-        <div data-testid="child"></div>
-      </div>
-    ))
-    const { scrollEl, update } = useScrollParent(page.getByTestId('child').element())
-    update()
-    await expect.element(page.getByTestId('parent')).toBe(scrollEl.value)
+    const wrapper = mount(
+      {
+        setup(_: unknown, { expose }: SetupContext) {
+          const target = shallowRef<HTMLDivElement>()
+          const { scrollEl } = useScrollParent(target)
+          expose({ scrollEl })
+          return () => (
+            <div data-testid="scroller" style="overflow: scroll;">
+              <div ref={target}></div>
+            </div>
+          )
+        }
+      },
+      {
+        attachTo: document.body
+      }
+    )
+    await expect.element(page.getByTestId('scroller')).toBe(wrapper.vm.scrollEl)
   })
 })
