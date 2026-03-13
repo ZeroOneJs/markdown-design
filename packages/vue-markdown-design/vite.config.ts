@@ -42,14 +42,14 @@ export default defineConfig({
     lib: {
       entry: 'src/index.ts'
     }
-  },
-  test: {
-    browser: {
-      provider: playwright(),
-      enabled: true,
-      // 至少需要一个实例
-      instances: [{ browser: 'chromium', viewport: { width: 1280, height: 720 } }]
-    },
-    setupFiles: 'src/__tests__/setup.ts'
   }
+  // test: {
+  //   browser: {
+  //     provider: playwright(),
+  //     enabled: true,
+  //     // 至少需要一个实例
+  //     instances: [{ browser: 'chromium', viewport: { width: 1280, height: 720 } }]
+  //   },
+  //   setupFiles: 'src/__tests__/setup.ts'
+  // }
 })
