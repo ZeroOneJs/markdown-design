@@ -1,22 +1,18 @@
 import { playwright } from '@vitest/browser-playwright'
 import { defineConfig } from 'vitest/config'
-import dasds from './packages/vue-markdown-design/vite.config'
+import config from './packages/vue-markdown-design/vite.config'
 
 export default defineConfig({
   test: {
     projects: [
       {
         test: {
-          // 基于文件命名约定的示例
-          // 非强制要求
-          include: ['packages/**/__tests__/**/!(*.browser).spec.ts'],
-          name: 'unit'
+          name: 'unit',
+          include: ['packages/**/__tests__/**/!(*.browser).spec.ts']
         }
       },
       {
-        plugins: dasds.plugins,
-        // 继承此配置的选项，如 plugins 和 pool
-        // extends: true,
+        plugins: config.plugins,
         test: {
           name: 'browser',
           include: [

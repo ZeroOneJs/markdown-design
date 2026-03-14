@@ -1,15 +1,10 @@
 {
   "extends": "./tsconfig.app.json",
-  "include": [
-    "packages/*/src/**/*",
-    "env.d.ts",
-    "packages/*/__tests__/**/*",
-    "packages/*/cypress/**/*"
-  ],
+  "include": ["packages/*/src/**/*", "env.d.ts", "packages/*/__tests__/**/*"],
   "exclude": [],
   "compilerOptions": {
     "composite": true,
-    "types": ["node", "jsdom"],
+    "types": ["node"],
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.cypress-ct.tsbuildinfo"
   }
 }
