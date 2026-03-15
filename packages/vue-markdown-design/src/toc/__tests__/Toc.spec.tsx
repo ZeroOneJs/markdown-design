@@ -26,7 +26,7 @@ describe('Toc', () => {
 
   test('startLevel 小于 endLevel', () => {
     const warnSpy = vi.spyOn(console, 'warn')
-    render(<Toc startLevel="6" endLevel="1" />)
+    render(<Toc startLevel="2" endLevel="1" />)
     expect(warnSpy).toHaveBeenCalledWith(
       '[vue-markdown-design] The start-level must be less than the end-level.'
     )

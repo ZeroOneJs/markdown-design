@@ -107,10 +107,14 @@ describe('Render', () => {
 
   test('highlight', async () => {
     const { rerender } = render(<Render src={'```js\nconst = foo\n```'} />)
-    const locator = page.getByText('const')
-    await expect.element(locator).toHaveClass(/hljs/)
+    const codeLocator = page.getByRole('code')
+    await expect.element(codeLocator).toHaveClass('language-js')
+    rerender({ src: '```\nconst = foo\n```' })
+    await expect.element(codeLocator).not.toHaveClass('language-js')
+    const textLocator = page.getByText('const')
+    await expect.element(textLocator).toHaveClass(/hljs/)
     rerender({ highlight: false })
-    await expect.element(locator).not.toHaveClass(/hljs/)
+    await expect.element(textLocator).not.toHaveClass(/hljs/)
   })
 
   test('highlightOptions', async () => {
