@@ -90,9 +90,10 @@ describe('Markdown', () => {
   })
 
   test('miniScreenWidth', async () => {
-    await page.viewport(768, 768)
+    await page.viewport(720, 720)
     render(<Markdown toc />)
     await expect.element(page.getByRole('complementary')).toHaveClass('vmd-markdown--mini')
+    await page.viewport(1280, 720)
   })
 
   test('searchOffset', async () => {
@@ -215,10 +216,11 @@ describe('Markdown', () => {
   })
 
   test('小屏幕点选目录时目录自动关闭', async () => {
-    await page.viewport(768, 768)
+    await page.viewport(720, 720)
     render(<Markdown src="# Title" toc />)
     await page.getByRole('link', { name: 'Title' }).click()
     await expect.element(page.getByRole('complementary')).not.toBeInTheDocument()
+    await page.viewport(1280, 720)
   })
 
   test('searchBlur/searchFocus', async () => {
