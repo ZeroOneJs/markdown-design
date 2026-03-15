@@ -2,6 +2,7 @@
   "private": true,
   "scripts": {
     "test": "vitest",
+    "test:coverage": "vitest --coverage",
     "docs:dev": "pnpm -C ./packages/markdown-design-docs dev",
     "docs:build": "pnpm -C ./packages/markdown-design-docs build",
     "build": "pnpm -r --filter=!markdown-design-docs build",

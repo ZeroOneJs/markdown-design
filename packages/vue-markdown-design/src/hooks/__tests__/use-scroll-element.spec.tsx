@@ -27,12 +27,12 @@ describe('use-scroll-element', () => {
   test('父节点为空', () => {
     const wrapper = mount(
       {
-        setup(_: unknown, { expose }: SetupContext) {
-          const target = shallowRef<HTMLDivElement>()
+        render: () => null,
+        setup() {
+          const target = document.createElement('div')
           const { scrollEl, update } = useScrollParent(target)
           update()
-          expose({ scrollEl })
-          return () => <div ref={target}></div>
+          return { scrollEl }
         }
       },
       {
@@ -47,11 +47,14 @@ describe('use-scroll-element', () => {
       {
         setup(_: unknown, { expose }: SetupContext) {
           const target = shallowRef<HTMLDivElement>()
-          const { scrollEl } = useScrollParent(target)
-          expose({ scrollEl })
+          const { scrollEl: parentScrollEl } = useScrollParent(target)
+          const { scrollEl } = useScrollParent(target, { onlyParent: false })
+          expose({ parentScrollEl, scrollEl })
           return () => (
-            <div data-testid="scroller" style="overflow: scroll;">
-              <div ref={target}></div>
+            <div data-testid="scroller-1" style="overflow: scroll;">
+              <div data-testid="scroller-2" style="overflow: scroll;">
+                <div ref={target}></div>
+              </div>
             </div>
           )
         }
@@ -60,6 +63,9 @@ describe('use-scroll-element', () => {
         attachTo: document.body
       }
     )
-    await expect.element(page.getByTestId('scroller')).toBe(wrapper.vm.scrollEl)
+    await expect.element(wrapper.vm.parentScrollEl).toBe(page.getByTestId('scroller-2').element())
+    await expect(wrapper.vm.scrollEl).toEqual(
+      expect.arrayContaining(page.getByTestId(/scroller/).elements())
+    )
   })
 })

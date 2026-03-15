@@ -8,6 +8,7 @@ import { type VueWrapper, enableAutoUnmount, mount } from '@vue/test-utils'
 import keywordMd from '../../__tests__/fixtures/commonmark/keyword.md?raw'
 import miniMd from '../../__tests__/fixtures/commonmark/mini.md?raw'
 import poemMd from '../../__tests__/fixtures/commonmark/poem.md?raw'
+import tocMd from '../../__tests__/fixtures/commonmark/toc.md?raw'
 
 enableAutoUnmount(beforeEach)
 
@@ -120,10 +121,10 @@ describe('Markdown', () => {
   })
 
   test('tocOffset', async () => {
-    render(<Markdown src={poemMd} toc style={style} tocOffset={60} />)
+    render(<Markdown src={poemMd} toc style={style} tocOffset={32} />)
     const name = 'The Tyger'
     await page.getByRole('link', { name }).click()
-    expect(page.getByRole('heading', { name }).boundingClientRect('top')).toBeCloseTo(60, 0)
+    expect(page.getByRole('heading', { name }).boundingClientRect('top')).toBeCloseTo(32, 0)
   })
 
   test('tocSmooth', async () => {
@@ -300,5 +301,25 @@ describe('Markdown', () => {
       attachTo: document.body
     })
     expect(wrapper.vm.mdInstance).toBeInstanceOf(MarkdownIt)
+  })
+
+  test('htmlStr', async () => {
+    const wrapper: VueWrapper<any> = mount(<Markdown />, {
+      attachTo: document.body
+    })
+    expect(wrapper.vm.htmlStr).toBe('')
+    await wrapper.setProps({ src: '# Title' })
+    expect(wrapper.vm.htmlStr).toBe(
+      `<h1 id="title" tabindex="-1"><a class="vmd-render__anchor" href="#title" data-vmd-anchor="">#</a>Title</h1>\n`
+    )
+  })
+
+  test('目录高度大于容器高度时出现滚动条', async () => {
+    render(<Markdown src={tocMd} toc topOffset={250} />)
+    const locator = page.getByRole('navigation')
+    await expect
+      .element(locator.element().parentNode as HTMLDivElement)
+      .toHaveAttribute('style', expect.stringContaining('height'))
+    await expect.element(locator).toHaveAttribute('style', expect.stringContaining('margin-bottom'))
   })
 })
