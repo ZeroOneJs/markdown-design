@@ -28,9 +28,5 @@ export default defineConfig({
         }
       }
     ]
-    // coverage: {
-    //   // provider: 'istanbul'
-    //   enabled: true,
-    // },
   }
 })

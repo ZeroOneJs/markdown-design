@@ -1,7 +1,10 @@
 import { page, userEvent } from 'vitest/browser'
 import Search from '..'
 import { render } from 'vitest-browser-vue'
-import { describe, expect, test, vi } from 'vitest'
+import { describe, expect, test, vi, beforeEach } from 'vitest'
+import { enableAutoUnmount, mount } from '@vue/test-utils'
+
+enableAutoUnmount(beforeEach)
 
 describe('Search', () => {
   test('clearable', async () => {
@@ -123,5 +126,40 @@ describe('Search', () => {
     await page.getByRole('textbox').click()
     await userEvent.keyboard('{Enter}')
     expect(emitted()['stepClick'][1]).toEqual(['next'])
+  })
+
+  // test('next button click', async () => {
+  //   const { emitted } = render(<Search modelValue="keyword" />)
+  //   const nextBtn = page.getByLabelText('Next')
+  //   await nextBtn.click()
+  //   expect(emitted()['stepClick']).toBeDefined()
+  //   expect(emitted()['stepClick'][0]).toEqual(['next'])
+  // })
+
+  test('refresh', async () => {
+    const wrapper = mount(
+      ({ content = 'Content 1' }) => {
+        return (
+          <>
+            <Search modelValue="t" target="[data-testid='target']" />
+            <div v-html={content} data-testid="target"></div>
+          </>
+        )
+      },
+      {
+        attachTo: document.body
+      }
+    )
+    const locator = page.getByRole('mark')
+    await expect.element(locator).toHaveLength(2)
+    await wrapper.setProps({ content: 'Content 2' })
+    const instance = wrapper.getComponent(Search)
+    instance.vm.$.exposed?.refresh()
+    await expect.element(locator).toHaveLength(2)
+    await page.getByLabelText('Next').click()
+    await wrapper.setProps({ content: 'Content 3' })
+    instance.vm.$.exposed?.refresh(false)
+    await expect.element(locator.first()).not.toHaveClass('vmd-search--highlight')
+    await expect.element(locator.last()).toHaveClass('vmd-search--highlight')
   })
 })

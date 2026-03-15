@@ -8,6 +8,7 @@ import { type VueWrapper, enableAutoUnmount, mount } from '@vue/test-utils'
 import keywordMd from '../../__tests__/fixtures/commonmark/keyword.md?raw'
 import miniMd from '../../__tests__/fixtures/commonmark/mini.md?raw'
 import poemMd from '../../__tests__/fixtures/commonmark/poem.md?raw'
+import tocMd from '../../__tests__/fixtures/commonmark/toc.md?raw'
 
 enableAutoUnmount(beforeEach)
 
@@ -126,11 +127,18 @@ describe('Markdown', () => {
   })
 
   test('tocOffset', async () => {
-    render(<Markdown src={poemMd} toc style={style} tocOffset={60} />)
+    render(<Markdown src={poemMd} toc style={style} tocOffset={32} />)
     const name = 'The Tyger'
     await page.getByRole('link', { name }).click()
-    expect(page.getByRole('heading', { name }).boundingClientRect('top')).toBeCloseTo(60, 0)
+    expect(page.getByRole('heading', { name }).boundingClientRect('top')).toBeCloseTo(32, 0)
   })
+
+  // test('tocOffset with function', async () => {
+  //   render(<Markdown src={poemMd} toc style={style} tocOffset={() => 80} />)
+  //   const name = 'The Tyger'
+  //   await page.getByRole('link', { name }).click()
+  //   expect(page.getByRole('heading', { name }).boundingClientRect('top')).toBeCloseTo(80, 0)
+  // })
 
   test('tocSmooth', async () => {
     render(<Markdown src={poemMd} toc tocSmooth />)
@@ -313,5 +321,67 @@ describe('Markdown', () => {
       attachTo: document.body
     })
     expect(wrapper.vm.mdInstance).toBeInstanceOf(MarkdownIt)
+  })
+
+  test('htmlStr', async () => {
+    const wrapper: VueWrapper<any> = mount(<Markdown />, {
+      attachTo: document.body
+    })
+    expect(wrapper.vm.htmlStr).toBe('')
+    await wrapper.setProps({ src: '# Title' })
+    expect(wrapper.vm.htmlStr).toBe(
+      `<h1 id="title" tabindex="-1"><a class="vmd-render__anchor" href="#title" data-vmd-anchor="">#</a>Title</h1>\n`
+    )
+  })
+
+  // test('tocRefresh', async () => {
+  //   const wrapper: VueWrapper<any> = mount(<Markdown src="# Title" toc />, {
+  //     attachTo: document.body
+  //   })
+  //   await expect.element(page.getByRole('link', { name: 'Title' })).toBeInTheDocument()
+  //   await wrapper.vm.tocRefresh()
+  //   await expect.element(page.getByRole('link', { name: 'Title' })).toBeInTheDocument()
+  // })
+
+  // test('searchRefresh', async () => {
+  //   const wrapper: VueWrapper<any> = mount(<Markdown src="# Title" search keyword="Title" />, {
+  //     attachTo: document.body
+  //   })
+  //   await expect.element(page.getByRole('mark')).toBeInTheDocument()
+  //   await wrapper.vm.searchRefresh()
+  //   await expect.element(page.getByRole('mark')).toBeInTheDocument()
+  // })
+
+  // test('searchRefresh with resetIndex false', async () => {
+  //   const wrapper: VueWrapper<any> = mount(<Markdown src="# Old Title" search keyword="t" />, {
+  //     attachTo: document.body
+  //   })
+  //   await page.getByLabelText('Next').click()
+  //   await wrapper.setProps({ src: '# New Title' })
+  //   // await expect.element(page.getByRole('mark')).toBeInTheDocument()
+  //   // await wrapper.vm.searchRefresh(false)
+  //   // await expect.element(page.getByRole('mark')).toBeInTheDocument()
+  // })
+
+  // test('tocStyles with large toc', async () => {
+  //   const longTocMd = Array.from({ length: 50 }, (_, i) => `# Title ${i + 1}`).join('\n')
+  //   render(<Markdown src={longTocMd} toc topOffset={0} bottomOffset={0} style={style} />)
+  //   await expect.element(page.getByRole('navigation')).toBeInTheDocument()
+  // })
+
+  // test('tocStyles with overflow', async () => {
+  //   await page.viewport(400, 300)
+  //   const longTocMd = Array.from({ length: 30 }, (_, i) => `# Title ${i + 1}`).join('\n')
+  //   render(<Markdown src={longTocMd} toc topOffset={0} bottomOffset={0} />)
+  //   await expect.element(page.getByRole('navigation')).toBeInTheDocument()
+  // })
+
+  test('目录高度大于容器高度时出现滚动条', async () => {
+    render(<Markdown src={tocMd} toc topOffset={250} />)
+    const locator = page.getByRole('navigation')
+    await expect
+      .element(locator.element().parentNode as HTMLDivElement)
+      .toHaveStyle({ height: '247px' })
+    await expect.element(locator).toHaveStyle({ marginBottom: '144.711px' })
   })
 })

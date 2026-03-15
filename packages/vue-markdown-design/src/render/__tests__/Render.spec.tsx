@@ -113,6 +113,12 @@ describe('Render', () => {
     await expect.element(locator).not.toHaveClass(/hljs/)
   })
 
+  // test('highlight with unsupported language', async () => {
+  //   render(<Render src={'```unknownlang\nsome code\n```'} />)
+  //   const locator = page.getByText('some code')
+  //   await expect.element(locator).toHaveClass(/language-unknownlang/)
+  // })
+
   test('highlightOptions', async () => {
     render(<Render src={'```js\nconst = foo\n```'} highlightOptions={{ classPrefix: 'vi-' }} />)
     const locator = page.getByText('const')
