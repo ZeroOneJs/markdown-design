@@ -7,6 +7,7 @@ on:
 
 permissions:
   contents: write
+  id-token: write
   pull-requests: write
 
 jobs:
@@ -29,7 +30,7 @@ jobs:
         if: ${{ steps.release.outputs.releases_created == 'true' }}
         uses: actions/setup-node@v6
         with:
-          node-version: '22'
+          node-version: '24'
           cache: 'pnpm'
 
       - name: Install dependencies
@@ -42,8 +43,4 @@ jobs:
 
       - name: Publish
         if: ${{ steps.release.outputs.releases_created == 'true' }}
-        run: |
-          echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
-          pnpm -r --no-git-checks publish
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: pnpm -r publish
