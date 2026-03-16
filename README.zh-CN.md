@@ -1,5 +1,7 @@
 # Vue Markdown Design
 
+[![NPM Version](https://img.shields.io/npm/v/vue-markdown-design)](https://www.npmjs.com/package/vue-markdown-design) [![codecov](https://codecov.io/github/ZeroOneJs/markdown-design/graph/badge.svg?token=US6XWJTP8H)](https://codecov.io/github/ZeroOneJs/markdown-design) [![GitHub License](https://img.shields.io/github/license/ZeroOneJs/markdown-design)](https://github.com/ZeroOneJs/markdown-design/blob/main/packages/vue-markdown-design/LICENSE) [![Release](https://github.com/ZeroOneJs/markdown-design/actions/workflows/release.yml/badge.svg)](https://github.com/ZeroOneJs/markdown-design/actions/workflows/release.yml)
+
 一个基于 [markdown-it](https://github.com/markdown-it/markdown-it) 的 Vue 3 开箱即用 Markdown 渲染组件。
 
 ## 主要特性
@@ -19,6 +21,8 @@
 🛡️ **安全防护** - 默认启用 HTML 内容安全过滤，有效防范 XSS 等网络攻击
 
 📋 **类型提示** - 使用 TypeScript 开发，提供完整的类型定义
+
+🧪 **组件测试** - 端到端和单元测试覆盖率到达 99%，确保组件稳定可靠
 
 ## 快速上手
 
