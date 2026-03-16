@@ -2,7 +2,9 @@ English | [中文](./README.zh-CN.md)
 
 # Vue Markdown Design
 
-Vue Markdown Design is an out-of-the-box Markdown rendering component for Vue 3, built on [markdown-it](https://github.com/markdown-it/markdown-it).
+[![NPM Version](https://img.shields.io/npm/v/vue-markdown-design)](https://www.npmjs.com/package/vue-markdown-design) [![codecov](https://codecov.io/github/ZeroOneJs/markdown-design/graph/badge.svg?token=US6XWJTP8H)](https://codecov.io/github/ZeroOneJs/markdown-design) [![GitHub License](https://img.shields.io/github/license/ZeroOneJs/markdown-design)](https://github.com/ZeroOneJs/markdown-design/blob/main/packages/vue-markdown-design/LICENSE) [![Release](https://github.com/ZeroOneJs/markdown-design/actions/workflows/release.yml/badge.svg)](https://github.com/ZeroOneJs/markdown-design/actions/workflows/release.yml)
+
+An out-of-the-box Markdown rendering component for Vue 3, built on [markdown-it](https://github.com/markdown-it/markdown-it).
 
 ## Key Features
 
@@ -21,6 +23,8 @@ Vue Markdown Design is an out-of-the-box Markdown rendering component for Vue 3,
 🛡️ **Security** - HTML sanitization is enabled by default to mitigate XSS and other attacks
 
 📋 **Typings** - Written in TypeScript with complete type definitions
+
+🧪 **Testing** - Achieves 99% coverage in both E2E and unit tests, ensuring component stability and reliability
 
 ## Quick Start
 
