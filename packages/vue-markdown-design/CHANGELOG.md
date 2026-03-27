@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.3.2](https://github.com/ZeroOneJs/markdown-design/compare/vue-markdown-design-v0.3.1...vue-markdown-design-v0.3.2) (2026-03-27)
+
+
+### Bug Fixes
+
+* replace span with button elements for accessibility ([8481e3b](https://github.com/ZeroOneJs/markdown-design/commit/8481e3b75a03ba1ea95ffc8bae55bb850abc2ad1))
+* **sticky:** prevent element overflow during initialization in non-flow layouts ([f53a641](https://github.com/ZeroOneJs/markdown-design/commit/f53a6419403e64b813c497e8af0a954289114b0d))
+
 ## [0.3.1](https://github.com/ZeroOneJs/markdown-design/compare/vue-markdown-design-v0.3.0...vue-markdown-design-v0.3.1) (2026-01-28)
 
 
