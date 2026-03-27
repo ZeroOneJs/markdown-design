@@ -1,7 +1,9 @@
 {
   "plugins": ["node-workspace"],
   "packages": {
-    "packages/vue-markdown-design": {},
+    "packages/vue-markdown-design": {
+      "prerelease": true
+    },
     "packages/markdown-it-headers": {},
     "packages/markdown-it-sanitize": {}
   }
